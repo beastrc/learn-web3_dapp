@@ -18,7 +18,3 @@ export type QueryResponseData = {
 export type KeypairData = {
 	addressString: string
 }
-
-export type TransactionIdentifier = {
-	txID: string
-}
