@@ -41,4 +41,4 @@ yarn-error.log*
 /contracts/solana/program/target/
 
 # credentials
-/credentials
+/credentials/*
