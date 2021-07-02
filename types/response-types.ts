@@ -1,5 +1,15 @@
 import { BN } from 'avalanche';
 
+export type ConnectReponse = string
+
+export type TransferReponse = {
+	txID: string
+}
+
+export type TransferErrorResponse = {
+	message: string
+}
+
 export type QueryResponseData = {
 	pChainHeight: BN
 	pChainMinStake: {
@@ -17,4 +27,8 @@ export type QueryResponseData = {
 
 export type KeypairData = {
 	addressString: string
+}
+
+export type TransactionIdentifier = {
+	txID: string
 }

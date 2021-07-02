@@ -4,55 +4,42 @@ import fs from 'fs';
 
 import { AVALANCHE_NETWORKS, CHAINS } from 'types/types';
 import { getDatahubNodeURL } from 'utils/datahub-utils';
-
+import { getAvalancheClient } from 'utils/avalanche-utils'
 type Data = any;
 
 export default function account(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
 ) {
-	const datahubUrl = getDatahubNodeURL(CHAINS.AVALANCHE, AVALANCHE_NETWORKS.FUJI);
-	const url = new URL(datahubUrl);
-
-	const client = new Avalanche(
-		url.hostname,
-		parseInt(url.port),
-		url.protocol.replace(":", ""),
-		parseInt(process.env.NEXT_PUBLIC_AVALANCHE_NETWORK_ID as string),
-		"X",
-		"C",
-		process.env.NEXT_PUBLIC_AVALANCHE_NETWORK_NAME
-	);  
-
-	// Apply DataHub API authentication token
-	client.setAuthToken(process.env.NEXT_PUBLIC_DATAHUB_AVALANCHE_API_KEY as string);
+	const client = getAvalancheClient()
 
 	// Define the path where our keypair will be saved in JSON format
 	const credentialsPath = './credentials'
-	const keyPath = `${credentialsPath}/avalanche_keypair.json`
+	const keyPath = `${credentialsPath}/avalanche_privkey.json`
 	const chain = client.XChain(); // the chainID can be altered if necessary, but we are on XChain here
 	const keyChain = chain.keyChain(); // keyChain will be the returned instance of KeyChain from AVMAPI
 
-	// Check if we already have an existing keypair
+	let key
 	if (!fs.existsSync(keyPath)) {
 		console.log("Generating a new keypair...")
-		const key = keyChain.makeKey()
-
-		console.log("Saving keypair to", keyPath)
-		fs.writeFileSync(keyPath, JSON.stringify({
-			pubkey: key.getPublicKeyString(),
-			privkey: key.getPrivateKeyString(),
-		}, null, 2))
+		key = keyChain.makeKey()
+		fs.writeFileSync(keyPath, key.getPrivateKeyString())
 	} else {
-		console.log(`${keyPath} exists! Importing...`)
-		const data = JSON.parse(fs.readFileSync(keyPath))
-		const keyImport = keyChain.importKey(data.privkey)
-		const addressString = keyImport.getAddressString()
-		console.log("Imported X-chain address:", keyImport.getAddressString())
-		
-		res.status(200).json({
-			addressString,
-		});
-	}
+		const buffer = fs.readFileSync(keyPath)
+		console.log(`buffer`, buffer)
+		const bufferStr = buffer.toString()
 
+		if (bufferStr) {
+			console.log("Loading keypair from saved private key...")
+			key = keyChain.importKey(bufferStr)
+		} else {
+			console.log("Generating a new keypair...")
+			key = keyChain.makeKey()
+			fs.writeFileSync(keyPath, key.getPrivateKeyString())
+		}
+	}
+	
+	res.status(200).json({
+		addressString: key.getAddressString(),
+	});
 }
