@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from "axios";
-import { Alert, Col, Space, Spin, Typography } from "antd";
+import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { AvalancheConnectReponse } from 'types/avalanche-types';
+import { NearConnectReponse } from 'types/near-types';
 
 const { Text } = Typography;
 
@@ -18,9 +18,9 @@ const Connect = () => {
 	const getConnection = () => {
 		setFetchingVersion(true)
 		axios
-			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/connect`)
+			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/near/connect`)
 			.then(res => {
-				const version: AvalancheConnectReponse = res.data
+				const version: NearConnectReponse = res.data
 				setVersion(version)
 				setFetchingVersion(false)
 			})
@@ -38,14 +38,14 @@ const Connect = () => {
 					? <Alert
 							message={
 								<Space>
-									Connected to Avalanche!
+									Connected to Near!
 									<Text code>{version}</Text>
 								</Space>
 							}
 							type="success"
 							showIcon
 						/>
-					: <Alert message="Not connected to Avalanche" type="error" showIcon />}
+					: <Alert message="Not connected to Near" type="error" showIcon />}
 		</Col>
 	);
 }
