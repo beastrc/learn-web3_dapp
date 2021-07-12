@@ -64,7 +64,22 @@ export const CHAINS_CONFIG: ChainsType = {
 			{
 				id: "connect",
 				title: "Connect to NEAR",
-				url: ""
+				url: "https://learn.figment.io/network-documentation/near/near-pathway"
+            },
+			{
+				id: "keypair",
+				title: "Generate a keypair",
+				url: "https://learn.figment.io/network-documentation/near/near-pathway"
+            },
+			{
+				id: "account",
+				title: "Create an account",
+				url: "https://learn.figment.io/network-documentation/near/near-pathway"
+            },
+			{
+				id: "transfer",
+				title: "Transfer some near",
+				url: "https://learn.figment.io/network-documentation/near/near-pathway"
 			},
 		]
 	},
@@ -77,16 +92,6 @@ export const CHAINS_CONFIG: ChainsType = {
 			{
 				id: "connect",
 				title: "Connect to Polkadot",
-				url: ""
-			},
-			{
-				id: "query",
-				title: "Query Polkadot",
-				url: ""
-			},
-			{
-				id: "account",
-				title: "Create an account",
 				url: ""
 			},
 		]
