@@ -64,17 +64,7 @@ export const CHAINS_CONFIG: ChainsType = {
 			{
 				id: "connect",
 				title: "Connect to NEAR",
-				url: "https://learn.figment.io/network-documentation/near/near-pathway"
-            },
-			{
-				id: "account",
-				title: "Create an account",
-				url: "https://learn.figment.io/network-documentation/near/near-pathway"
-            },
-			{
-				id: "balance",
-				title: "Query the balance",
-				url: "https://learn.figment.io/network-documentation/near/near-pathway"
+				url: ""
 			},
 		]
 	},
@@ -87,6 +77,16 @@ export const CHAINS_CONFIG: ChainsType = {
 			{
 				id: "connect",
 				title: "Connect to Polkadot",
+				url: ""
+			},
+			{
+				id: "query",
+				title: "Query Polkadot",
+				url: ""
+			},
+			{
+				id: "account",
+				title: "Create an account",
 				url: ""
 			},
 		]

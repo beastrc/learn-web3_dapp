@@ -4,7 +4,7 @@ import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight } from 'react-feather';
 
-import { ChainType, StepType, CHAINS } from 'types/types';
+import { ChainType, StepType } from 'types/types';
 
 const { Text } = Typography;
 
@@ -72,7 +72,7 @@ const StepButtons = ({
 	isFirstStep,
 	isLastStep,
 }: {
-	chainId: CHAINS
+	chainId: string
 	next(): void
 	prev(): void
 	isFirstStep: boolean
@@ -97,36 +97,25 @@ const StepButtons = ({
 	)
 }
 
-const getButtonBgColor = (chainId: CHAINS) => {
-	if (chainId === CHAINS.SOLANA) {
+const getButtonBgColor = (chainId: string) => {
+	if (chainId === "solana") {
 		return 'linear-gradient(253deg, #00FFA3, #DC1FFF)';
-	} else if (chainId === CHAINS.AVALANCHE) {
+	} else if (chainId === "avalanche") {
 		return '#e84141';
-	} else if (chainId === CHAINS.POLYGON) {
+	} else if (chainId === "polygon") {
 		return '#8247e5';
-	} else if (chainId === CHAINS.POLKADOT) {
+	} else if (chainId === "polkadot") {
 		return '#e6007a';
-	} else if (chainId === CHAINS.TEZOS) {
+	} else if (chainId === "tezos") {
 		return '#0f62ff';
-    } else if (chainId === CHAINS.CELO) {
-        return "linear-gradient(253deg, rgb(251, 204, 92), rgb(53,208,127))"
-    } else if (chainId === CHAINS.NEAR) {
-        return "linear-gradient(253deg, #00c1de, #00c08b)"
-    } else if (chainId === CHAINS.SECRET) {
-        return "black"
-    }
-	
-    return "rgb(255,242,155)"
+	}
+	return "rgb(255,242,155)"
 }
 
-const getButtonTextColor = (chainId: CHAINS) => {
-	if (chainId === CHAINS.SOLANA) {
+const getButtonTextColor = (chainId: string) => {
+	if (chainId === "solana") {
 		return "white";
-    }
-	if (chainId === CHAINS.NEAR) {
-		return "black";
-    }    
-
+	}
 	return "white"
 }
 
