@@ -1,50 +1,20 @@
-import { useState } from "react";
-import { Row, Typography } from 'antd';
-
-import Sidebar from "components/shared/Sidebar";
+import { useEffect, useReducer } from "react";
 import { ChainType } from "types/types";
-import Step from "components/shared/Step";
-import Connect from "./steps/1_Connect";
-import { useSteps } from "hooks/steps-hooks";
+import NearApp from "@near/App";
+import { useLocalStorage } from '@near/hooks'
+import { appStateReducer, initialState, NearContext } from '@near/context'
 
-const { Text, Paragraph } = Typography;
-
-const Chain = ({ chain }: { chain: ChainType }) => {
-  const [keypair, setKeypair] = useState(null);
-  const { steps } = chain
-
-  const {
-    next,
-    prev,
-    stepIndex,
-    step,
-    isFirstStep,
-    isLastStep
-  } = useSteps(steps);
-
-  return (
-    <Row>
-      <Sidebar
-        chain={chain}
-        steps={steps}
-        stepIndex={stepIndex}
-      />
-      <Step
-        chain={chain}
-        step={step}
-        isFirstStep={isFirstStep}
-        isLastStep={isLastStep}
-        prev={prev}
-        next={next}
-        body={
-          <>
-            {step.id === "connect" && <Connect />}
-          </>
-        }
-        nav={<div>nav</div>}
-      />
-    </Row>
-  );
+const Near = ({ chain }: { chain: ChainType }) => {
+    const [storageState, setStorageState] = useLocalStorage("near", initialState)
+    const [state, dispatch] = useReducer(appStateReducer, storageState);
+    useEffect(() => {
+        setStorageState(state)
+    }, [state])
+    return (
+        <NearContext.Provider value={{ state, dispatch }}>
+            <NearApp chain={chain} />
+        </NearContext.Provider>
+    )
 }
 
-export default Chain
+export default Near
