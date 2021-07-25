@@ -5,15 +5,12 @@ import Sidebar from "components/shared/Sidebar";
 import { ChainType } from "types/types";
 import Step from "components/shared/Step";
 import Connect from "./steps/1_Connect";
-import Fund from "./steps/2_Fund";
-
 import { useSteps } from "hooks/steps-hooks";
 
 const { Text, Paragraph } = Typography;
 
 const Chain = ({ chain }: { chain: ChainType }) => {
-  const [account, setAccount] = useState(null);
-
+  const [keypair, setKeypair] = useState(null);
   const { steps } = chain
 
   const {
@@ -42,22 +39,24 @@ const Chain = ({ chain }: { chain: ChainType }) => {
         body={
           <>
             {step.id === "connect" && <Connect />}
-            {step.id === "fund" && <Fund />}
           </>
         }
-        // nav={<Nav account={account} />}
+        // nav={<Nav keypair={keypair} />}
       />
     </Row>
   );
 }
 
-// const Nav = ({ account }: { account: any }) => {
-//   if (!account) return null;
+// const Nav = ({ keypair }: { keypair: any }) => {
+//   if (!keypair) return null;
+
+//   const publicKey = keypair.publicKey.toString();
+//   const publicKeyToDisplay = `${publicKey.slice(0,5)}...${publicKey.slice(-5)}`;
 
 //   return (
 //     <div style={{ position: "fixed", top: 20, right: 20 }}>
-//       <Paragraph copyable={{ text: account }}>
-//         <Text code>{account}</Text>
+//       <Paragraph copyable={{ text: keypair.publicKey.toString() }}>
+//         <Text code>{publicKeyToDisplay}</Text>
 //       </Paragraph>
 //     </div>
 //   )
