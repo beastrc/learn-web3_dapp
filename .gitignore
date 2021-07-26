@@ -42,5 +42,7 @@ yarn-error.log*
 /contracts/polygon/SimpleStorage/node_modules
 /contracts/polygon/SimpleStorage/.secret
 
+.vscode
+
 # credentials
 /credentials

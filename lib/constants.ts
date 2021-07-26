@@ -99,18 +99,8 @@ export const CHAINS_CONFIG: ChainsType = {
 		steps: [
 			{
 				id: "connect",
-				title: "Connect to the Polygon testnet network",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/connect-to-polygon"
-			},
-			{
-				id: "query",
-				title: "Query Polygon for information",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/query-polygon"
-			},
-			{
-				id: "fund",
-				title: "Fund your Polygon account",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/get-matic-tokens-on-mumbai"
+				title: "Connect to the Matic testnet network",
+				url: ""
 			}
 		]
 	},
@@ -174,7 +164,7 @@ export const CHAINS_CONFIG: ChainsType = {
 		id: CHAINS.TEZOS,
 		label: "Tezos",
 		active: true,
-		logoUrl: "https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=010",
+		logoUrl: "https://cryptologos.cc/logos/tezos-xtz-logo.svg?v=013",
 		steps: [
 			{
 				id: "connect",
