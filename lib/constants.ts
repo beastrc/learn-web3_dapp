@@ -4,7 +4,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.AVALANCHE]: {
 		id: CHAINS.AVALANCHE,
 		label: "Avalanche",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010",
 		steps: [
 			{
@@ -32,7 +32,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.CELO]: {
 		id: CHAINS.CELO,
 		label: "Celo",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/celo-celo-logo.svg?v=010",
 		steps: [
 			{
@@ -45,7 +45,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.THE_GRAPH]: {
 		id: CHAINS.THE_GRAPH,
 		label: "The Graph",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=012",
 		steps: [
 			{
@@ -58,7 +58,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.NEAR]: {
 		id: CHAINS.NEAR,
 		label: "NEAR",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=010",
 		steps: [
 			{
@@ -71,7 +71,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.POLKADOT]: {
 		id: CHAINS.POLKADOT,
 		label: "Polkadot",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/polkadot-new-dot-logo.svg?v=010",
 		steps: [
 			{
@@ -99,25 +99,15 @@ export const CHAINS_CONFIG: ChainsType = {
 		steps: [
 			{
 				id: "connect",
-				title: "Connect to the Polygon testnet network",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/connect-to-polygon"
-			},
-			{
-				id: "query",
-				title: "Query Polygon for information",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/query-polygon"
-			},
-			{
-				id: "fund",
-				title: "Fund your Polygon account",
-				url: "https://app.gitbook.com/@figment-learn/s/pathway-sandbox/polygon-matic-pathway/get-matic-tokens-on-mumbai"
+				title: "Connect to the Matic testnet network",
+				url: ""
 			}
 		]
 	},
 	[CHAINS.SECRET]: {
 		id: CHAINS.SECRET,
 		label: "Secret",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/secret-scrt-logo.svg?v=010",
 		steps: [
 			{
@@ -173,7 +163,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.TEZOS]: {
 		id: CHAINS.TEZOS,
 		label: "Tezos",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=010",
 		steps: [
 			{
