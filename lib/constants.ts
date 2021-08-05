@@ -157,7 +157,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.SECRET]: {
 		id: CHAINS.SECRET,
 		label: "Secret",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/secret-scrt-logo.svg?v=010",
 		steps: [
 			{
@@ -171,7 +171,7 @@ export const CHAINS_CONFIG: ChainsType = {
 		id: CHAINS.SOLANA,
 		label: "Solana",
     	logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
-		active: false,
+		active: true,
 		steps: [
 			{
 				id: "connect",

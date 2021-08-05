@@ -4,7 +4,6 @@ import {
   CHAINS,
   AVALANCHE_NETWORKS,
   NEAR_NETWORKS,
-  SECRET_NETWORKS,
   POLKADOT_NETWORKS,
   POLKADOT_PROTOCOLS,
   POLYGON_NETWORKS,
@@ -25,10 +24,8 @@ export const getDatahubNodeURL = (chain: CHAINS, network: NETWORKS, protocol?: P
         return getDataHubPolygonNodeUrl(network as POLYGON_NETWORKS, protocol as POLYGON_PROTOCOLS)
     case CHAINS.SOLANA:
         return getDataHubSolanaNodeUrl(network as SOLANA_NETWORKS, protocol as SOLANA_PROTOCOLS)
-    case CHAINS.SECRET:
-        return getDataHubSecretNodeUrl(network as SECRET_NETWORKS)
     default:
-      return ""
+        return ""
   }
 }
 
@@ -46,12 +43,7 @@ const getDataHubNearNodeUrl = (network: NEAR_NETWORKS): string =>
     network === NEAR_NETWORKS.MAINNET
         ? `https://${process.env.DATAHUB_NEAR_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_NEAR_API_KEY}`
         : `https://${process.env.DATAHUB_NEAR_TESTNET_RPC_URL}/apikey/${process.env.DATAHUB_NEAR_API_KEY}`
-
-const getDataHubSecretNodeUrl = (network: SECRET_NETWORKS): string => 
-  network === SECRET_NETWORKS.MAINNET
-    ? `https://${process.env.DATAHUB_SECRET_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_SECRET_API_KEY}/`
-    : `https://${process.env.DATAHUB_SECRET_TESTNET_RPC_URL}/apikey/${process.env.DATAHUB_SECRET_API_KEY}/`
-
+     
 const getDataHubPolkadotNodeUrl = (network: POLKADOT_NETWORKS, protocol: POLKADOT_PROTOCOLS): string => {
   if (network === POLKADOT_NETWORKS.WESTEND) {
     if (protocol === POLKADOT_PROTOCOLS.RPC) {
