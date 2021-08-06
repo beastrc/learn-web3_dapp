@@ -2,14 +2,19 @@ import { useEffect, useState } from 'react'
 import { Alert, Button, Col, Space, Typography } from 'antd';
 import axios from 'axios'
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppState } from '@near/hooks';
+
+import { AvalancheKeypairType } from "types/avalanche-types"
 
 const { Text } = Typography;
 
-const Account = () => {
+const Account = ({
+	keypair,
+	setKeypair
+}: { 
+	keypair: AvalancheKeypairType | null,
+	setKeypair: (keypair: AvalancheKeypairType) => void
+}) => {
 	const [fetching, setFetching] = useState<boolean>(false);
-	const [keypair, setKeypair] = useState<string | null>(null)
-	const { state, dispatch } = useAppState();
 
 	useEffect(() => {
 		generateKeypair();
@@ -18,9 +23,9 @@ const Account = () => {
 	const generateKeypair = () => {
 		setFetching(true)
 		axios
-			.get(`/api/avalanche/account`)
+			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/account`)
 			.then(res => {
-				const data = res.data
+				const data: AvalancheKeypairType = res.data
 				setKeypair(data)
 				setFetching(false)
 			})
