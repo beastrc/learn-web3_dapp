@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Connection, PublicKey, SystemProgram, Transaction, Keypair, sendAndConfirmTransaction } from "@solana/web3.js";
 import { Form, Input, Button, Alert, Space, Typography } from 'antd';
 import { LoadingOutlined, RedoOutlined } from '@ant-design/icons';
+
 import { getDatahubNodeURL } from "utils/datahub-utils";
-import { getTxExplorerURL } from  "@solana/lib";
-import { useAppState } from "@solana/hooks";
+import { getTxExplorerURL } from '../utils';
 
 const layout = {
   labelCol: { span: 4 },
@@ -16,12 +16,11 @@ const tailLayout = {
 
 const { Text } = Typography;
 
-const Transfer = () => {
-  const [toAddress, setToAddress] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+const Transfer = ({ keypair }) => {
+  const [toAddress, setToAddress] = useState(null);
+  const [error, setError] = useState(null);
   const [fetching, setFetching] = useState(false);
-  const [txSignature, setTxSignature] = useState<string | null>(null);
-  const { secretKey, publicKey } = useAppState().state;
+  const [txSignature, setTxSignature] = useState(null);
 
   const generate = () => {
     const keypair = Keypair.generate();
@@ -29,63 +28,45 @@ const Transfer = () => {
     setToAddress(address);
   }
 
-  const transfer = (values: any) => {
-    // alert("Implement the transfer() function!");
+  const transfer = (values) => {
+    alert("Implement the transfer() function!");
 
-    const lamports = parseFloat(values.amount);
+    const amountNumber = parseFloat(values.amount);
   
-    if (isNaN(lamports)) {
+    if (isNaN(amountNumber)) {
       setError("Amount needs to be a valid number")
     }
   
-    setTxSignature(null);
-    setFetching(true);
+    const rpcUrl = getDatahubNodeURL(CHAINS.SOLANA, SOLANA_NETWORKS.DEVNET, SOLANA_PROTOCOLS.RPC)
+    const wsUrl = getDatahubNodeURL(CHAINS.SOLANA, SOLANA_NETWORKS.DEVNET, SOLANA_PROTOCOLS.WS)
+    const connection = new Connection(rpcUrl, { wsEndpoint: wsUrl });
 
-    const rpcUrl = "https://api.devnet.solana.com" 
-    const connection = new Connection(rpcUrl, "confirmed");
-
-    const fromPubkey = new PublicKey(publicKey as string);
-    const toPubkey = new PublicKey(toAddress as  string);
+    const fromPubKey = new PublicKey(values.from);
+    const toPubKey = new PublicKey(toAddress);
 
     const instructions = SystemProgram.transfer({
-      fromPubkey,
-      toPubkey,
-      lamports,
+      fromPubkey: fromPubKey,
+      toPubkey: toPubKey,
+      lamports: amountNumber,
     });
 
     const signers = [
       {
-        publicKey: fromPubkey,
-        secretKey: Uint8Array.from(JSON.parse(secretKey as string))
+        publicKey: fromPubKey,
+        secretKey: new Uint8Array(keypair.secretKey)
       }
     ];
+
+    setTxSignature(null);
+    setFetching(true);
 
     // Create a transaction
     // Add instructions
     // Call sendAndConfirmTransaction
     // On success, call setTxSignature and setFetching
-
-    const transaction = new Transaction().add(instructions);
-
-    setTxSignature(null);
-    setFetching(true);
-  
-    sendAndConfirmTransaction(
-      connection,
-      transaction,
-      signers,
-    ).then((signature) => {
-      setTxSignature(signature)
-      setFetching(false);
-    })
-    .catch((err) => {
-      console.log(err);
-      setFetching(false);
-    })
-    
   };
 
-  const explorerUrl = getTxExplorerURL(txSignature as string);
+  const explorerUrl = getTxExplorerURL(txSignature);
 
   return (
     <Form
@@ -94,11 +75,11 @@ const Transfer = () => {
       layout="horizontal"
       onFinish={transfer}
       initialValues={{
-        from: publicKey
+        from: keypair.publicKey.toString()
       }}
     > 
       <Form.Item label="Sender" name="from" required>
-        <Text code>{publicKey}</Text>
+        <Text code>{keypair.publicKey.toString()}</Text>
       </Form.Item>
 
       <Form.Item label="Amount" name="amount" required tooltip="1 lamport = 0.000000001 SOL">
@@ -161,3 +142,11 @@ const Transfer = () => {
 };
 
 export default Transfer
+
+
+// CLI https://docs.solana.com/cli/transfer-tokens#transfer-tokens-from-your-first-wallet-to-the-second-address
+
+// Random example code from Google https://githubmemory.com/repo/1Crazymoney/math-solana-js
+// web3.js docs https://solana-labs.github.io/solana-web3.js/modules.html#sendandconfirmtransaction
+
+// SEE lib/transfer.js for working code

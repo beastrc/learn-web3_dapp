@@ -1,6 +1,6 @@
 import { useState, useContext } from "react"
-import type { State } from "@solana/context"
-import { SolanaContext } from "@solana/context"
+import type { State } from "@avalanche/context"
+import { AvalancheContext } from "@avalanche/context"
 
 const useLocalStorage = (key: string, initialValue: State) => {
   const [storedValue, setStoredValue] = useState<State>(() => {
@@ -25,6 +25,6 @@ const useLocalStorage = (key: string, initialValue: State) => {
   return [storedValue, setValue] as const;
 }
 
-const useAppState = () => useContext(SolanaContext)
+const useAppState = () => useContext(AvalancheContext)
 
 export { useLocalStorage, useAppState }

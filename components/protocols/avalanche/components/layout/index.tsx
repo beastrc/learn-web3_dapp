@@ -4,12 +4,12 @@ import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from '@solana/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from '@avalanche/types'
 
 const { Text } = Typography;
 
-const primaryColor = "linear-gradient(253deg, #00FFA3, #DC1FFF)"
-const secondaryColor = "black"
+const primaryColor = "#e84141"
+const secondaryColor = "#F6F6F6"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (

@@ -4,7 +4,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.AVALANCHE]: {
 		id: CHAINS.AVALANCHE,
 		label: "Avalanche",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010",
 		steps: [
 			{
@@ -170,8 +170,8 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.SOLANA]: {
 		id: CHAINS.SOLANA,
 		label: "Solana",
-    	logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
-		active: true,
+    logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
+		active: false,
 		steps: [
 			{
 				id: "connect",

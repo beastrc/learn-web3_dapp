@@ -5,7 +5,6 @@ export type State = {
     networkId?: string
     publicKey?: string
     secretKey?: string 
-    contractKey?: string 
 }
 
 type Action =
@@ -13,7 +12,6 @@ type Action =
     | { type: 'SetNetworkId', networkId?: string }
     | { type: 'SetPublicKey', publicKey?: string }
     | { type: 'SetSecretKey', secretKey?: string }
-    | { type: 'SetContractKey', contractKey?: string }
 
 const initialState = {
     index: 0,
@@ -29,14 +27,12 @@ function appStateReducer(state: State, action: Action): State  {
             return { ...state, secretKey: action.secretKey }
         case 'SetPublicKey':
             return { ...state, publicKey: action.publicKey }    
-        case 'SetContractKey':
-            return { ...state, contractKey: action.contractKey }
         default:
             return state
     }
 }
 
-const SolanaContext = createContext<{
+const AvalancheContext = createContext<{
     state: State;
     dispatch: Dispatch<Action>;
 }>({
@@ -44,4 +40,4 @@ const SolanaContext = createContext<{
     dispatch: () => null
 });
 
-export { SolanaContext, initialState, appStateReducer }
+export { AvalancheContext, initialState, appStateReducer }
