@@ -3,7 +3,7 @@ import { Button, Space, Col, Typography } from 'antd'
 import axios from 'axios'
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { AvalancheQueryResponse } from "types/avalanche-types"
+import { AvalancheQueryResponse } from "@avalanche/types"
 import styled from "styled-components";
 
 const { Text } = Typography;
@@ -15,7 +15,7 @@ const Query = () => {
 	const getQuery = () => {
 		setFetching(true)
 		axios
-			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/query`)
+			.get(`/api/avalanche/query`)
 			.then(res => {
 				const data: AvalancheQueryResponse = res.data
 				setQueryData(data)
