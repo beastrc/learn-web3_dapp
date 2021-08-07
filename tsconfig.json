@@ -15,8 +15,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@near/*": ["components/protocols/near/*"], 
-      "@tezos/*": ["components/protocols/tezos/*"], 
+      "@near/*": ["components/protocols/near/*"],
+      "@ccelo/*": ["components/protocols/celo/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

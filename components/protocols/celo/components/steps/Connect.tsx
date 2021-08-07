@@ -2,33 +2,40 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
-
-import { AvalancheConnectReponse } from 'types/avalanche-types';
+import { useAppState } from '@ccelo/hooks'
 
 const { Text } = Typography;
 
 const Connect = () => {
 	const [version, setVersion] = useState<string | null>(null);
 	const [fetchingVersion, setFetchingVersion] = useState<boolean>(false);
+    const { state, dispatch } = useAppState();
+	useEffect(() => {
+		const getConnection = () => {
+			setFetchingVersion(true)
+			axios
+				.post(`/api/celo/connect`, state)
+				.then(res => {
+					setVersion(res.data)
+					setFetchingVersion(false)
+
+				})
+				.catch(err => {
+					console.error(err)
+					setFetchingVersion(false)
+				})
+		}
+		getConnection()
+    }, [state]);
 
 	useEffect(() => {
-		getConnection();
-	}, []);
-
-	const getConnection = () => {
-		setFetchingVersion(true)
-		axios
-			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/connect`)
-			.then(res => {
-				const version: AvalancheConnectReponse = res.data
-				setVersion(version)
-				setFetchingVersion(false)
+		if (version) {
+			dispatch({
+				type: 'SetNetworkId',
+				networkId: version
 			})
-			.catch(err => {
-				console.log(err)
-				setFetchingVersion(false)
-			})
-	}
+		}
+	}, [version, setVersion])
 
 	return (
 		<Col style={{ width: "100%" }}>
@@ -38,14 +45,14 @@ const Connect = () => {
 					? <Alert
 							message={
 								<Space>
-									Connected to Avalanche!
+									Connected to Celo!
 									<Text code>{version}</Text>
 								</Space>
 							}
 							type="success"
 							showIcon
 						/>
-					: <Alert message="Not connected to Avalanche" type="error" showIcon />}
+					: <Alert message="Not connected to Celo" type="error" showIcon />}
 		</Col>
 	);
 }

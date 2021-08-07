@@ -24,7 +24,7 @@ function appStateReducer(state: State, action: Action): State  {
     }
 }
 
-const TezosContext = createContext<{
+const CeloContext = createContext<{
     state: State;
     dispatch: Dispatch<Action>;
 }>({
@@ -32,4 +32,4 @@ const TezosContext = createContext<{
     dispatch: () => null
 });
 
-export { TezosContext, initialState, appStateReducer }
+export { CeloContext, initialState, appStateReducer }

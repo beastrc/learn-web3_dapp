@@ -1,6 +1,6 @@
 import { Alert, Space, Typography, Popover, Button } from 'antd';
-import { useAppState } from '@tezos/hooks'
-import type { EntryT, AlertT } from '@tezos/types';
+import { useAppState } from '@ccelo/hooks'
+import type { EntryT, AlertT } from '@ccelo/types';
 
 const { Text, Paragraph } = Typography;
 
