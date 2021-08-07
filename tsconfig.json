@@ -15,8 +15,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@near/*": ["components/protocols/near/*"],
-      "@avalanche/*": ["components/protocols/avalanche/*"] 
+        "@near/*": ["components/protocols/near/*"] 
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
