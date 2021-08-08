@@ -4,16 +4,16 @@ import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from 'components/protocols/secret/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from '@polka/types'
 
 const { Text } = Typography;
 
-const primaryColor = "linear-gradient(90deg, #000000, #636363)"
-const secondaryColor = "khaki"
+const primaryColor = "#e6007a"
+const secondaryColor = "#F6F6F6"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (
-		<Right span={18}>
+		<Right span={16}>
 			<Col>
 				<StepHeader>
 					<Title>{props.step.title}</Title>
@@ -69,12 +69,12 @@ const StepButtons: React.FC<StepButtonsI> = ({ next, prev, isFirstStep, isLastSt
 }
 
 export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
-	const TitleStep = ({ title }: {title: string}) => <div style={{color: 'khaki', fontWeight: 'bold'}}>{title}</div>
+	const TitleStep = ({ title }: {title: string}) => <div style={{color: 'white', fontWeight: 'bold'}}>{title}</div>
 	return (
-		<Left span={6}>
+		<Left span={8}>
 			<Space size="large" direction="horizontal" align="center" style={{ marginBottom: "40px" }}>
 				<Image src="/figment-learn-compact.svg" alt="Figment Learn" height={41} width={100} />
-				<ChainTitle>{`Secret Pathway`}</ChainTitle>
+				<ChainTitle>{`Polkadot Pathway`}</ChainTitle>
 			</Space>
 
 			<Steps direction="vertical" size="small" current={stepIndex}>
@@ -125,7 +125,6 @@ const StepContent = styled.div`
 
 const NextButton = styled(Button)`
 	border: none;
-	color: khaki;
     font-weight: bold;
 	color: ${secondaryColor};
 	background: ${primaryColor};
@@ -150,7 +149,7 @@ const PrevButton = styled(Button)`
 `;
 
 const ChainTitle = styled.div`
-	color: khaki;
+	color: white;
 	font-weight: bold;
 	margin-bottom: 8px;
 	font-size: 28px;

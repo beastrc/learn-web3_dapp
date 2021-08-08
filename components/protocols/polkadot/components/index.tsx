@@ -1,6 +1,6 @@
 import { Typography, Popover, Button } from 'antd';
-import { useAppState } from 'components/protocols/secret/hooks'
-import type { EntryT } from 'components/protocols/secret/types';
+import { useAppState } from '@polka/hooks'
+import type { EntryT } from '@polka/types';
 
 const { Text, Paragraph } = Typography;
 

@@ -24,7 +24,7 @@ function appStateReducer(state: State, action: Action): State  {
     }
 }
 
-const SecretContext = createContext<{
+const PolkadotContext = createContext<{
     state: State;
     dispatch: Dispatch<Action>;
 }>({
@@ -32,4 +32,4 @@ const SecretContext = createContext<{
     dispatch: () => null
 });
 
-export { SecretContext, initialState, appStateReducer }
+export { PolkadotContext, initialState, appStateReducer }
