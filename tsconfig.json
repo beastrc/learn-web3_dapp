@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@near/*": ["components/protocols/near/*"], 
-      "@tezos/*": ["components/protocols/tezos/*"], 
+      "@secret/*": ["components/protocols/secret/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

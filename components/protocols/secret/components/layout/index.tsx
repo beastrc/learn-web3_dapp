@@ -4,16 +4,16 @@ import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from '@tezos/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from 'components/protocols/secret/types'
 
 const { Text } = Typography;
 
-const primaryColor = "#0f62ff"
-const secondaryColor = "#F6F6F6"
+const primaryColor = "linear-gradient(90deg, #000000, #636363)"
+const secondaryColor = "khaki"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (
-		<Right span={16}>
+		<Right span={18}>
 			<Col>
 				<StepHeader>
 					<Title>{props.step.title}</Title>
@@ -69,15 +69,16 @@ const StepButtons: React.FC<StepButtonsI> = ({ next, prev, isFirstStep, isLastSt
 }
 
 export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
+	const TitleStep = ({ title }: {title: string}) => <div style={{color: 'khaki', fontWeight: 'bold'}}>{title}</div>
 	return (
-		<Left span={8}>
+		<Left span={6}>
 			<Space size="large" direction="horizontal" align="center" style={{ marginBottom: "40px" }}>
 				<Image src="/figment-learn-compact.svg" alt="Figment Learn" height={41} width={100} />
-				<ChainTitle>{`Tezos Pathway`}</ChainTitle>
+				<ChainTitle>{`Secret Pathway`}</ChainTitle>
 			</Space>
 
 			<Steps direction="vertical" size="small" current={stepIndex}>
-				{steps.map((s: StepType) => <Steps.Step key={s.id} title={s.title} />)}
+				{steps.map((s: StepType) => <Steps.Step key={s.id} title={<TitleStep title={s.title} />} />)}
 			</Steps>
 
 			<Footer>
@@ -124,7 +125,8 @@ const StepContent = styled.div`
 
 const NextButton = styled(Button)`
 	border: none;
-
+	color: khaki;
+    font-weight: bold;
 	color: ${secondaryColor};
 	background: ${primaryColor};
 
@@ -148,7 +150,8 @@ const PrevButton = styled(Button)`
 `;
 
 const ChainTitle = styled.div`
-	color: white;
+	color: khaki;
+	font-weight: bold;
 	margin-bottom: 8px;
 	font-size: 28px;
 	font-weight: 600;
@@ -158,6 +161,7 @@ const Left = styled(Col)`
 	background: ${primaryColor};
 	padding: 40px 0 0 40px;
 	height: 100vh;
+	
 `;
 
 const Footer = styled.div`

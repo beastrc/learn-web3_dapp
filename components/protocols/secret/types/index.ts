@@ -1,5 +1,3 @@
-import { ChainType } from "types/types";
-
 export type AlertT = "success" | "info" | "warning" | "error" | undefined
 
 export type EntryT = {
@@ -40,3 +38,12 @@ export type StepType = {
   title: string
   url: string
 }
+
+export type ChainType = {
+    id: any
+    label: string
+    active: boolean
+    logoUrl: string
+    steps: StepType[]
+  }
+  
