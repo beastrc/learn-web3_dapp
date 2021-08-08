@@ -4,12 +4,12 @@ import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from '@ccelo/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from '@tezos/types'
 
 const { Text } = Typography;
 
-const primaryColor = "linear-gradient(253deg, rgb(251, 204, 92), rgb(53,208,127))"
-const secondaryColor = "black"
+const primaryColor = "#0f62ff"
+const secondaryColor = "#F6F6F6"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (
@@ -73,7 +73,7 @@ export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
 		<Left span={8}>
 			<Space size="large" direction="horizontal" align="center" style={{ marginBottom: "40px" }}>
 				<Image src="/figment-learn-compact.svg" alt="Figment Learn" height={41} width={100} />
-				<ChainTitle>{`Celo Pathway`}</ChainTitle>
+				<ChainTitle>{`Tezos Pathway`}</ChainTitle>
 			</Space>
 
 			<Steps direction="vertical" size="small" current={stepIndex}>

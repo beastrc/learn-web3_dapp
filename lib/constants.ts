@@ -32,7 +32,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.CELO]: {
 		id: CHAINS.CELO,
 		label: "Celo",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/celo-celo-logo.svg?v=010",
 		steps: [
 			{
@@ -213,7 +213,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.TEZOS]: {
 		id: CHAINS.TEZOS,
 		label: "Tezos",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/tezos-xtz-logo.svg?v=010",
 		steps: [
 			{
@@ -223,4 +223,4 @@ export const CHAINS_CONFIG: ChainsType = {
 			},
 		]
 	},
-}
+};
