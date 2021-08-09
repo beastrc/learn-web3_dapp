@@ -1,5 +1,4 @@
-export const VERSION = "0.0.1"
-/*import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
 const {ApiPromise, Keyring, WsProvider} = require('@polkadot/api');
 const {mnemonicGenerate, mnemonicValidate} = require('@polkadot/util-crypto');
 
@@ -35,4 +34,3 @@ export default async function account(
     mnemonic,
 	});
 }
-*/
