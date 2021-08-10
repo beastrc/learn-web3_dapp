@@ -1,18 +1,15 @@
 import { Alert, Space, Typography, Popover, Button } from 'antd';
-import { useAppState } from '@near/hooks'
-import { getPrettyPublicKey } from '@near/lib';
-import type { EntryT, AlertT } from '@near/types';
+import { useAppState } from '@avalanche/hooks'
+import type { EntryT, AlertT } from '@avalanche/types';
 
 const { Text, Paragraph } = Typography;
 
 const Nav = () => {
     const { state } = useAppState();
-    const { networkId, secretKey, accountId, contractId} = state;
+    const { networkId, address } = state;
 
-    const displaySecretKey = (secretKey: string) => `${getPrettyPublicKey(secretKey).slice(0,5)}...${getPrettyPublicKey(secretKey).slice(-5)}`
     const displayNetworkId = (networkId: string) => networkId
-    const displayAccountId = (accountId: string) => accountId
-    const displayContractId = (contractId: string) => contractId
+    const displayAddress = (address: string) => `${address.slice(0,5)}...${address.slice(-5)}`
 
     const Entry = ({ msg, display, value }: EntryT) => {
         return (
@@ -26,10 +23,8 @@ const Nav = () => {
     const AppState = () => {
         return (
         <>
-            <Entry msg={"Network: "} value={networkId} display={displayNetworkId} />
-            {secretKey && <Entry msg={"Public key: "} value={secretKey} display={displaySecretKey} />}
-            {accountId && <Entry msg={"Account Id: "} value={accountId} display={displayAccountId} />}
-            {contractId && <Entry msg={"Contratc Id"} value={ contractId} display={displayContractId} />}
+            {networkId && <Entry msg={"Network Id: "} value={networkId} display={displayNetworkId} />}
+            {address && <Entry msg={"Address: "} value={address} display={displayAddress} />}
         </>
         )
     }
@@ -53,7 +48,5 @@ const Notify = ({ msg, status }: {msg: string, status: AlertT }) =>
         type={status}
         showIcon
     />
-
-
 
 export { Nav, Notify }
