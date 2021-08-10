@@ -2,40 +2,33 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppState } from '@avalanche/hooks'
+
+import { AvalancheConnectReponse } from 'types/avalanche-types';
 
 const { Text } = Typography;
 
 const Connect = () => {
 	const [version, setVersion] = useState<string | null>(null);
 	const [fetchingVersion, setFetchingVersion] = useState<boolean>(false);
-    const { state, dispatch } = useAppState();
-	useEffect(() => {
-		const getConnection = () => {
-			setFetchingVersion(true)
-			axios
-				.post(`/api/avalanche/connect`, state)
-				.then(res => {
-					setVersion(res.data)
-					setFetchingVersion(false)
-
-				})
-				.catch(err => {
-					console.error(err)
-					setFetchingVersion(false)
-				})
-		}
-		getConnection()
-    }, [state]);
 
 	useEffect(() => {
-		if (version) {
-			dispatch({
-				type: 'SetNetworkId',
-				networkId: version
+		getConnection();
+	}, []);
+
+	const getConnection = () => {
+		setFetchingVersion(true)
+		axios
+			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/connect`)
+			.then(res => {
+				const version: AvalancheConnectReponse = res.data
+				setVersion(version)
+				setFetchingVersion(false)
 			})
-		}
-	}, [version, setVersion])
+			.catch(err => {
+				console.log(err)
+				setFetchingVersion(false)
+			})
+	}
 
 	return (
 		<Col style={{ width: "100%" }}>

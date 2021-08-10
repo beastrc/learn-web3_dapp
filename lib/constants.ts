@@ -4,7 +4,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.AVALANCHE]: {
 		id: CHAINS.AVALANCHE,
 		label: "Avalanche",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010",
 		steps: [
 			{
@@ -16,11 +16,6 @@ export const CHAINS_CONFIG: ChainsType = {
 				id: "account",
 				title: "Create a Keypair",
 				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/2.-create-your-first-avalanche-account"
-			},
-			{
-				id: "balance",
-				title: "Get the balance",
-				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/3.-query-the-avalanche-network"
 			},
 			{
 				id: "query",
@@ -130,7 +125,7 @@ export const CHAINS_CONFIG: ChainsType = {
 		id: CHAINS.POLYGON,
 		label: "Polygon",
 		active: true,
-  		logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
+    logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
 		steps: [
 			{
 				id: "connect",
@@ -162,7 +157,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.SECRET]: {
 		id: CHAINS.SECRET,
 		label: "Secret",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/secret-scrt-logo.svg?v=010",
 		steps: [
 			{
@@ -170,12 +165,22 @@ export const CHAINS_CONFIG: ChainsType = {
 				title: "Connect to Secret",
 				url: ""
 			},
+			{
+				id: "account",
+				title: "Get an Account",
+				url: ""
+			},
+			{
+				id: "balance",
+				title: "Get the Balance",
+				url: ""
+			},
 		]
 	},
 	[CHAINS.SOLANA]: {
 		id: CHAINS.SOLANA,
 		label: "Solana",
-   		logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
+    	logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
 		active: false,
 		steps: [
 			{

@@ -2,16 +2,16 @@ import { createContext, Dispatch } from 'react';
 
 export type State = {
     index: number
-    networkId?: string
-    secretKey?: string 
-    address?: string 
+    network?: string
+    address?: string
+    mnemonic?: string
 }
 
 type Action =
     | { type: 'SetIndex', index: number }
-    | { type: 'SetNetworkId', networkId?: string }
+    | { type: 'SetNetwork', network?: string }
     | { type: 'SetAddress', address?: string }
-    | { type: 'SetSecretKey', secretKey?: string }
+    | { type: 'SetMnemonic', mnemonic?: string }
 
 const initialState = {
     index: 0,
@@ -21,18 +21,18 @@ function appStateReducer(state: State, action: Action): State  {
     switch (action.type) {
         case 'SetIndex':
             return { ...state, index: action.index }
-        case 'SetNetworkId':
-            return { ...state, networkId: action.networkId }
-        case 'SetSecretKey':
-            return { ...state, secretKey: action.secretKey }
+        case 'SetNetwork':
+            return { ...state, network: action.network }
         case 'SetAddress':
-            return { ...state, address: action.address }    
+            return { ...state, address: action.address }        
+        case 'SetMnemonic':
+            return { ...state, mnemonic: action.mnemonic }            
         default:
             return state
     }
 }
 
-const AvalancheContext = createContext<{
+const SecretContext = createContext<{
     state: State;
     dispatch: Dispatch<Action>;
 }>({
@@ -40,4 +40,4 @@ const AvalancheContext = createContext<{
     dispatch: () => null
 });
 
-export { AvalancheContext, initialState, appStateReducer }
+export { SecretContext, initialState, appStateReducer }

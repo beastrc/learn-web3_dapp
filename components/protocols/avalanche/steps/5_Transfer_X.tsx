@@ -3,8 +3,8 @@ import axios from 'axios'
 import { Form, Input, Button, Alert, Space, Typography } from 'antd'
 import { LoadingOutlined, RedoOutlined } from '@ant-design/icons'
 
-import { getAvalancheClient, getAvalancheExplorerURL } from "@avalanche/lib"
-import { AvalancheKeypairType, AvalancheTransferResponse, AvalancheTransferErrorResponse } from "@avalanche/types"
+import { getAvalancheClient, getAvalancheExplorerURL } from "utils/avalanche-utils"
+import { AvalancheKeypairType, AvalancheTransferReponse, AvalancheTransferErrorResponse } from "types/avalanche-types"
 
 const layout = {
 	labelCol: { span: 4 },
@@ -58,7 +58,7 @@ const Transfer = ({ keypair }: { keypair: AvalancheKeypairType | null} ) => {
 				},
 			)
 			.then(res => {
-				const data: AvalancheTransferResponse = res.data
+				const data: AvalancheTransferReponse = res.data
 				const txID: string = data.txID
 				setTxId(txID)
 				setFetching(false)

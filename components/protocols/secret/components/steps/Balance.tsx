@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Alert, Col, Input, Button, Space, Typography } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useAppState } from '@avalanche/hooks'
+import { useAppState } from '@secret/hooks'
 
 const { Text } = Typography;
 
-const DECIMAL_OFFSET = 10**9;
+const DECIMAL_OFFSET = 10**6;
 
 const Balance = () => {
     const [fetching, setFetching] = useState<boolean>(false);
@@ -17,15 +17,17 @@ const Balance = () => {
     const getBalance = () => {
         setError(null)
         setFetching(true)
-        axios.post(`/api/avalanche/balance`, state)
+        axios.post(`/api/secret/balance`, state)
             .then(res => {
-                const avax = res.data
-                const intoAVAX = (parseFloat(avax) / DECIMAL_OFFSET).toFixed();
-                setBalance(parseFloat(intoAVAX))
+                const amount = res.data
+                console.log(typeof amount)
+                const intoSCRT = (amount / DECIMAL_OFFSET).toFixed();
+                setBalance(parseFloat(intoSCRT))
                 setFetching(false)
             })
             .catch(err => {
                 const data = err.data
+                console.log(err)
                 setFetching(false)
                 setBalance(0)
                 setError(data)
@@ -46,7 +48,7 @@ const Balance = () => {
                     : balance != 0
                         ? <Alert
                             message={
-                                <Text strong>{`This address has a balance of ${balance} AVAX`}</Text>
+                                <Text strong>{`This address has a balance of ${balance} SCRT`}</Text>
                             }
                             type="success"
                             closable
