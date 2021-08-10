@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Alert, Button, Space, Col, Input, Typography } from 'antd'
 import axios from "axios"
-import { SolanaFundResponse, SolanaTransferErrorResponse } from "types/solana-types"
+import { SolanaFundReponse, SolanaTransferErrorResponse } from "types/solana-types"
 
 const { Text } = Typography
 
@@ -23,7 +23,7 @@ const Fund = () => {
 				},
       )
 			.then(res => {
-				const data: SolanaFundResponse = res.data
+				const data: SolanaFundReponse = res.data
         console.log(`data`, data)
 				setIsFunded(true)
 				setFetching(false)

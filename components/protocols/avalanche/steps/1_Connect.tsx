@@ -3,7 +3,7 @@ import axios from "axios";
 import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { AvalancheConnectResponse } from 'types/avalanche-types';
+import { AvalancheConnectReponse } from 'types/avalanche-types';
 
 const { Text } = Typography;
 
@@ -20,7 +20,7 @@ const Connect = () => {
 		axios
 			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/connect`)
 			.then(res => {
-				const version: AvalancheConnectResponse = res.data
+				const version: AvalancheConnectReponse = res.data
 				setVersion(version)
 				setFetchingVersion(false)
 			})

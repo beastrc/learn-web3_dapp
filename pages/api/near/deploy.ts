@@ -3,7 +3,6 @@ import { configFromNetworkId } from '@near/lib'
 import { connect, KeyPair } from "near-api-js";
 import fs from 'fs';
 
-// The symbolic link /out/main.wasm points to /contracts/near/target/release/wasm32-unknown-unknown/release/greeter.wasm
 const WASM_PATH = 'contracts/near/out/main.wasm'
 
 export default async function (
@@ -24,6 +23,6 @@ export default async function (
         return res.status(200).json(response.transaction.hash)
     } catch (error) {
         console.error(error)
-        return res.status(500).json("Contract deployment failed: " + error.message)
+        return res.status(500).json("Contract deployement failed")
     } 
 }
