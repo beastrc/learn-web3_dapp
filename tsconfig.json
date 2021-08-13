@@ -15,8 +15,8 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@near/*": ["components/protocols/near/*"], 
-      "@secret/*": ["components/protocols/secret/*"],
+      "@near/*": ["components/protocols/near/*"],
+      "@polka/*": ["components/protocols/polkadot/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

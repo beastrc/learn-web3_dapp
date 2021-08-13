@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Form, Input, Button, Alert, Space, Typography } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
-import { useAppState } from '@secret/hooks'
-import { transactionUrl } from '@secret/lib'
+import { useAppState } from '@polka/hooks'
 import axios from 'axios'
 
 const layout = {
@@ -16,6 +15,10 @@ const tailLayout = {
 
 const { Text } = Typography
 
+const RECIPIENT_ADDR = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'
+
+const transactionUrl = (hash: string) => 
+  `https://westend.subscan.io/extrinsic/${hash}`
 
 const Transfer = () => {
     const [error, setError] = useState<string | null>(null)
@@ -33,7 +36,7 @@ const Transfer = () => {
 
         setFetching(true)
 		axios
-			.post(`/api/secret/transfer`, {...state, txAmount })
+			.post(`/api/polkadot/transfer`, {...state, txAmount })
 			.then(res => {
         const hash = res.data
         setHash(hash)
@@ -54,21 +57,21 @@ const Transfer = () => {
       initialValues={{
           from: state.address,
           amount: 1,
-          to: state.address,
+          to: RECIPIENT_ADDR,
       }}
     > 
       <Form.Item label="Sender" name="from" required>
         <Text code>{state.address}</Text>
       </Form.Item>
 
-      <Form.Item label="Amount" name="amount" required tooltip="1 SCRT = 10**6 uSCRT">
+      <Form.Item label="Amount" name="amount" required tooltip="1 WND = 10**12 Planck">
         <Space direction="vertical">
-          <Input suffix="uSCRT" style={{ width: "200px" }} placeholder={'enter amount in uSCRT'}/>
+          <Input suffix="Planck" style={{ width: "200px" }} placeholder={'enter amount in Planck'}/>
         </Space>
       </Form.Item>
 
       <Form.Item label="Recipient" name="to" required>
-        <Text code>{state.address}</Text>
+        <Text code>{RECIPIENT_ADDR}</Text>
       </Form.Item>
 
       <Form.Item {...tailLayout}>
@@ -90,7 +93,7 @@ const Transfer = () => {
       {hash &&
         <Form.Item {...tailLayout}>
           <Alert
-          style={{ maxWidth: '350px'}}
+            style={{ maxWidth: '365px'}}
             type="success"
             showIcon
             message={
@@ -98,7 +101,7 @@ const Transfer = () => {
             }
             description={
               <a href={transactionUrl(hash ?? '')} target="_blank" rel="noreferrer">
-                View on Secret Explorer
+                View on Polkadot Explorer
               </a>
             }
           />
