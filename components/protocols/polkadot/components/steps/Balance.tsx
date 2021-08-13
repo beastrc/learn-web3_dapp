@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Alert, Col, Input, Button, Space, Typography } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useAppState } from '@secret/hooks'
+import { useAppState } from '@polka/hooks'
 
 const { Text } = Typography;
 
-const DECIMAL_OFFSET = 10**6;
+const DECIMAL_OFFSET = 10**12;
+// const DECIMAL_OFFSET = 1_000_000_000_000;
+
 
 const Balance = () => {
     const [fetching, setFetching] = useState<boolean>(false);
@@ -17,11 +19,11 @@ const Balance = () => {
     const getBalance = () => {
         setError(null)
         setFetching(true)
-        axios.post(`/api/secret/balance`, state)
+        axios.post(`/api/polkadot/balance`, state)
             .then(res => {
                 const amount = res.data
-                const intoSCRT = (amount / DECIMAL_OFFSET).toFixed();
-                setBalance(parseFloat(intoSCRT))
+                const intoWND = (amount / DECIMAL_OFFSET).toFixed();
+                setBalance(parseFloat(intoWND))
                 setFetching(false)
             })
             .catch(err => {
@@ -47,7 +49,7 @@ const Balance = () => {
                     : balance != 0
                         ? <Alert
                             message={
-                                <Text strong>{`This address has a balance of ${balance} SCRT`}</Text>
+                                <Text strong>{`This address has a balance of ${balance} WND`}</Text>
                             }
                             type="success"
                             closable

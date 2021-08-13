@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppState } from 'components/protocols/secret/hooks'
+import { useAppState } from '@polka/hooks'
 
 const { Text } = Typography;
 
@@ -10,11 +10,12 @@ const Connect = () => {
 	const [version, setVersion] = useState<string | null>(null);
 	const [fetchingVersion, setFetchingVersion] = useState<boolean>(false);
     const { state, dispatch } = useAppState();
+
 	useEffect(() => {
 		const getConnection = () => {
 			setFetchingVersion(true)
 			axios
-				.post(`/api/secret/connect`, state)
+				.get(`/api/polkadot/connect`)
 				.then(res => {
 					setVersion(res.data)
 					setFetchingVersion(false)
@@ -45,14 +46,14 @@ const Connect = () => {
 					? <Alert
 							message={
 								<Space>
-									Connected to Secret! version: 
+									Connected to Polkadot! version: 
 									<Text code>{version.slice(0,5)}</Text>
 								</Space>
 							}
 							type="success"
 							showIcon
 						/>
-					: <Alert message="Not connected to Secret" type="error" showIcon />}
+					: <Alert message="Not connected to Polkadot" type="error" showIcon />}
 		</Col>
 	);
 }
