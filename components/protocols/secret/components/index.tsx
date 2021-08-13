@@ -1,15 +1,15 @@
 import { Typography, Popover, Button } from 'antd';
-import { useAppState } from '@polka/hooks'
-import type { EntryT } from '@polka/types';
+import { useAppState } from 'components/protocols/secret/hooks'
+import type { EntryT } from 'components/protocols/secret/types';
 
 const { Text, Paragraph } = Typography;
 
 const Nav = () => {
     const { state } = useAppState();
-    const { network, address, mnemonic } = state;
+    const { network, address, mnemonic, contractAddress } = state;
 
     const displayNetwork = (network: string) => network.slice(0,5)
-    const displayPublicKey = (publicKey: string) => `${publicKey.slice(0,5)}...${publicKey.slice(-5)}`
+    const displayPublicKey = (publicKey: string) => `${publicKey.slice(7,13)}...${publicKey.slice(-5)}`
     const displayMnemonic = (mnemonic: string) => `${mnemonic.slice(0, 5)}...${mnemonic.slice(-5)}`
 
     const Entry = ({ msg, display, value }: EntryT) => {
@@ -27,6 +27,7 @@ const Nav = () => {
             {network && <Entry msg={"Network: "} value={network} display={displayNetwork} />}
             {address && <Entry msg={"Address: "} value={address} display={displayPublicKey} />}
             {mnemonic && <Entry msg={"mnemonic: "} value={mnemonic} display={displayMnemonic} />}
+            {contractAddress && <Entry msg={"contractAddress: "} value={contractAddress} display={displayPublicKey} />}
         </>
         )
     }

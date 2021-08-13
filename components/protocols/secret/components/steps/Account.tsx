@@ -1,36 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Col, Space, Typography } from 'antd';
-import { useAppState } from '@polka/hooks';
+import { useAppState } from '@secret/hooks';
 import axios from "axios";
 
 const { Text } = Typography;
 
-const FAUCET_ADDR = `https://app.element.io/#/room/#westend_faucet:matrix.org`
-
-type downloadBoxT = {
-    jsonWallet: string,
-    address: string
-}
-const DownloadBox = ({ jsonWallet, address }: downloadBoxT) => {
-	const fileName = address;	
-    return (
-        <Button>
-            <a
-                href={`data:text/json;charset=utf-8,${encodeURIComponent(
-                    jsonWallet
-                )}`}
-                download={`polkadot-${fileName}.json`}
-            >
-                {`Download Json`}
-            </a>
-        </Button>
-    )
-}
-
 const Account = () => {
 	const [fetching, setFetching] = useState<boolean>(false);
 	const [address, setAdress] = useState<string | null>(null)
-	const [jsonWallet, setJsonWallet] = useState<string>('')
 	const { state, dispatch } = useAppState();
 
 	useEffect( () => {
@@ -42,12 +19,10 @@ const Account = () => {
 	const generateKeypair = async () => {
 		try {
 			setFetching(true)
-			const response = await axios.get(`/api/polkadot/account`)
+			const response = await axios.get(`/api/secret/account`)
 			const mnemonic = response.data.mnemonic;
 			const address = response.data.address;
-			const jsonWallet = response.data.jsonWallet;
 			setAdress(address)
-			setJsonWallet(jsonWallet)
 			dispatch({
 				type: 'SetMnemonic',
 				mnemonic: mnemonic
@@ -81,7 +56,7 @@ const Account = () => {
 					<div>
 					  <div>
 						This is the string representation of the public key <br/>
-						<Text code style={{ fontWeight: 'bold' }}>{address}</Text>.
+						<Text code>{address}</Text>.
 					  </div>
 					  <Text>It's accessible (and copyable) at the top right of this page.</Text>
 					</div>
@@ -96,18 +71,11 @@ const Account = () => {
 					</Space>
 				  }
 				  description={
-					<div>
-						<a href={FAUCET_ADDR} target="_blank" rel="noreferrer">
-							Go to the faucet, connect and enter
-						</a>
-						<br />
-						<Text code style={{ fontWeight: 'bold' }}>!drip ${address}</Text>
-					</div>
+					<a href={`https://faucet.secrettestnet.io/`} target="_blank" rel="noreferrer">Go to the faucet</a>
 				}
 				  type="warning"
 				  showIcon
 				/>
-			  {state?.address && <DownloadBox jsonWallet={jsonWallet} address={state.address} /> }	
 			  </Space>
 			</Col>
 		  }
@@ -116,3 +84,4 @@ const Account = () => {
 	}
 
 export default Account
+

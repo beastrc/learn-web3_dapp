@@ -1,5 +1,3 @@
-export const VERSION = "0.0.1"
-/*
 import { useState } from "react"
 import { Button, Space, Col, Typography } from 'antd'
 import axios from 'axios'
@@ -60,4 +58,3 @@ const Code = styled.pre`
 `;
 
 export default Query
-*/

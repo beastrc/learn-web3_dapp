@@ -1,5 +1,3 @@
-export const VERSION = "0.0.1"
-/*
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { ApiPromise } from "@polkadot/api"
 import { WsProvider } from "@polkadot/rpc-provider"
@@ -50,4 +48,3 @@ export default async function connect(
     })
   }
 }
-*/
