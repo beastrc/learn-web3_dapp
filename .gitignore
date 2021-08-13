@@ -50,3 +50,4 @@ yarn-error.log*
 # near
 neardev
 contracts/near/target/
+contracts/near/out/main.wasm
