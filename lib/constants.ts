@@ -32,13 +32,38 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.CELO]: {
 		id: CHAINS.CELO,
 		label: "Celo",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/celo-celo-logo.svg?v=010",
 		steps: [
 			{
 				id: "connect",
 				title: "Connect to Celo",
-				url: ""
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "account",
+				title: "Creacte an account",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "balance",
+				title: "Get the balance",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "transfert",
+				title: "Transfer fom Token",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "deploy",
+				title: "Deploy a smart contract",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "interact",
+				title: "Interact with contract",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
 			},
 		]
 	},
@@ -101,7 +126,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.POLKADOT]: {
 		id: CHAINS.POLKADOT,
 		label: "Polkadot",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/polkadot-new-dot-logo.svg?v=010",
 		steps: [
 			{
@@ -110,30 +135,15 @@ export const CHAINS_CONFIG: ChainsType = {
 				url: ""
 			},
 			{
+				id: "query",
+				title: "Query Polkadot",
+				url: ""
+			},
+			{
 				id: "account",
 				title: "Create an account",
 				url: ""
 			},
-			{
-				id: "restore",
-				title: "Restore an account",
-				url: ""
-			},
-			{
-				id: "balance",
-				title: "Get the Balance",
-				url: ""
-			},
-			{
-				id: "transfer",
-				title: "Transfer some Token",
-				url: ""
-			},
-			{
-				id: "estimate",
-				title: "Estimate transaction fees",
-				url: ""
-			}
 		]
 	},
 	[CHAINS.POLYGON]: {

@@ -4,12 +4,12 @@ import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from '@polka/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from '@ccelo/types'
 
 const { Text } = Typography;
 
-const primaryColor = "#e6007a"
-const secondaryColor = "#F6F6F6"
+const primaryColor = "linear-gradient(253deg, rgb(251, 204, 92), rgb(53,208,127))"
+const secondaryColor = "black"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (
@@ -69,16 +69,15 @@ const StepButtons: React.FC<StepButtonsI> = ({ next, prev, isFirstStep, isLastSt
 }
 
 export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
-	const TitleStep = ({ title }: {title: string}) => <div style={{color: 'white', fontWeight: 'bold'}}>{title}</div>
 	return (
 		<Left span={8}>
 			<Space size="large" direction="horizontal" align="center" style={{ marginBottom: "40px" }}>
 				<Image src="/figment-learn-compact.svg" alt="Figment Learn" height={41} width={100} />
-				<ChainTitle>{`Polkadot Pathway`}</ChainTitle>
+				<ChainTitle>{`Celo Pathway`}</ChainTitle>
 			</Space>
 
 			<Steps direction="vertical" size="small" current={stepIndex}>
-				{steps.map((s: StepType) => <Steps.Step key={s.id} title={<TitleStep title={s.title} />} />)}
+				{steps.map((s: StepType) => <Steps.Step key={s.id} title={s.title} />)}
 			</Steps>
 
 			<Footer>
@@ -125,7 +124,7 @@ const StepContent = styled.div`
 
 const NextButton = styled(Button)`
 	border: none;
-    font-weight: bold;
+
 	color: ${secondaryColor};
 	background: ${primaryColor};
 
@@ -150,7 +149,6 @@ const PrevButton = styled(Button)`
 
 const ChainTitle = styled.div`
 	color: white;
-	font-weight: bold;
 	margin-bottom: 8px;
 	font-size: 28px;
 	font-weight: 600;
@@ -160,7 +158,6 @@ const Left = styled(Col)`
 	background: ${primaryColor};
 	padding: 40px 0 0 40px;
 	height: 100vh;
-	
 `;
 
 const Footer = styled.div`

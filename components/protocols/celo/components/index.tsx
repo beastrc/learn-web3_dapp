@@ -1,16 +1,16 @@
 import { Typography, Popover, Button } from 'antd';
-import { useAppState } from '@polka/hooks'
-import type { EntryT } from '@polka/types';
+import { useAppState } from '@ccelo/hooks'
+import type { EntryT } from '@ccelo/types';
 
 const { Text, Paragraph } = Typography;
 
 const Nav = () => {
     const { state } = useAppState();
-    const { network, address, mnemonic } = state;
+    const { network, secret, address } = state;
 
-    const displayNetwork = (network: string) => network.slice(0,5)
-    const displayPublicKey = (publicKey: string) => `${publicKey.slice(0,5)}...${publicKey.slice(-5)}`
-    const displayMnemonic = (mnemonic: string) => `${mnemonic.slice(0, 5)}...${mnemonic.slice(-5)}`
+    const displayNetwork = (network: string) => network
+    const displayAddress = (address: string) => `${address.slice(0,5)}...${address.slice(-5)}`
+    const displaySecret = (secret: string) => `${secret.slice(0,5)}...${secret.slice(-5)}`
 
     const Entry = ({ msg, display, value }: EntryT) => {
         return (
@@ -24,9 +24,9 @@ const Nav = () => {
     const AppState = () => {
         return (
         <>
-            {network && <Entry msg={"Network: "} value={network} display={displayNetwork} />}
-            {address && <Entry msg={"Address: "} value={address} display={displayPublicKey} />}
-            {mnemonic && <Entry msg={"mnemonic: "} value={mnemonic} display={displayMnemonic} />}
+            {network && <Entry msg={"Network version: "} value={network} display={displayNetwork} />}
+            {address && <Entry msg={"Address: "} value={address} display={displayAddress} />}
+            {secret && <Entry msg={"Secret"} value={secret} display={displaySecret} />}
         </>
         )
     }

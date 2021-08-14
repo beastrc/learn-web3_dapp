@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@near/*": ["components/protocols/near/*"],
-      "@polka/*": ["components/protocols/polkadot/*"],
+      "@ccelo/*": ["components/protocols/celo/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
