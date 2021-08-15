@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@near/*": ["components/protocols/near/*"],
-      "@ccelo/*": ["components/protocols/celo/*"],
+      "@avalanche/*": ["components/protocols/avalanche/*"] 
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

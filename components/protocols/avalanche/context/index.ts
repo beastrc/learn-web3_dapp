@@ -3,17 +3,15 @@ import { createContext, Dispatch } from 'react';
 export type State = {
     index: number
     network?: string
-    address?: string
-    secret?: string
-    contractAddress?: string
+    secretKey?: string 
+    address?: string 
 }
 
 type Action =
     | { type: 'SetIndex', index: number }
     | { type: 'SetNetwork', network?: string }
     | { type: 'SetAddress', address?: string }
-    | { type: 'SetSecret', secret?: string }
-    | { type: 'SetContractAddress', contractAddress?: string }
+    | { type: 'SetSecretKey', secretKey?: string }
 
 const initialState = {
     index: 0,
@@ -25,18 +23,16 @@ function appStateReducer(state: State, action: Action): State  {
             return { ...state, index: action.index }
         case 'SetNetwork':
             return { ...state, network: action.network }
+        case 'SetSecretKey':
+            return { ...state, secretKey: action.secretKey }
         case 'SetAddress':
-            return { ...state, address: action.address }
-        case 'SetSecret':
-            return { ...state, secret: action.secret }
-        case 'SetContractAddress':
-            return { ...state, contractAddress: action.contractAddress }    
+            return { ...state, address: action.address }    
         default:
             return state
     }
 }
 
-const CeloContext = createContext<{
+const AvalancheContext = createContext<{
     state: State;
     dispatch: Dispatch<Action>;
 }>({
@@ -44,4 +40,4 @@ const CeloContext = createContext<{
     dispatch: () => null
 });
 
-export { CeloContext, initialState, appStateReducer }
+export { AvalancheContext, initialState, appStateReducer }

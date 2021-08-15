@@ -3,13 +3,12 @@ import Image from 'next/image'
 import { Alert, Button, Row, Col, Typography, Space, Steps } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import styled from "styled-components";
-import { ArrowUpRight, ArrowLeft } from 'react-feather';
-import type { SidebarI, StepButtonsI, StepI, StepType } from '@ccelo/types'
+import type { SidebarI, StepButtonsI, StepI, StepType } from '@avalanche/types'
 
 const { Text } = Typography;
 
-const primaryColor = "linear-gradient(253deg, rgb(251, 204, 92), rgb(53,208,127))"
-const secondaryColor = "black"
+const primaryColor = "#e84141"
+const secondaryColor = "#F6F6F6"
 
 export const Step: React.FC<StepI> = (props) => {
 	return (
@@ -23,7 +22,6 @@ export const Step: React.FC<StepI> = (props) => {
 								<Text strong>Start here!</Text>
 								<Space align="center" size="small">
 									<ALink><a href={props.step.url} target="_blank" rel="noreferrer">View step Instructions</a></ALink>
-									<ArrowUpRight color="#1890ff" size={18} style={{ marginTop: "6px" }} />
 								</Space>
 							</Space>
 						}
@@ -73,7 +71,7 @@ export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
 		<Left span={8}>
 			<Space size="large" direction="horizontal" align="center" style={{ marginBottom: "40px" }}>
 				<Image src="/figment-learn-compact.svg" alt="Figment Learn" height={41} width={100} />
-				<ChainTitle>{`Celo Pathway`}</ChainTitle>
+				<ChainTitle>{`Solana Pathway`}</ChainTitle>
 			</Space>
 
 			<Steps direction="vertical" size="small" current={stepIndex}>
@@ -82,7 +80,7 @@ export const Sidebar: React.FC<SidebarI> = ({ steps, stepIndex }) => {
 
 			<Footer>
 				<Space align="center">
-					<ArrowLeft size={20} style={{ marginTop: "7px" }} />
+					<ArrowLeftOutlined size={20} style={{ marginTop: "7px" }} />
 					<Link href="/">See All Pathways</Link>
 				</Space>
 			</Footer>

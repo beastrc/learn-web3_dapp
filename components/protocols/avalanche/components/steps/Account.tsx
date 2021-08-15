@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Alert, Button, Col, Space, Typography } from 'antd';
-import { useAppState } from '@ccelo/hooks';
+import { useAppState } from '@avalanche/hooks';
 import axios from "axios";
 
 const { Text } = Typography;
@@ -19,19 +19,21 @@ const Account = () => {
 	const generateKeypair = async () => {
 		try {
 			setFetching(true)
-			const response = await axios.get(`/api/celo/account`)
-			const secret = response.data.secret;
-			const address = response.data.address;
+			const response = await axios.get(`/api/avalanche/account`)
+			const data = response.data
+			console.log(data)
+			const secret = data.secret;
+			const address = data.address;
 			setAdress(address)
+			setFetching(false)
 			dispatch({
-				type: 'SetSecret',
-				secret: secret
+				type: 'SetSecretKey',
+				secretKey: secret
 			})
 			dispatch({
 				type: 'SetAddress',
 				address: address
-			})
-			setFetching(false)
+			})	
 		} catch (error) {
 			console.error(error)
 			setFetching(false)
@@ -40,14 +42,7 @@ const Account = () => {
 
 	return (
 		<Col>
-		  <Button 
-            type="primary" 
-            onClick={generateKeypair} 
-            style={{ marginBottom: "20px" }} 
-            loading={fetching}
-            >
-              Generate a Keypair
-          </Button>
+		  <Button type="primary" onClick={generateKeypair} style={{ marginBottom: "20px" }} loading={fetching}>Generate a Keypair</Button>
 		  {address &&
 			<Col>
 			  <Space direction="vertical">
@@ -76,7 +71,7 @@ const Account = () => {
 					</Space>
 				  }
 				  description={
-					<a href={`https://celo.org/developers/faucet`} target="_blank" rel="noreferrer">Go to the faucet</a>
+					<a href={`https://faucet.avax-test.network/`} target="_blank" rel="noreferrer">Go to the faucet</a>
 				}
 				  type="warning"
 				  showIcon
