@@ -1,7 +1,7 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { AvalancheQueryResponse } from "@avalanche/types";
-import { getAvalancheClient } from '@avalanche/lib';
+import { AvalancheQueryResponse } from "types/avalanche-types"
+import { getAvalancheClient } from 'utils/avalanche-utils';
 
 export default async function query(
   req: NextApiRequest,

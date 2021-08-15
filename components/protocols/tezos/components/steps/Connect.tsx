@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import { Alert, Col, Space, Typography } from "antd";
 import { LoadingOutlined } from '@ant-design/icons';
-import { useAppState } from '@avalanche/hooks'
+import { useAppState } from 'components/protocols/tezos/hooks'
 
 const { Text } = Typography;
 
@@ -14,7 +14,7 @@ const Connect = () => {
 		const getConnection = () => {
 			setFetchingVersion(true)
 			axios
-				.post(`/api/avalanche/connect`, state)
+				.post(`/api/tezos/connect`, state)
 				.then(res => {
 					setVersion(res.data)
 					setFetchingVersion(false)
@@ -45,14 +45,14 @@ const Connect = () => {
 					? <Alert
 							message={
 								<Space>
-									Connected to Avalanche!
+									Connected to Tezos! version: 
 									<Text code>{version}</Text>
 								</Space>
 							}
 							type="success"
 							showIcon
 						/>
-					: <Alert message="Not connected to Avalanche" type="error" showIcon />}
+					: <Alert message="Not connected to Tezos" type="error" showIcon />}
 		</Col>
 	);
 }

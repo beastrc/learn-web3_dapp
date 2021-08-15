@@ -1,22 +1,45 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getAvalancheClient } from '@avalanche/lib'
+import { Avalanche } from 'avalanche';
+import fs from 'fs';
 
-type ReponseT = {
-	secret: string
-	address: string
-}
+import { AVALANCHE_NETWORKS, CHAINS } from 'types/types';
+import { getDatahubNodeURL } from 'utils/datahub-utils';
+import { getAvalancheClient } from 'utils/avalanche-utils'
+type Data = any;
+
 export default function account(
 	req: NextApiRequest,
-	res: NextApiResponse<ReponseT>
+	res: NextApiResponse<Data>
 ) {
 	const client = getAvalancheClient()
+
+	// Define the path where our keypair will be saved in JSON format
+	const credentialsPath = './credentials'
+	const keyPath = `${credentialsPath}/avalanche_privkey.json`
 	const chain = client.XChain(); // the chainID can be altered if necessary, but we are on XChain here
 	const keyChain = chain.keyChain(); // keyChain will be the returned instance of KeyChain from AVMAPI
-	const key = keyChain.makeKey()
-	console.log(key.getPrivateKeyString())
-	console.log(key.getAddressString())
+
+	let key
+	if (!fs.existsSync(keyPath)) {
+		console.log("Generating a new keypair...")
+		key = keyChain.makeKey()
+		fs.writeFileSync(keyPath, key.getPrivateKeyString())
+	} else {
+		const buffer = fs.readFileSync(keyPath)
+		console.log(`buffer`, buffer)
+		const bufferStr = buffer.toString()
+
+		if (bufferStr) {
+			console.log("Loading keypair from saved private key...")
+			key = keyChain.importKey(bufferStr)
+		} else {
+			console.log("Generating a new keypair...")
+			key = keyChain.makeKey()
+			fs.writeFileSync(keyPath, key.getPrivateKeyString())
+		}
+	}
+	
 	res.status(200).json({
-		secret: key.getPrivateKeyString(),
-		address: key.getAddressString(),
-	})
+		addressString: key.getAddressString(),
+	});
 }
