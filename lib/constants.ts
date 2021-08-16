@@ -42,13 +42,43 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.CELO]: {
 		id: CHAINS.CELO,
 		label: "Celo",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/celo-celo-logo.svg?v=010",
 		steps: [
 			{
 				id: "connect",
 				title: "Connect to Celo",
-				url: ""
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "account",
+				title: "Creacte an account",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "balance",
+				title: "Get the balance",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "transfer",
+				title: "Transfer some Token",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "change",
+				title: "Change cUSD to CELO",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "deploy",
+				title: "Deploy a smart contract",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
+			},
+			{
+				id: "interact",
+				title: "Interact with contract",
+				url: "https://learn2.figment.io/pathways/celo-pathway"
 			},
 		]
 	},
@@ -68,7 +98,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.NEAR]: {
 		id: CHAINS.NEAR,
 		label: "NEAR",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=010",
 		steps: [
 			{
@@ -135,7 +165,7 @@ export const CHAINS_CONFIG: ChainsType = {
 		id: CHAINS.POLYGON,
 		label: "Polygon",
 		active: true,
-  		logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
+  	logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
 		steps: [
 			{
 				id: "connect",
@@ -167,7 +197,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.SECRET]: {
 		id: CHAINS.SECRET,
 		label: "Secret",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/secret-scrt-logo.svg?v=010",
 		steps: [
 			{
@@ -175,12 +205,37 @@ export const CHAINS_CONFIG: ChainsType = {
 				title: "Connect to Secret",
 				url: ""
 			},
+			{
+				id: "account",
+				title: "Get an Account",
+				url: ""
+			},
+			{
+				id: "balance",
+				title: "Get the Balance",
+				url: ""
+			},
+			{
+				id: "transfer",
+				title: "Transfer SCRT",
+				url: ""
+			},
+			{
+				id: "deploy",
+				title: "Deploy a contract",
+				url: ""
+			},
+			{
+				id: "call",
+				title: "Call the smart contract",
+				url: ""
+			},
 		]
 	},
 	[CHAINS.SOLANA]: {
 		id: CHAINS.SOLANA,
 		label: "Solana",
-   		logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
+    	logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
 		active: false,
 		steps: [
 			{

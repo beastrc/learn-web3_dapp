@@ -16,8 +16,10 @@
     "baseUrl": ".",
     "paths": {
       "@near/*": ["components/protocols/near/*"],
-      "@avalanche/*": ["components/protocols/avalanche/*"] 
-    }
+      "@ccelo/*": ["components/protocols/celo/*"],
+      "@avalanche/*": ["components/protocols/avalanche/*"], 
+      "@secret/*": ["components/protocols/secret/*"]
+    },
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
