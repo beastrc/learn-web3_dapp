@@ -22,14 +22,6 @@ export enum NEAR_NETWORKS {
     TESTNET = "TESTNET"
 }
 
-
-// Tezos
-export enum TEZOS_NETWORKS {
-  MAINNET = "MAINNET",
-  TESTNET = "TESTNET"
-}
-
-
 // Polkadot
 export enum POLKADOT_NETWORKS {
   WESTEND = "WESTEND",

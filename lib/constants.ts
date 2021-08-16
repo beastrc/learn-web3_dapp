@@ -4,7 +4,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.AVALANCHE]: {
 		id: CHAINS.AVALANCHE,
 		label: "Avalanche",
-		active: false,
+		active: true,
 		logoUrl: "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010",
 		steps: [
 			{
@@ -18,13 +18,23 @@ export const CHAINS_CONFIG: ChainsType = {
 				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/2.-create-your-first-avalanche-account"
 			},
 			{
-				id: "query",
-				title: "Query Avalanche",
+				id: "balance",
+				title: "Get the balance",
 				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/3.-query-the-avalanche-network"
 			},
 			{
-				id: "transferX",
-				title: "Transfer AVAX on the X Chain",
+				id: "transfer",
+				title: "Transfer some AVAX",
+				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/3.-query-the-avalanche-network"
+			},
+			{
+				id: "export",
+				title: "Export Token from X-Chain to C-Chain",
+				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/4.-create-your-first-transaction"
+			},
+			{
+				id: "import",
+				title: "Import Token from X-Chain to C-Chain",
 				url: "https://learn.figment.io/network-documentation/avalanche/tutorials/pathway/4.-create-your-first-transaction"
 			},
 		]
@@ -124,8 +134,8 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.POLYGON]: {
 		id: CHAINS.POLYGON,
 		label: "Polygon",
-		active: false,
-    logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
+		active: true,
+  		logoUrl: "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=010",
 		steps: [
 			{
 				id: "connect",
@@ -170,7 +180,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.SOLANA]: {
 		id: CHAINS.SOLANA,
 		label: "Solana",
-    logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
+   		logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.svg?v=010",
 		active: false,
 		steps: [
 			{
@@ -213,7 +223,7 @@ export const CHAINS_CONFIG: ChainsType = {
 	[CHAINS.TEZOS]: {
 		id: CHAINS.TEZOS,
 		label: "Tezos",
-		active: true,
+		active: false,
 		logoUrl: "https://cryptologos.cc/logos/tezos-xtz-logo.svg?v=010",
 		steps: [
 			{
@@ -221,31 +231,6 @@ export const CHAINS_CONFIG: ChainsType = {
 				title: "Connect to Tezos",
 				url: ""
 			},
-			{
-				id: "account",
-				title: "Create an account",
-				url: ""
-			},
-			{
-				id: "balance",
-				title: "Get balance",
-				url: ""
-			},
-			{
-				id: "transfer",
-				title: "Transfer some Token",
-				url: ""
-			},
-			{
-				id: "deploy",
-				title: "Deploy a Smart contract",
-				url: ""
-			},
-			{
-				id: "call",
-				title: "interact with a contract",
-				url: ""
-			},
 		]
 	},
-};
+}
