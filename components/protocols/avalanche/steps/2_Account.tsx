@@ -3,7 +3,7 @@ import { Alert, Button, Col, Space, Typography } from 'antd';
 import axios from 'axios'
 import { LoadingOutlined } from '@ant-design/icons';
 
-import { PolkadotKeypairType, PolkadotAccountResponse } from "types/polkadot-types"
+import { AvalancheKeypairType } from "types/avalanche-types"
 
 const { Text } = Typography;
 
@@ -11,18 +11,21 @@ const Account = ({
 	keypair,
 	setKeypair
 }: { 
-	keypair: PolkadotKeypairType | null,
-	setKeypair: (keypair: PolkadotKeypairType) => void
+	keypair: AvalancheKeypairType | null,
+	setKeypair: (keypair: AvalancheKeypairType) => void
 }) => {
 	const [fetching, setFetching] = useState<boolean>(false);
+
+	useEffect(() => {
+		generateKeypair();
+	}, []);
 
 	const generateKeypair = () => {
 		setFetching(true)
 		axios
-			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/polkadot/account`)
+			.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/avalanche/account`)
 			.then(res => {
-				const data: PolkadotAccountResponse = res.data
-				console.log(`data`, data)
+				const data: AvalancheKeypairType = res.data
 				setKeypair(data)
 				setFetching(false)
 			})
@@ -32,7 +35,7 @@ const Account = ({
 			})
 	}
 
-	console.log(`keypair`, keypair)
+	const publicKeyStr = keypair ? keypair.addressString : null
 
 	return (
 		<Space direction="vertical">
@@ -52,12 +55,8 @@ const Account = ({
 									<div>
 										<Text>Open the JS console to inspect the Keypair.</Text>
 										<div>
-											This is the 24 words mnemonic:
-											<Text code>{keypair.mnemonic}</Text>.
-										</div>
-										<div>
 											This is the string representation of the keypair address :
-											<Text code>{keypair.account.address}</Text>.
+											<Text code>{publicKeyStr}</Text>.
 										</div>
 										<Text>It is accessible (and copyable) at the top right of this page.</Text>
 									</div>
