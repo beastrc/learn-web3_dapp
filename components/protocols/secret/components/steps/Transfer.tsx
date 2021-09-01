@@ -19,7 +19,7 @@ const { Text } = Typography
 const Transfer = () => {
   const [error, setError] = useState<string | null>(null)
   const [fetching, setFetching] = useState(false)
-  const [txHash, setTxHash] = useState(null)
+  const [hash, setHash] = useState(null)
   const { state } = useAppState()
 
   const transfer = (values: any) => {
@@ -35,7 +35,7 @@ const Transfer = () => {
         .post(`/api/secret/transfer`, {...state, txAmount })
         .then(res => {
           const hash = res.data
-          setTxHash(txHash)
+          setHash(hash)
           setFetching(false)
         })
         .catch(err => {
@@ -87,7 +87,7 @@ const Transfer = () => {
           </Form.Item>
       }
 
-      {txHash &&
+      {hash &&
         <Form.Item {...tailLayout}>
           <Alert
           style={{ maxWidth: '350px'}}
@@ -97,7 +97,7 @@ const Transfer = () => {
               <Text strong>Transfer confirmed!</Text>
             }
             description={
-              <a href={transactionUrl(txHash ?? '')} target="_blank" rel="noreferrer">
+              <a href={transactionUrl(hash ?? '')} target="_blank" rel="noreferrer">
                 View on Secret Explorer
               </a>
             }

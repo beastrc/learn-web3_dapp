@@ -21,7 +21,7 @@ const Transfer = () => {
   const [recipient, setRecipient] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
-  const [txHash, setTxHash] = useState<string | null>(null);
+  const [hash, setHash] = useState<string | null>(null);
   const { state } = useAppState()
 
   const generate = () => {
@@ -43,7 +43,7 @@ const Transfer = () => {
         .then(res => {
           const hash = res.data
           console.log(hash)
-          setTxHash(txHash)
+          setHash(hash)
           setFetching(false)
       })
       .catch(err => {
@@ -52,7 +52,7 @@ const Transfer = () => {
       })
 	}
 
-  const explorerUrl = transactionExplorer(txHash as string);
+  const explorerUrl = transactionExplorer(hash as string);
 
   return (
     <Col style={{ minHeight: '350px', maxWidth: '600px'}}>
@@ -97,7 +97,7 @@ const Transfer = () => {
           </Form.Item>
         }
 
-        {txHash &&
+        {hash &&
           <Form.Item {...tailLayout}>
             <Alert
               type="success"

@@ -7,12 +7,12 @@ const { Text } = Typography;
 
 const Account = () => {
 	const [fetching, setFetching] = useState<boolean>(false);
-	const [address, setAddress] = useState<string | null>(null)
+	const [address, setAdress] = useState<string | null>(null)
 	const { state, dispatch } = useAppState();
 
 	useEffect( () => {
 		if (state?.address) {
-			setAddress(state.address)
+			setAdress(state.address)
 		}
 	}, [])
 
@@ -22,7 +22,7 @@ const Account = () => {
 			const response = await axios.get(`/api/celo/account`)
 			const secret = response.data.secret;
 			const address = response.data.address;
-			setAddress(address)
+			setAdress(address)
 			dispatch({
 				type: 'SetSecret',
 				secret: secret

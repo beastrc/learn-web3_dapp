@@ -40,11 +40,11 @@ const Estimate = () => {
 				<Alert
 				  message={
 					<Space>
-					  <Text strong>This is the estimated fee</Text>
+					  <Text strong>This is the estimated fees</Text>
 					</Space>
 				  }
 				  description={
-						<Text code style={{ fontWeight: 'bold' }}>{fees} Planck</Text>
+						<Text code style={{ fontWeight: 'bold' }}>{fees} Plancks</Text>
 				  }
 				  type="success"
 				  showIcon

@@ -12,6 +12,5 @@ export {
     Balance, 
     Transfer,
     Deploy, 
-    Getter,
-    Setter 
+    Getter, Setter 
 }

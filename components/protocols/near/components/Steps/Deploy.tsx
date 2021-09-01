@@ -10,7 +10,7 @@ const { Text } = Typography
 const Deploy = () => {
     const [fetching, setFetching] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
-    const [txHash, setTxHash] = useState<string>('')
+    const [txhash, setTxhash] = useState<string>('')
     const { state } = useAppState()
 
     const deployContract = () => {
@@ -18,7 +18,7 @@ const Deploy = () => {
         setFetching(true)
         axios.post(`/api/near/deploy`, state)
             .then(res => {
-                setTxHash(res.data)
+                setTxhash(res.data)
                 setFetching(false)
             })
             .catch(err => {
@@ -28,7 +28,7 @@ const Deploy = () => {
             })
     }
 
-    const txUrl = getTransactionUrl(state.network)(txHash)
+    const txUrl = getTransactionUrl(state.network)(txhash)
 
     return (
 		<Col style={{ minHeight: '350px', maxWidth: '600px'}}>	
@@ -46,7 +46,7 @@ const Deploy = () => {
                 {error && <Alert type="error" closable message={error} /> }
                 {fetching
                     ? <LoadingOutlined style={{ fontSize: 24 }} spin />
-                    : txHash.length !== 0
+                    : txhash.length !== 0
                         ? <Alert
                             message={
                                 <Text strong>{`The contract has been deployed!`}</Text>

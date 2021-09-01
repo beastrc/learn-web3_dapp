@@ -45,7 +45,7 @@ const Account = () => {
 				email: walletInfo.email
 			})
 		} catch(error) {
-			console.error('Incorrect JSON format')
+			console.error('Ill formed JSON')
 		}
 	}
 
@@ -91,7 +91,7 @@ const Account = () => {
 						description={
 							<Text strong>
 								<a href={accountUrl(state?.address ?? '')} target="_blank" rel="noreferrer">
-									View the account on Tezos Explorer
+									View the account in the explorer
 								</a>
 							</Text>
 						}
