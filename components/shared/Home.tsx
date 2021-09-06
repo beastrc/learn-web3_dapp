@@ -3,10 +3,9 @@ import Link from "next/link";
 import { Col } from 'antd';
 import styled from "styled-components";
 
-import { CHAINS, UserActivity } from "types/types";
+import { CHAINS } from "types/types";
 import { CHAINS_CONFIG } from "lib/constants";
 import { getChainColors } from "utils/colors-utils";
-import {trackEvent} from 'utils/tracking-utils';
 import ProtocolLogo from "components/icons";
 
 const Home = () => {
@@ -20,12 +19,7 @@ const Home = () => {
 						const { primaryColor, secondaryColor } = getChainColors(chain as CHAINS)
 
 						const box = (
-							<ProtocolBox key={id} active={active} primary_color={primaryColor} secondary_color={secondaryColor} onClick={() => {
-								trackEvent(UserActivity.PROTOCOL_CLICKED, {
-									protocolId: chain,
-									protocolName: label,
-								});
-							}}>
+							<ProtocolBox key={id} active={active} primary_color={primaryColor} secondary_color={secondaryColor}>
 								<ProtocolLogo chainId={chain} />
 								<Label>{label}</Label>
 							</ProtocolBox>
