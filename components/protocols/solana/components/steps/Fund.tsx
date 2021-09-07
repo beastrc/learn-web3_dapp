@@ -1,8 +1,7 @@
-import { Alert, Button, Space, Col, Input, Typography } from 'antd'
-import { transactionExplorer } from  "@solana/lib";
-import { useAppState } from '@solana/hooks';
 import { useState } from "react"
+import { Alert, Button, Space, Col, Input, Typography } from 'antd'
 import axios from "axios"
+import { transactionExplorer } from  "@solana/lib";
 
 const { Text } = Typography
 
@@ -12,14 +11,18 @@ const Fund = () => {
   const [error, setError] = useState<string | null>(null);
   const [isFunded, setIsFunded] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')
-	const { state } = useAppState();
 
   const fund = () => {
     if (!value) return null
 
     setFetching(true)
 		axios
-			.post(`/api/solana/fund`, state)
+			.post(
+        `/api/solana/fund`,
+        {
+					address: value,
+				},
+      )
 			.then(res => {
         setTxHash(res.data)
 				setIsFunded(true)
@@ -47,7 +50,7 @@ const Fund = () => {
             type="success"
             showIcon
             message={
-              <a href={transactionExplorer(txHash, state.network)} target="_blank" rel="noreferrer">View on Solana Explorer</a>
+              <a href={transactionExplorer(txHash)} target="_blank" rel="noreferrer">View on Solana Explorer</a>
             }
           />
       }
