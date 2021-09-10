@@ -1,6 +1,6 @@
-import { Connection, PublicKey  } from '@solana/web3.js';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSafeUrl } from '@solana/lib';
+import type {NextApiRequest, NextApiResponse} from 'next';
+import {Connection, PublicKey} from '@solana/web3.js';
+import {getNodeURL} from '@solana/lib';
 import * as borsh from 'borsh';
 
 // The state of a greeting account managed by the hello world program
@@ -18,14 +18,14 @@ const GreetingSchema = new Map([
   [GreetingAccount, {kind: 'struct', fields: [['counter', 'u32']]}],
 ]);
 
-export default async function getGreetings(
+export default async function getter(
   req: NextApiRequest,
-  res: NextApiResponse<string | number>
+  res: NextApiResponse<string | number>,
 ) {
   try {
-    const { greeter } = req.body;
-    const url = getSafeUrl();
-    const connection = new Connection(url, "confirmed");
+    const {network, greeter} = req.body;
+    const url = getNodeURL(network);
+    const connection = new Connection(url, 'confirmed');
     const greeterPublicKey = new PublicKey(greeter);
 
     const accountInfo = await connection.getAccountInfo(greeterPublicKey);
@@ -34,16 +34,15 @@ export default async function getGreetings(
       throw new Error('Error: cannot find the greeted account');
     }
 
-    // Find the expected parameters.
-    const greeting = borsh.deserialize(undefined)
+    const greeting = borsh.deserialize(
+      GreetingSchema,
+      GreetingAccount,
+      accountInfo.data,
+    );
 
-    // A short helper
-    console.log(greeting)
-
-    // Pass down the counter
-    res.status(200).json(undefined);
-  } catch(error) {
-    console.error(error);
-    res.status(500).json('Get Greeting failed');
+    res.status(200).json(greeting.counter);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json(error.message);
   }
 }
