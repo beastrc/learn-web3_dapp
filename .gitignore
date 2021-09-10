@@ -7,7 +7,6 @@
 
 # testing
 /coverage
-ok.json
 
 # next.js
 /.next/
@@ -53,4 +52,3 @@ package-lock.json
 # near
 neardev
 contracts/near/target/
-/solana-wallet

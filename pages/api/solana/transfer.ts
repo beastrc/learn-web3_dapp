@@ -1,27 +1,21 @@
-import {CHAINS, SOLANA_NETWORKS, SOLANA_PROTOCOLS} from 'types';
-import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeURL} from 'utils/datahub-utils';
-import {
-  Connection,
-  PublicKey,
-  SystemProgram,
-  Transaction,
-  sendAndConfirmTransaction,
-} from '@solana/web3.js';
+import { Connection, PublicKey, SystemProgram, Transaction, sendAndConfirmTransaction } from "@solana/web3.js";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { getSafeUrl } from "@solana/lib";
 
+type ParamT = {
+    address: string
+    secret: string
+    recipient: string
+    lamports: number
+}
 export default async function transfer(
   req: NextApiRequest,
-  res: NextApiResponse<string>,
+  res: NextApiResponse<string>
 ) {
   try {
-    const {address, secret, recipient, lamports, network} = req.body;
-    const url = getNodeURL(
-      CHAINS.SOLANA,
-      SOLANA_NETWORKS.DEVNET,
-      SOLANA_PROTOCOLS.RPC,
-      network,
-    );
-    const connection = new Connection(url, 'confirmed');
+    const { address, secret, recipient, lamports } = req.body as ParamT
+    const url = getSafeUrl();
+    const connection = new Connection(url, "confirmed");
 
     const fromPubkey = new PublicKey(address as string);
     const toPubkey = new PublicKey(recipient as string);
@@ -29,31 +23,19 @@ export default async function transfer(
     // The secret key is stored in our state as a stingified array
     const secretKey = Uint8Array.from(JSON.parse(secret as string));
 
-    // Find the parameter to pass
-    const instructions = SystemProgram.transfer({
-      fromPubkey,
-      toPubkey,
-      lamports,
-    });
+    // Find the parameter to pass  
+    const instructions = SystemProgram.transfer
 
-    const signers = [
-      {
-        publicKey: fromPubkey,
-        secretKey,
-      },
-    ];
+    // How could you construct a signer array's
+    const signers = 
 
-    const transaction = new Transaction().add(instructions);
+    // Maybe adding someting to a Transaction could be interesting ?
+    const transaction = new Transaction()
 
-    const hash = await sendAndConfirmTransaction(
-      connection,
-      transaction,
-      signers,
-    );
-
+    const hash =// You should now what is expected here.
     res.status(200).json(hash);
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    res.status(500).json(error);
   }
 }
