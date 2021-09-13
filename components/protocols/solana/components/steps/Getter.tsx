@@ -1,5 +1,5 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
-import {useAppState} from '@solana/hooks';
+import {useAppState} from '@solana/context';
 import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
@@ -33,7 +33,10 @@ const Getter = () => {
     setError(null);
     setFetching(true);
     try {
-      const response = await axios.post(`/api/solana/getter`, state);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/getter`,
+        state,
+      );
       setGreeting(response.data);
       dispatch({
         type: 'SetValidate',
