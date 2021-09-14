@@ -1,6 +1,6 @@
 import {Alert, Button, Col, Space, Typography, Modal} from 'antd';
 import {useEffect, useState} from 'react';
-import {useAppState} from '@solana/context';
+import {useAppState} from '@solana/hooks';
 import axios from 'axios';
 import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
@@ -37,9 +37,7 @@ const Keypair = () => {
   const generateKeypair = async () => {
     setFetching(true);
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/keypair`,
-      );
+      const response = await axios.get(`/api/solana/keypair`);
       setAddress(response.data.address);
       dispatch({
         type: 'SetSecret',

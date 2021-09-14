@@ -1,7 +1,9 @@
-import {useState} from 'react';
+import {useState, useContext} from 'react';
+import type {State} from '@solana/context';
+import {SolanaContext} from '@solana/context';
 
-const useLocalStorage = <StateT>(key: string, initialValue: StateT) => {
-  const [storedValue, setStoredValue] = useState<StateT>(() => {
+const useLocalStorage = (key: string, initialValue: State) => {
+  const [storedValue, setStoredValue] = useState<State>(() => {
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -10,7 +12,7 @@ const useLocalStorage = <StateT>(key: string, initialValue: StateT) => {
       return initialValue;
     }
   });
-  const setValue = (value: StateT | ((val: StateT) => StateT)) => {
+  const setValue = (value: State | ((val: State) => State)) => {
     try {
       const valueToStore =
         value instanceof Function ? value(storedValue) : value;
@@ -23,4 +25,6 @@ const useLocalStorage = <StateT>(key: string, initialValue: StateT) => {
   return [storedValue, setValue] as const;
 };
 
-export {useLocalStorage};
+const useAppState = () => useContext(SolanaContext);
+
+export {useLocalStorage, useAppState};

@@ -22,7 +22,6 @@
       "@tezos/*": ["components/protocols/tezos/*"],
       "@avalanche/*": ["components/protocols/avalanche/*"],
       "@secret/*": ["components/protocols/secret/*"],
-      "@polygon/*": ["components/protocols/polygon/*"],
       "@funnel/*": ["utils/*"]
     }
   },

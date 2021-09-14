@@ -1,8 +1,8 @@
-import {getPolygonTxExplorerURL} from '@polygon/lib';
+import {useState} from 'react';
 import {Button, Alert, Space, Typography, Col} from 'antd';
-import {useAppState} from '@polygon/context';
-import {useState, useEffect} from 'react';
+import {getPolygonTxExplorerURL} from 'utils/polygon-utils';
 import {ethers} from 'ethers';
+import {useEffect} from 'react';
 
 // A random test's address
 const recipient = '0xb11D554F2139d843F5c94a3185d17C4d5762a7c7';
@@ -19,7 +19,6 @@ const Transfer = () => {
   const [hash, setHash] = useState('');
   const [balance, setBalance] = useState('');
   const [fetchingBalance, setFetchingBalance] = useState(false);
-  const {dispatch} = useAppState();
 
   useEffect(() => {
     const checkBalance = async () => {
@@ -55,10 +54,6 @@ const Transfer = () => {
       const hash = undefined;
       const receipt = await hash.wait();
       setHash(receipt.transactionHash);
-      dispatch({
-        type: 'SetValidate',
-        validate: 5,
-      });
       setFetching(false);
     } catch (error) {
       setError(error);

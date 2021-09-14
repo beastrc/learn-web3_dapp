@@ -1,7 +1,8 @@
+import {useState} from 'react';
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
-import {useAppState} from '@polygon/context';
-import {useState, useEffect} from 'react';
+import {LoadingOutlined} from '@ant-design/icons';
 import {ethers} from 'ethers';
+import {useEffect} from 'react';
 
 const {Text} = Typography;
 
@@ -14,18 +15,9 @@ const Restore = () => {
   const [address, setAddress] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
   const [value, setValue] = useState<string>('');
-  const {dispatch} = useAppState();
-
-  useEffect(() => {
-    if (address) {
-      dispatch({
-        type: 'SetValidate',
-        validate: 3,
-      });
-    }
-  }, [address, setAddress]);
 
   const restore = () => {
+    console.log(value);
     try {
       const wallet = undefined;
       const selectedAddress = window.ethereum.selectedAddress;

@@ -1,4 +1,4 @@
-import {createContext, Dispatch, useContext} from 'react';
+import {createContext, Dispatch} from 'react';
 
 export type State = {
   index: number;
@@ -53,6 +53,4 @@ const SolanaContext = createContext<{
   dispatch: () => null,
 });
 
-const useAppState = () => useContext(SolanaContext);
-
-export {SolanaContext, initialState, appStateReducer, useAppState};
+export {SolanaContext, initialState, appStateReducer};

@@ -2,7 +2,7 @@ import {Form, Input, Button, Alert, Space, Typography, Col, Modal} from 'antd';
 import {LoadingOutlined, RedoOutlined} from '@ant-design/icons';
 import {prettyError, transactionExplorer} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
-import {useAppState} from '@solana/context';
+import {useAppState} from '@solana/hooks';
 import type {ErrorT} from '@solana/types';
 import {Keypair} from '@solana/web3.js';
 import {useState} from 'react';
@@ -56,14 +56,11 @@ const Transfer = () => {
         throw new Error('invalid amount');
       }
 
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/transfer`,
-        {
-          ...state,
-          lamports,
-          recipient,
-        },
-      );
+      const response = await axios.post(`/api/solana/transfer`, {
+        ...state,
+        lamports,
+        recipient,
+      });
       setHash(response.data);
       dispatch({
         type: 'SetValidate',

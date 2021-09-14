@@ -1,8 +1,9 @@
+import {Typography, Popover, Button} from 'antd';
 import {trackStorageCleared} from '@funnel/tracking-utils';
 import type {EntryT, ErrorT} from '@solana/types';
-import {Typography, Popover, Button, Select} from 'antd';
-import {useAppState} from '@solana/context';
+import {useAppState} from '@solana/hooks';
 import ReactJson from 'react-json-view';
+import {Select} from 'antd';
 
 const {Option} = Select;
 
@@ -118,7 +119,7 @@ const Nav = () => {
           defaultValue={state.network}
           style={{width: 120}}
           onChange={toggleLocal}
-          disabled={state.index != 0}
+          disabled={true} //{state.index != 0}
         >
           <Option value="datahub">Datahub</Option>
           <Option value="testnet">Testnet</Option>

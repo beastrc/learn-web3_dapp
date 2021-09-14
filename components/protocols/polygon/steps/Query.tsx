@@ -1,13 +1,15 @@
-import {Alert, Button, Col, Space} from 'antd';
-import {useAppState} from '@polygon/context';
-import ReactJson from 'react-json-view';
 import {useState} from 'react';
+import {Alert, Button, Col, Space, Typography} from 'antd';
 import axios from 'axios';
+import styled from 'styled-components';
+import ReactJson from 'react-json-view';
 
 import {
   PolygonQueryResponse,
   PolygonQueryErrorResponse,
 } from 'types/polygon-types';
+
+const {Text} = Typography;
 
 // Prevents "Property 'ethereum' does not exist on type
 // 'Window & typeof globalThis' ts(2339)" linter warning
@@ -19,7 +21,6 @@ const Query = () => {
   const [queryData, setQueryData] = useState<PolygonQueryResponse | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const {dispatch} = useAppState();
 
   const getQuery = () => {
     setFetching(true);
@@ -32,10 +33,7 @@ const Query = () => {
         if (!queryData) {
           console.log('queryData not set on first click?');
         } else {
-          dispatch({
-            type: 'SetValidate',
-            validate: 2,
-          });
+          console.log(queryData);
         }
         setFetching(false);
       })
@@ -83,5 +81,12 @@ const Query = () => {
     </Col>
   );
 };
+
+const Code = styled.pre`
+  font-size: 0.9em;
+  padding: 10px;
+  background-color: #eee;
+  margin-top: 20px;
+`;
 
 export default Query;
