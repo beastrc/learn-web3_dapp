@@ -1,15 +1,15 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {accountExplorer, transactionExplorer} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
-import {useAppState} from '@solana/hooks';
+import {useAppState} from '@solana/context';
 import {useState, useEffect} from 'react';
-import type {ErrorT} from '@solana/types';
+import type {ErrorT, StepT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Greeter = () => {
+const Greeter = ({validate}: StepT) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
@@ -35,7 +35,10 @@ const Greeter = () => {
     setHash(null);
     setFetching(true);
     try {
-      const response = await axios.post(`/api/solana/greeter`, state);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/greeter`,
+        state,
+      );
       setHash(response.data.hash);
       dispatch({
         type: 'SetGreeter',

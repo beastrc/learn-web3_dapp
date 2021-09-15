@@ -1,14 +1,14 @@
 import {Alert, Button, Space, Col, Input, Typography, Modal} from 'antd';
 import {transactionExplorer, prettyError} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
-import {useAppState} from '@solana/hooks';
-import type {ErrorT} from '@solana/types';
+import {useAppState} from '@solana/context';
+import type {ErrorT, StepT} from '@solana/types';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Fund = () => {
+const Fund = ({validate}: StepT) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [isFunded, setIsFunded] = useState<boolean>(false);
@@ -37,24 +37,17 @@ const Fund = () => {
     if (state.network === 'datahub') {
       state0 = {...state, network: 'devnet'};
     }
+    console.log(state);
     try {
-      const response = await axios.post(`/api/solana/fund`, state0 ?? state);
-      console.log(response.data);
-      if (response.data.length === 0) {
-        throw new Error('Complete the code');
-      }
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/fund`,
+        state0 ?? state,
+      );
       setHash(response.data);
       setIsFunded(true);
-      dispatch({
-        type: 'SetValidate',
-        validate: 3,
-      });
+      validate(3);
     } catch (error) {
-      if (error.message === 'Complete the code') {
-        setError({message: 'Complete the code'});
-      } else {
-        setError(prettyError(error));
-      }
+      setError(prettyError(error));
       setIsFunded(false);
     } finally {
       setFetching(false);

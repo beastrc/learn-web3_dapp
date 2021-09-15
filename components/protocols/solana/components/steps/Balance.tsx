@@ -1,15 +1,15 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {LAMPORTS_PER_SOL} from '@solana/web3.js';
 import {ErrorBox} from '@solana/components';
-import {useAppState} from '@solana/hooks';
-import type {ErrorT} from '@solana/types';
+import {useAppState} from '@solana/context';
+import type {ErrorT, StepT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Balance = () => {
+const Balance = ({validate}: StepT) => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
@@ -34,7 +34,10 @@ const Balance = () => {
     setFetching(true);
     setError(null);
     try {
-      const response = await axios.post(`/api/solana/balance`, state);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/balance`,
+        state,
+      );
       setBalance(response.data / LAMPORTS_PER_SOL);
       dispatch({
         type: 'SetValidate',

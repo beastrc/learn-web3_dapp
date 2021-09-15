@@ -1,48 +1,36 @@
-import {useState} from 'react';
-import {Alert, Button, Col, Space, Typography} from 'antd';
-import axios from 'axios';
-import styled from 'styled-components';
-import ReactJson from 'react-json-view';
-
-import {
-  PolygonQueryResponse,
-  PolygonQueryErrorResponse,
-} from 'types/polygon-types';
-
-const {Text} = Typography;
-
-// Prevents "Property 'ethereum' does not exist on type
-// 'Window & typeof globalThis' ts(2339)" linter warning
-declare let window: any;
-
+import {PolygonQueryResponse, PolygonQueryErrorResponse} from '@polygon/types';
 import {LoadingOutlined} from '@ant-design/icons';
+import {Alert, Button, Col, Space} from 'antd';
+import {useAppState} from '@polygon/context';
+import {useState, useEffect} from 'react';
+import ReactJson from 'react-json-view';
+import axios from 'axios';
 
 const Query = () => {
   const [queryData, setQueryData] = useState<PolygonQueryResponse | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const {state} = useAppState();
 
-  const getQuery = () => {
+  useEffect(() => {
+    if (queryData) {
+      state.validator(2);
+    }
+  }, [queryData, setQueryData]);
+
+  const getQuery = async () => {
     setFetching(true);
-
-    axios
-      .get(`/api/polygon/query`)
-      .then((res) => {
-        const data: PolygonQueryResponse = res.data;
-        setQueryData(data);
-        if (!queryData) {
-          console.log('queryData not set on first click?');
-        } else {
-          console.log(queryData);
-        }
-        setFetching(false);
-      })
-      .catch((err) => {
-        console.log(`err.response`, err.response);
-        const data: PolygonQueryErrorResponse = err.response?.data;
-        setFetching(false);
-        setError(data?.message);
-      });
+    try {
+      const response = await axios.get(`/api/polygon/query`);
+      setQueryData(response.data);
+      setFetching(false);
+    } catch (error) {
+      const data = error.response?.data;
+      setFetching(false);
+      setError(data?.message);
+    } finally {
+      setFetching(false);
+    }
   };
 
   return (
@@ -81,12 +69,5 @@ const Query = () => {
     </Col>
   );
 };
-
-const Code = styled.pre`
-  font-size: 0.9em;
-  padding: 10px;
-  background-color: #eee;
-  margin-top: 20px;
-`;
 
 export default Query;
