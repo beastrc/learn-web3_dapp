@@ -1,14 +1,14 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
-import {useAppState} from '@solana/context';
+import {useAppState} from '@solana/hooks';
 import {ErrorBox} from '@solana/components';
-import type {ErrorT, StepT} from '@solana/types';
+import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Getter = ({validate}: StepT) => {
+const Getter = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [greeting, setGreeting] = useState<number>(-1);
@@ -33,10 +33,7 @@ const Getter = ({validate}: StepT) => {
     setError(null);
     setFetching(true);
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/getter`,
-        state,
-      );
+      const response = await axios.post(`/api/solana/getter`, state);
       setGreeting(response.data);
       dispatch({
         type: 'SetValidate',

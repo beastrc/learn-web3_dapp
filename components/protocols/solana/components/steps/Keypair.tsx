@@ -1,14 +1,14 @@
 import {Alert, Button, Col, Space, Typography, Modal} from 'antd';
-import type {ErrorT, StepT} from '@solana/types';
-import {useAppState} from '@solana/context';
-import {ErrorBox} from '@solana/components';
 import {useEffect, useState} from 'react';
-import {prettyError} from '@solana/lib';
+import {useAppState} from '@solana/hooks';
 import axios from 'axios';
+import {ErrorBox} from '@solana/components';
+import type {ErrorT} from '@solana/types';
+import {prettyError} from '@solana/lib';
 
 const {Text} = Typography;
 
-const Keypair = ({validate}: StepT) => {
+const Keypair = () => {
   const [address, setAddress] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
@@ -37,9 +37,7 @@ const Keypair = ({validate}: StepT) => {
   const generateKeypair = async () => {
     setFetching(true);
     try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/keypair`,
-      );
+      const response = await axios.get(`/api/solana/keypair`);
       setAddress(response.data.address);
       dispatch({
         type: 'SetSecret',
@@ -49,7 +47,10 @@ const Keypair = ({validate}: StepT) => {
         type: 'SetAddress',
         address: response.data.address,
       });
-      validate(2);
+      dispatch({
+        type: 'SetValidate',
+        validate: 2,
+      });
     } catch (error) {
       setError(prettyError(error));
     } finally {

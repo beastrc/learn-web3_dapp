@@ -1,19 +1,19 @@
 import {Col, Alert, Space, Typography, Button, Modal} from 'antd';
 import {PoweroffOutlined} from '@ant-design/icons';
 import {useEffect, useState} from 'react';
-import {useAppState} from '@solana/context';
+import {useAppState} from '@solana/hooks';
 import {ErrorBox} from '@solana/components';
-import type {ErrorT, StepT} from '@solana/types';
+import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Connect = ({validate}: StepT) => {
+const Connect = () => {
   const [version, setVersion] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
-  const {state} = useAppState();
+  const {state, dispatch} = useAppState();
 
   useEffect(() => {
     if (error) {
@@ -35,7 +35,10 @@ const Connect = ({validate}: StepT) => {
     setError(null);
     try {
       const response = await axios.post(`/api/solana/connect`, state);
-      validate(1);
+      dispatch({
+        type: 'SetValidate',
+        validate: 1,
+      });
       setVersion(response.data);
     } catch (error) {
       setError(prettyError(error));

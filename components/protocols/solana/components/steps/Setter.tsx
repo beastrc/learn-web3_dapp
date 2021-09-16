@@ -3,14 +3,14 @@ import {LoadingOutlined} from '@ant-design/icons';
 import {transactionExplorer} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
 import {useEffect, useState} from 'react';
-import {useAppState} from '@solana/context';
-import type {ErrorT, StepT} from '@solana/types';
+import {useAppState} from '@solana/hooks';
+import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import axios from 'axios';
 
 const {Text} = Typography;
 
-const Setter = ({validate}: StepT) => {
+const Setter = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [resetting, setResetting] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
@@ -38,10 +38,7 @@ const Setter = ({validate}: StepT) => {
       setError(null);
       setFetching(true);
       try {
-        const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/getter`,
-          state,
-        );
+        const response = await axios.post(`/api/solana/getter`, state);
         setMessage(response.data);
       } catch (error) {
         setError(prettyError(error));

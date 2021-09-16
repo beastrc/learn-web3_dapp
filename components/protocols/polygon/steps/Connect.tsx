@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import detectEthereumProvider from '@metamask/detect-provider';
-import {Alert, Button, Col, Space, Typography} from 'antd';
-import {Network} from '@ethersproject/networks';
-import {useAppState} from '@polygon/context';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+import {Alert, Button, Col, Space, Typography, Tag} from 'antd';
 import {ethers} from 'ethers';
+import detectEthereumProvider from '@metamask/detect-provider';
+import {Network} from '@ethersproject/networks';
+
+import {PolygonAccountT} from 'types/polygon-types';
 
 const {Text} = Typography;
 
@@ -12,42 +13,28 @@ const {Text} = Typography;
 // 'Window & typeof globalThis' ts(2339)" linter warning
 declare let window: any;
 
-const Connect = () => {
-  const [network, setNetwork] = useState<Network | undefined>(undefined);
-  const [address, setAddress] = useState<string | undefined>(undefined);
-  const {state, dispatch} = useAppState();
-
-  useEffect(() => {
-    if (address) {
-      if (address) {
-        dispatch({
-          type: 'SetAddress',
-          address: address,
-        });
-        state.validator(1);
-      }
-    }
-  }, [address, setAddress]);
+const Connect = ({
+  account,
+  setAccount,
+}: {
+  account: PolygonAccountT;
+  setAccount(account: PolygonAccountT): void;
+}) => {
+  const [network, setNetwork] = useState<Network | null>(null);
 
   const checkConnection = async () => {
     const provider = await detectEthereumProvider();
 
     if (provider) {
+      // TODO
       // Connect to Polygon using Web3Provider and Metamask
-      // @ts-ignore
-      await provider.send('eth_requestAccounts', []);
-      const web3provider = new ethers.providers.Web3Provider(
-        window.ethereum,
-        'any',
-      );
-      const signer = web3provider.getSigner();
-
       // Define address and network
-      const address = await signer.getAddress();
-      const network = ethers.providers.getNetwork(await signer.getChainId());
+      const web3provider = undefined;
+      const address = undefined;
+      const network = undefined;
 
+      setAccount(address);
       setNetwork(network);
-      setAddress(address);
     } else {
       alert('Please install Metamask at https://metamask.io');
     }
@@ -61,7 +48,7 @@ const Connect = () => {
             Check Metamask Connection
           </Button>
         }
-        {state.address && network ? (
+        {account && network ? (
           <Alert
             message={<Text strong>{`Connected to ${network.name}`}</Text>}
             type="success"

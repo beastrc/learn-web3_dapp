@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import SimpleStorageJson from 'contracts/polygon/SimpleStorage/build/contracts/SimpleStorage.json';
-import {Alert, Button, Col, InputNumber, Space, Typography} from 'antd';
-import {getPolygonTxExplorerURL} from '@polygon/lib';
-import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@polygon/context';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
+import {Alert, Card, Button, Col, InputNumber, Space, Typography} from 'antd';
 import {ethers} from 'ethers';
+import {LoadingOutlined} from '@ant-design/icons';
+
+import SimpleStorageJson from 'contracts/polygon/SimpleStorage/build/contracts/SimpleStorage.json';
+import {getPolygonTxExplorerURL} from 'utils/polygon-utils';
 
 const {Text} = Typography;
 
@@ -13,21 +13,11 @@ const {Text} = Typography;
 // 'Window & typeof globalThis' ts(2339)" linter warning
 declare let window: any;
 
-const Setter = () => {
+const SetStorage = () => {
   const [inputNumber, setInputNumber] = useState<number>(0);
   const [fetchingSet, setFetchingSet] = useState<boolean>(false);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<boolean>(false);
-  const {dispatch} = useAppState();
-
-  useEffect(() => {
-    if (txHash) {
-      dispatch({
-        type: 'SetValidate',
-        validate: 8,
-      });
-    }
-  }, [txHash, setTxHash]);
 
   const setValue = async () => {
     setFetchingSet(true);
@@ -35,13 +25,12 @@ const Setter = () => {
 
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(
-      SimpleStorageJson.networks['80001'].address,
-      SimpleStorageJson.abi,
-      signer,
-    );
+    // try to figure out the expected parameters
+    const contract = new ethers.Contract(undefined);
     try {
-      const transactionResult = await contract.set(inputNumber);
+      // try to figure out the expected method
+      const transactionResult = undefined;
+
       setFetchingSet(false);
       setInputNumber(0);
       setConfirming(true);
@@ -96,4 +85,4 @@ const Setter = () => {
   );
 };
 
-export default Setter;
+export default SetStorage;

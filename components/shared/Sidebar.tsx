@@ -1,12 +1,13 @@
-import logoSVG from 'public/figment-learn-compact.svg';
-import {getChainColors} from 'utils/colors';
-import {ChainType, StepType} from 'types';
+import React from 'react';
 import styled from 'styled-components';
 import {Col, Steps, Space} from 'antd';
 import {ArrowLeft} from 'react-feather';
-import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
+import logoSVG from 'public/figment-learn-compact.svg';
+
+import {ChainType, StepType} from 'types';
+import {getChainColors} from 'utils/colors-utils';
 
 const {Step} = Steps;
 

@@ -2,8 +2,8 @@ import {Form, Input, Button, Alert, Space, Typography, Col, Modal} from 'antd';
 import {LoadingOutlined, RedoOutlined} from '@ant-design/icons';
 import {prettyError, transactionExplorer} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
-import {useAppState} from '@solana/context';
-import type {ErrorT, StepT} from '@solana/types';
+import {useAppState} from '@solana/hooks';
+import type {ErrorT} from '@solana/types';
 import {Keypair} from '@solana/web3.js';
 import {useState} from 'react';
 import axios from 'axios';
@@ -20,7 +20,7 @@ const tailLayout = {
 
 const {Text} = Typography;
 
-const Transfer = ({validate}: StepT) => {
+const Transfer = () => {
   const [recipient, setRecipient] = useState<string | null>(null);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
@@ -56,14 +56,11 @@ const Transfer = ({validate}: StepT) => {
         throw new Error('invalid amount');
       }
 
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/transfer`,
-        {
-          ...state,
-          lamports,
-          recipient,
-        },
-      );
+      const response = await axios.post(`/api/solana/transfer`, {
+        ...state,
+        lamports,
+        recipient,
+      });
       setHash(response.data);
       dispatch({
         type: 'SetValidate',
