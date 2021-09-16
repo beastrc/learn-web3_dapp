@@ -1,4 +1,3 @@
-// coucou husky
 import {useEffect, useReducer} from 'react';
 import {Row} from 'antd';
 import {
