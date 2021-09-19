@@ -22,9 +22,10 @@
       "@tezos/*": ["components/protocols/tezos/*"],
       "@avalanche/*": ["components/protocols/avalanche/*"],
       "@secret/*": ["components/protocols/secret/*"],
+      "@polygon/*": ["components/protocols/polygon/*"],
       "@funnel/*": ["utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

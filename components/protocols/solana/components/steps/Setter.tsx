@@ -3,7 +3,7 @@ import {LoadingOutlined} from '@ant-design/icons';
 import {transactionExplorer} from '@solana/lib';
 import {ErrorBox} from '@solana/components';
 import {useEffect, useState} from 'react';
-import {useAppState} from '@solana/hooks';
+import {useAppState} from '@solana/context';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import axios from 'axios';
@@ -17,6 +17,12 @@ const Setter = () => {
   const [hash, setHash] = useState<string>('');
   const [message, setMessage] = useState<number>(-1);
   const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      state.validator(9);
+    }
+  }, [hash, setHash]);
 
   useEffect(() => {
     if (error) {
@@ -38,7 +44,10 @@ const Setter = () => {
       setError(null);
       setFetching(true);
       try {
-        const response = await axios.post(`/api/solana/getter`, state);
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/getter`,
+          state,
+        );
         setMessage(response.data);
       } catch (error) {
         setError(prettyError(error));

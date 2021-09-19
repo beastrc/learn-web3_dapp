@@ -1,8 +1,7 @@
-import {useState} from 'react';
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
-import {LoadingOutlined} from '@ant-design/icons';
+import {useAppState} from '@polygon/context';
+import {useState, useEffect} from 'react';
 import {ethers} from 'ethers';
-import {useEffect} from 'react';
 
 const {Text} = Typography;
 
@@ -15,15 +14,21 @@ const Restore = () => {
   const [address, setAddress] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
   const [value, setValue] = useState<string>('');
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (address) {
+      state.validator(3);
+    }
+  }, [address, setAddress]);
 
   const restore = () => {
-    console.log(value);
     try {
-      const wallet = undefined;
+      const wallet = ethers.Wallet.fromMnemonic(value.trim());
       const selectedAddress = window.ethereum.selectedAddress;
-      if (undefined === selectedAddress) {
-        setAddress(undefined);
-        setSecret(undefined);
+      if (wallet && wallet.address.toLocaleLowerCase() === selectedAddress) {
+        setAddress(wallet.address.toLocaleLowerCase());
+        setSecret(wallet.privateKey.toLocaleLowerCase());
       } else {
         setError('Unable to restore account');
       }
@@ -50,7 +55,14 @@ const Restore = () => {
             Restore Account
           </Button>
         </Space>
-        {error && <Alert type="error" closable message={error} />}
+        {error && (
+          <Alert
+            type="error"
+            closable
+            message={error}
+            onClose={() => setError(null)}
+          />
+        )}
         {address ? (
           <Alert
             message={
@@ -59,6 +71,7 @@ const Restore = () => {
             type="success"
             closable
             showIcon
+            onClose={() => setAddress(null)}
           />
         ) : null}
         {secret ? (
@@ -67,6 +80,7 @@ const Restore = () => {
             type="warning"
             closable
             showIcon
+            onClose={() => setSecret(null)}
           />
         ) : null}
       </Space>

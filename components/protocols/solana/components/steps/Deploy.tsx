@@ -1,6 +1,6 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {accountExplorer} from '@solana/lib';
-import {useAppState} from '@solana/hooks';
+import {useAppState} from '@solana/context';
 import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
@@ -15,6 +15,12 @@ const Deploy = () => {
   const [error, setError] = useState<ErrorT | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
   const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (checked) {
+      state.validator(6);
+    }
+  }, [checked, setChecked]);
 
   useEffect(() => {
     if (error) {
@@ -36,10 +42,10 @@ const Deploy = () => {
     setChecked(false);
     setFetching(true);
     try {
-      const response = await axios.post(`/api/solana/deploy`, {
-        ...state,
-        programId: value,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/solana/deploy`,
+        {...state, programId: value},
+      );
       setChecked(response.data);
       dispatch({
         type: 'SetProgramId',
