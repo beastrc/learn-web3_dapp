@@ -16,7 +16,7 @@ type Action =
   | {type: 'SetGreeter'; greeter?: string};
 
 const initialState = {
-  network: 'devnet',
+  network: 'datahub',
 };
 
 function appStateReducer(state: State, action: Action): State {
