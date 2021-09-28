@@ -1,17 +1,15 @@
-type EntryT = {
+export type EntryT = {
   msg: string;
   display: (value: string) => string;
   value: string;
 };
 
-type TransactionT = {
+export type TransactionT = {
   txID: string;
   outputIndex: number;
 };
 
-type BalanceT = {
+export type BalanceT = {
   balance: string;
   utxoIDs: TransactionT[];
 };
-
-export type {BalanceT, EntryT};
