@@ -1,44 +1,45 @@
-import {Col, Button, Alert, Space} from 'antd';
-import {useAppState} from '@avalanche/context';
+import {useState} from 'react';
+import {Col, Button, Alert, Space, Typography} from 'antd';
+import {useAppState} from '@avalanche/hooks';
 import {transactionUrl} from '@avalanche/lib';
-import {useEffect, useState} from 'react';
-import {useGlobalState} from 'context';
 import axios from 'axios';
 
+const layout = {
+  labelCol: {span: 4},
+  wrapperCol: {span: 20},
+};
+
+const tailLayout = {
+  wrapperCol: {offset: 4, span: 20},
+};
+
+const {Text} = Typography;
+
 const Export = () => {
-  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
   const {state} = useAppState();
 
-  useEffect(() => {
-    if (hash) {
-      if (globalState.valid < 5) {
-        globalDispatch({
-          type: 'SetValid',
-          valid: 5,
-        });
-      }
-    }
-  }, [hash, setHash]);
-
-  const exportToken = async () => {
+  const exchangeUSD = () => {
     setFetching(true);
-    try {
-      const response = await axios.post(`/api/avalanche/export`, state);
-      setHash(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setFetching(false);
-    }
+    axios
+      .post(`/api/avalanche/export`, state)
+      .then((res) => {
+        const hash = res.data;
+        setHash(hash);
+        setFetching(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setFetching(false);
+      });
   };
 
   return (
     <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical">
-        <Button type="primary" onClick={exportToken} loading={fetching}>
+        <Button type="primary" onClick={exchangeUSD} loading={fetching}>
           Export 0.05 AVAX
         </Button>
         {hash && (

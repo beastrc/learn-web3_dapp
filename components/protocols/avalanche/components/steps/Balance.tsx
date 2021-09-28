@@ -1,31 +1,18 @@
+import {useState} from 'react';
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@avalanche/context';
-import {useState, useEffect} from 'react';
-import {useGlobalState} from 'context';
 import axios from 'axios';
+import {useAppState} from '@avalanche/hooks';
 
 const {Text} = Typography;
 
 const DECIMAL_OFFSET = 10 ** 9;
 
 const Balance = () => {
-  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [balance, setBalance] = useState<number>(0);
   const {state} = useAppState();
-
-  useEffect(() => {
-    if (balance) {
-      if (globalState.valid < 3) {
-        globalDispatch({
-          type: 'SetValid',
-          valid: 3,
-        });
-      }
-    }
-  }, [balance, setBalance]);
 
   const getBalance = () => {
     setError(null);

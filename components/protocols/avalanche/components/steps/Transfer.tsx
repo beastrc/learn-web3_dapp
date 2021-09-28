@@ -1,9 +1,8 @@
+import {useState} from 'react';
 import {Form, Input, Button, Alert, Space, Typography, Col} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@avalanche/context';
+import {useAppState} from '@avalanche/hooks';
 import {transactionUrl} from '@avalanche/lib';
-import {useState, useEffect} from 'react';
-import {useGlobalState} from 'context';
 import axios from 'axios';
 
 const layout = {
@@ -20,42 +19,32 @@ const recipient = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
 const {Text} = Typography;
 
 const Transfer = () => {
-  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
   const {state} = useAppState();
 
-  useEffect(() => {
-    if (hash) {
-      if (globalState.valid < 4) {
-        globalDispatch({
-          type: 'SetValid',
-          valid: 4,
-        });
-      }
+  const transfer = (values: any) => {
+    const isValidAmount = parseFloat(values.amount);
+    if (isNaN(isValidAmount)) {
+      setError('Amount needs to be a valid number');
+      throw Error('Invalid Amount');
     }
-  }, [hash, setHash]);
 
-  const transfer = async (values: any) => {
+    const amount = values.amount;
+
     setFetching(true);
-    const navax = parseFloat(values.amount);
-    try {
-      if (isNaN(navax)) {
-        throw new Error('invalid amount');
-      }
-
-      const response = await axios.post(`/api/avalanche/transfer`, {
-        ...state,
-        navax,
-        recipient,
+    axios
+      .post(`/api/avalanche/transfer`, {...state, amount, recipient})
+      .then((res) => {
+        const hash = res.data;
+        setHash(hash);
+        setFetching(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setFetching(false);
       });
-      setHash(response.data);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setFetching(false);
-    }
   };
 
   return (

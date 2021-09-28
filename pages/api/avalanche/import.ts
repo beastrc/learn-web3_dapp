@@ -8,40 +8,33 @@ export default async function (
   res: NextApiResponse<string>,
 ) {
   try {
-    const {secret, network} = req.body;
-    const client = getAvalancheClient(network);
+    const {secret} = req.body;
+    const client = getAvalancheClient();
 
-    // Initialize chain components
-    const [xChain, cChain] = [client.XChain(), client.CChain()];
-    const [xKeychain, cKeychain] = [xChain.keyChain(), cChain.keyChain()];
-    const [xKeypair, cKeypair] = [
-      xKeychain.importKey(secret),
-      cKeychain.importKey(secret),
-    ];
-    const [cAddress] = [cKeypair.getAddressString()];
+    // Total amount we're transferring = 0.05 AVAX
+    const amount = '50000000';
 
-    // Get the real ID for X-Chain
-    const xChainId = undefined;
+    // Taking inspiration for xChain do the same for cChain
+    const [xChain, cChain] = [client.XChain(), undefined];
+    const [xKeychain, cKeychain] = [xChain.keyChain(), undefined];
+    const [xKeypair, cKeypair] = [xKeychain.importKey(secret), undefined];
+    const [xAddress, cAddress] = [xKeypair.getAddressString(), undefined];
 
     // Fetch UTXOs (unspent transaction outputs)
-    const {utxos} = await cChain.getUTXOs(cAddress, xChainId);
+    const {utxos} = await xChain.getUTXOs(xAddress);
 
-    // Derive Eth-like address from the private key
-    const binTools = BinTools.getInstance();
-    const keyBuff = binTools.cb58Decode(secret.split('-')[1]);
-    const ethAddr = Address.fromPrivateKey(
-      Buffer.from(keyBuff.toString('hex'), 'hex'),
-    ).toString();
-    console.log('Ethereum-style address: ', ethAddr);
+    // Get the real ID for the cChain
+    const chainId = undefined;
 
-    // Generate an unsigned import transaction
-    const importTx = await cChain.buildImportTx(undefined);
+    // Prepare the export transaction from X -> C chain
+    const exportTx = await xChain.buildExportTx(undefined);
 
-    // Sign and send import transaction
-    const hash = await cChain.issueTx(importTx.sign(cKeychain));
+    // Sign and send the transaction
+    const hash = await xChain.issueTx(exportTx.sign(xKeychain));
 
     res.status(200).json(hash);
   } catch (error) {
-    res.status(500).json(error.message);
+    console.error(error);
+    res.status(500).json('Import from X chain failed');
   }
 }

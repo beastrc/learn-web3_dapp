@@ -365,4 +365,27 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
+  [CHAINS.THE_GRAPH]: {
+    id: CHAINS.THE_GRAPH,
+    label: 'The Graph',
+    active: true,
+    logoUrl: 'https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=013',
+    steps: [
+      {
+        id: 'run-a-graph-node',
+        title: 'Run a Graph node',
+        url: 'https://learn.figment.io/tutorials/run-a-graph-node',
+      },
+      {
+        id: 'scaffold-a-subgraph',
+        title: 'Scaffold a subgraph',
+        url: 'https://learn.figment.io/tutorials/scaffold-a-subgraph',
+      },
+      {
+        id: 'hacking-the-manifest',
+        title: 'Hacking the Manifest',
+        url: 'https://learn.figment.io/tutorials/hacking-the-manifest',
+      },
+    ],
+  },
 };

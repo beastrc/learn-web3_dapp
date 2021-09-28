@@ -1,10 +1,11 @@
-import {getPolygonAddressExplorerURL} from '@polygon/lib';
 import {Typography, Popover, Button, Tag, Space, Select} from 'antd';
+import {trackStorageCleared} from 'utils/tracking-utils';
+import {getPolygonAddressExplorerURL} from '@polygon/lib';
+import {FundViewOutlined} from '@ant-design/icons';
 import {useAppState} from '@polygon/context';
 import type {EntryT} from '@polygon/types';
-import {trackStorageCleared} from '@funnel/tracking-utils';
-import {FundViewOutlined} from '@ant-design/icons';
 import {useGlobalState} from 'context';
+
 const {Paragraph} = Typography;
 
 const {Option} = Select;
@@ -51,7 +52,7 @@ const Nav = () => {
   };
 
   const clearKeychain = () => {
-    const proceed = confirm('Are you sure you want to clear the keychain?');
+    const proceed = confirm('Are you sure you want to reset the pathway?');
     if (proceed) {
       dispatch({
         type: 'SetAddress',
@@ -99,7 +100,7 @@ const Nav = () => {
         <Select
           defaultValue={'datahub'}
           style={{width: 100, textAlign: 'center'}}
-          disabled={true}
+          disabled={true} //{state.index != 0}
           showArrow={false}
         >
           <Option value="datahub">Datahub</Option>

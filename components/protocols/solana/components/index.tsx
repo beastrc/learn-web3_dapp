@@ -1,4 +1,4 @@
-import {trackStorageCleared} from 'utils/tracking-utils';
+import {trackStorageCleared} from '@funnel/tracking-utils';
 import {Typography, Popover, Button, Select} from 'antd';
 import type {EntryT, ErrorT} from '@solana/types';
 import {useAppState} from '@solana/context';
@@ -61,7 +61,7 @@ const Nav = () => {
   };
 
   const clearKeychain = () => {
-    const proceed = confirm('Are you sure you want to clear the storage?');
+    const proceed = confirm('Are you sure you want to reset the pathway?');
     if (proceed) {
       dispatch({
         type: 'SetAddress',
@@ -83,11 +83,23 @@ const Nav = () => {
     }
   };
 
-  const toggleLocal = (network: string) => {
-    dispatch({
-      type: 'SetNetwork',
-      network: network,
-    });
+  const toggleLocal = (node: string) => {
+    if (node === 'localnet') {
+      dispatch({
+        type: 'SetNetwork',
+        network: 'localnet',
+      });
+    } else if (node === 'devnet') {
+      dispatch({
+        type: 'SetNetwork',
+        network: 'devnet',
+      });
+    } else {
+      dispatch({
+        type: 'SetNetwork',
+        network: 'datahub',
+      });
+    }
   };
 
   return (
