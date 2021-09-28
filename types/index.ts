@@ -154,7 +154,3 @@ export interface ProtocolI {
   step: StepType;
   index?: number;
 }
-
-export type MarkdownForChainT = {
-  [stepId: string]: string;
-};
