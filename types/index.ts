@@ -8,7 +8,6 @@ export enum CHAINS {
   SECRET = 'secret',
   SOLANA = 'solana',
   TEZOS = 'tezos',
-  CERAMIC = 'ceramic',
 }
 
 // ----------------------------- Avalanche
@@ -103,16 +102,6 @@ export enum SOLANA_PROTOCOLS {
 }
 // -----------------------------
 
-// -----------------------------  Ceramic
-export enum CERAMIC_NETWORKS {
-  TESTNET = 'TESTNET',
-}
-
-export enum CERAMIC_PROTOCOLS {
-  HTTP = 'HTTP',
-}
-// -----------------------------
-
 export type NETWORKS =
   | POLYGON_NETWORKS
   | AVALANCHE_NETWORKS
@@ -121,8 +110,7 @@ export type NETWORKS =
   | NEAR_NETWORKS
   | SECRET_NETWORKS
   | CELO_NETWORKS
-  | TEZOS_NETWORKS
-  | CERAMIC_NETWORKS;
+  | TEZOS_NETWORKS;
 
 export type PROTOCOLS =
   | POLYGON_PROTOCOLS
@@ -132,8 +120,7 @@ export type PROTOCOLS =
   | SECRET_PROTOCOLS
   | NEAR_PROTOCOLS
   | CELO_PROTOCOLS
-  | TEZOS_PROTOCOLS
-  | CERAMIC_PROTOCOLS;
+  | TEZOS_PROTOCOLS;
 
 // ---------------------------------------------------
 export type ChainType = {
@@ -151,7 +138,8 @@ export type ChainsType = {
 export type StepType = {
   id: string;
   title: string;
-  url: string;
+  skipValidation?: boolean;
+  url?: string;
 };
 
 export enum UserActivity {
@@ -167,3 +155,7 @@ export interface ProtocolI {
   step: StepType;
   index?: number;
 }
+
+export type MarkdownForChainT = {
+  [stepId: string]: string;
+};

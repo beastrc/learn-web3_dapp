@@ -1,5 +1,9 @@
 import {ChainsType, CHAINS} from 'types';
 
+export const GRID_LAYOUT = [11, 13];
+export const HEADER_HEIGHT = 80;
+export const FOOTER_HEIGHT = 90;
+
 export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.AVALANCHE]: {
     id: CHAINS.AVALANCHE,
@@ -278,47 +282,38 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: 'connect',
         title: 'Connect to Solana',
-        url: 'https://learn.figment.io/tutorials/connect-to-devnet',
       },
       {
         id: 'account',
         title: 'Create an account',
-        url: 'https://learn.figment.io/tutorials/create-solana-keypair',
       },
       {
         id: 'fund',
         title: 'Fund the account with SOL',
-        url: 'https://learn.figment.io/tutorials/fund-solana-account',
       },
       {
         id: 'balance',
         title: 'Get the balance',
-        url: 'https://learn.figment.io/tutorials/check-solana-account-balance',
       },
       {
         id: 'transfer',
         title: 'Transfer some SOL',
-        url: 'https://learn.figment.io/tutorials/transfer-sol-tokens',
       },
       {
         id: 'deploy',
         title: 'Deploy a program',
-        url: 'https://learn.figment.io/tutorials/deploy-solana-program',
       },
       {
         id: 'greeter',
         title: 'Create storage for the program',
-        url: 'https://learn.figment.io/tutorials/how-to-store-state',
       },
       {
         id: 'getter',
         title: 'Get data from the program',
-        url: 'https://learn.figment.io/tutorials/get-greetings',
       },
       {
         id: 'setter',
         title: 'Send data to the program',
-        url: 'https://learn.figment.io/tutorials/send-greetings',
       },
     ],
   },
@@ -362,34 +357,6 @@ export const CHAINS_CONFIG: ChainsType = {
         id: 'setter',
         title: 'Set the storage of a smart contract',
         url: 'https://learn.figment.io/tutorials/tezos-set-contract-store',
-      },
-    ],
-  },
-  [CHAINS.CERAMIC]: {
-    id: CHAINS.CERAMIC,
-    label: 'Ceramic',
-    active: true,
-    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
-    steps: [
-      {
-        id: 'connect',
-        title: 'Connect using MetaMask',
-        url: 'https://learn.figment.io/tutorials/connect-to-tezos-node',
-      },
-      {
-        id: 'login',
-        title: 'Log in with IDX',
-        url: 'https://learn.figment.io/tutorials/create-a-tezos-account',
-      },
-      {
-        id: 'basicProfile',
-        title: 'Update your profile',
-        url: 'https://learn.figment.io/tutorials/check-tezos-account-balance',
-      },
-      {
-        id: 'customSchema',
-        title: 'Deploy and use custom schema',
-        url: 'https://learn.figment.io/tutorials/transfer-tez-tokens',
       },
     ],
   },
