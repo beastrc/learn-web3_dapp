@@ -3,7 +3,6 @@ import {Typography, Popover, Button, Select} from 'antd';
 import {useAppState} from '@avalanche/context';
 import type {EntryT} from '@avalanche/types';
 import {useGlobalState} from 'context';
-import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
 
 const {Option} = Select;
 
@@ -81,21 +80,35 @@ const Nav = () => {
   };
 
   return (
-    <StepMenuBar>
-      <Popover content={AppState} placement="bottom">
-        <Button type="primary">Keychain</Button>
-      </Popover>
-      <Select
-        defaultValue={state.network}
-        style={{width: 100, textAlign: 'center'}}
-        onChange={toggleLocal}
-        disabled={globalState.index != 0}
-      >
-        <Option value="datahub">Datahub</Option>
-        <Option value="devnet">Testnet</Option>
-        <Option value="localnet">Localnet</Option>
-      </Select>
-    </StepMenuBar>
+    <div
+      style={{
+        position: 'fixed',
+        top: 25,
+        right: 60,
+        display: 'flex',
+        justifyContent: 'space-evenly',
+        minWidth: '300px',
+        minHeight: '100px',
+      }}
+    >
+      <div>
+        <Popover content={AppState} placement="leftBottom">
+          <Button type="ghost">Keychain</Button>
+        </Popover>
+      </div>
+      <div>
+        <Select
+          defaultValue={state.network}
+          style={{width: 100, textAlign: 'center'}}
+          onChange={toggleLocal}
+          disabled={globalState.index != 0}
+        >
+          <Option value="datahub">Datahub</Option>
+          <Option value="devnet">Testnet</Option>
+          <Option value="localnet">Localnet</Option>
+        </Select>
+      </div>
+    </div>
   );
 };
 
