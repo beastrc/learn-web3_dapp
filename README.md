@@ -1,28 +1,12 @@
 # 🤔 What is `learn-web3-dapp`?
 
-We made this decentralized application (dApp) to help developers learn about Web 3 protocols. It's a Next.js app that used React, TypeScript and various smart contract languages (mostly Solidity and Rust).
+We made this decentralized application (dApp) to help developers learn about Web 3 protocols. It uses TypeScript, React, and various smart contract languages.
 
-We will guide you to build up a simple web client using the various blockchain's JavaScript SDKs to interact with their networks. Each protocol is slightly different, but we have attempted to standardize the workflow so that you can quickly get up to speed on networks like Solana, NEAR, Polygon and more!
+Following along with the [Figment Learn Pathways](https://learn.figment.io/pathways/), you will build up a simple web client using various JavaScript APIs to interact with different blockchain networks. Each protocol is slightly different, but we have attempted to standardize the workflow so that you can quickly get up to speed on networks like Solana, NEAR, Secret and Polygon!
 
-**Supported** ✅
-- Solana  
-- Polygon  
-- Avalanche  
-- NEAR  
-- Tezos  
-- Secret  
-- Polkadot  
+Learn more about [Figment](https://figment.io/).
 
-**Coming soon!** 🔜
-- The Graph  
-- Ceramic  
-- Arweave  
-
-Learn more about [Figment](https://figment.io/) and [Figment Learn](https://learn.figment.io/)
-
-![Screen Shot 2021-09-29 at 11 14 55 AM](https://user-images.githubusercontent.com/206753/135325747-330e9b28-14ee-4a32-9d7c-4216f82dd8c7.png)
-
-# 🧑‍💻 Get started
+# 🧑‍💻 How to use this repo
 
 Clone the repo and install the dependencies with `yarn`:
 
@@ -50,11 +34,17 @@ Start the Next.js development server on the default port 3000 with:
 yarn dev
 ```
 
+If your setup requires a specific port to allow inbound requests, or if you already have a service running on port 3000 - you can also specify a port with the `--port` flag:
+
+```
+yarn dev --port 3001
+```
+
 Once the server is running, you should see similar output:
 
 ```
 yarn run v1.22.10
-$ yarn dev
+$ next dev
 ready - started server on 0.0.0.0:3000, url: http://localhost:3000
 info  - Loaded env from ~/learn-web3-dapp/.env.local
 info  - Using webpack 5. Reason: Enabled by default https://nextjs.org/docs/messages/webpack5
@@ -64,7 +54,5 @@ event - compiled successfully
 You can now view the running application at [http://localhost:3000](http://localhost:3000) (or whichever port you specified)!
 
 We sincerely hope you enjoy the Pathway content and thank you for using `learn-web3-dapp` to learn about blockchain protocols 🚀
-
-[Join us on Discord](https://discord.com/invite/fszyM7K) if you have any questions!
 
 -- The Figment Learn Team
