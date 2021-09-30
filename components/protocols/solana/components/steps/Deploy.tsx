@@ -1,6 +1,7 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {accountExplorer} from '@solana/lib';
-import {ErrorBox} from '@solana/components/nav';
+import {useAppState} from '@solana/context';
+import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import {useEffect, useState} from 'react';
@@ -10,12 +11,23 @@ import {useGlobalState} from 'context';
 const {Text} = Typography;
 
 const Deploy = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [value, setValue] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [checked, setChecked] = useState<boolean>(false);
+  const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (checked) {
+      if (globalState.valid < 6) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 6,
+        });
+      }
+    }
+  }, [checked, setChecked]);
 
   useEffect(() => {
     if (error) {
@@ -43,7 +55,7 @@ const Deploy = () => {
       });
       setChecked(response.data);
       dispatch({
-        type: 'SetSolanaProgramId',
+        type: 'SetProgramId',
         programId: value as string,
       });
     } catch (error) {
@@ -54,7 +66,7 @@ const Deploy = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>

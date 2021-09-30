@@ -1,6 +1,7 @@
 import {Alert, Button, Space, Col, Input, Typography, Modal} from 'antd';
 import {transactionExplorer, prettyError} from '@solana/lib';
-import {ErrorBox} from '@solana/components/nav';
+import {ErrorBox} from '@solana/components';
+import {useAppState} from '@solana/context';
 import type {ErrorT} from '@solana/types';
 import {useEffect, useState} from 'react';
 import {useGlobalState} from 'context';
@@ -9,12 +10,23 @@ import axios from 'axios';
 const {Text} = Typography;
 
 const Fund = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [isFunded, setIsFunded] = useState<boolean>(false);
   const [hash, setHash] = useState<string>('');
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (isFunded) {
+      if (globalState.valid < 3) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 3,
+        });
+      }
+    }
+  }, [isFunded, setIsFunded]);
 
   useEffect(() => {
     if (error) {
@@ -40,13 +52,10 @@ const Fund = () => {
     }
     try {
       const response = await axios.post(`/api/solana/fund`, state0 ?? state);
+      console.log(response.data);
       if (response.data.length === 0) {
         throw new Error('Complete the code');
       }
-      dispatch({
-        type: 'SetHighestCompletedStepIndex',
-        highestCompletedStepIndex: 1,
-      });
       setHash(response.data);
       setIsFunded(true);
     } catch (error) {
@@ -62,7 +71,7 @@ const Fund = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical">
         <Input
           style={{width: '420px', fontWeight: 'bold'}}

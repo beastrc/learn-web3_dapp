@@ -1,6 +1,6 @@
 import {Alert, Col, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@polkadot/hooks';
+import {useAppState} from '@polka/hooks';
 import {useState} from 'react';
 import axios from 'axios';
 
@@ -35,7 +35,7 @@ const Deposit = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Button type="primary" onClick={getDeposit}>

@@ -1,5 +1,6 @@
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
 import {ethers} from 'ethers';
 
 const {Text} = Typography;
@@ -9,10 +10,22 @@ const {Text} = Typography;
 declare let window: any;
 
 const Restore = () => {
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [address, setAddress] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [value, setValue] = useState<string>('');
+
+  useEffect(() => {
+    if (address) {
+      if (globalState.valid < 8) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 8,
+        });
+      }
+    }
+  }, [address, setAddress]);
 
   const restore = () => {
     try {

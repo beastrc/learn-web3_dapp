@@ -32,7 +32,7 @@ const Deploy = () => {
   const txUrl = getTransactionUrl(state.network)(txHash);
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="horizontal">
           <Button type="primary" onClick={deployContract}>

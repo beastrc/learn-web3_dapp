@@ -1,5 +1,6 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
-import {ErrorBox} from '@solana/components/nav';
+import {useAppState} from '@solana/context';
+import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
 import {useState, useEffect} from 'react';
 import {prettyError} from '@solana/lib';
@@ -9,11 +10,22 @@ import axios from 'axios';
 const {Text} = Typography;
 
 const Getter = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [greeting, setGreeting] = useState<number>(-1);
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (greeting) {
+      if (globalState.valid < 8) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 8,
+        });
+      }
+    }
+  }, [greeting, setGreeting]);
 
   useEffect(() => {
     if (error) {
@@ -44,7 +56,7 @@ const Getter = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>Get the counter&apos;s value from the program:</Text>

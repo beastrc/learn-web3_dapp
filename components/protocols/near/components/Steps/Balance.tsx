@@ -38,7 +38,7 @@ const Balance = () => {
   const explorerUrl = getAccountUrl(network)(accountId as string);
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>

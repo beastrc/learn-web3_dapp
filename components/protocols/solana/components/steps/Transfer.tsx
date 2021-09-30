@@ -1,7 +1,8 @@
 import {Form, Input, Button, Alert, Space, Typography, Col, Modal} from 'antd';
 import {LoadingOutlined, RedoOutlined} from '@ant-design/icons';
 import {prettyError, transactionExplorer} from '@solana/lib';
-import {ErrorBox} from '@solana/components/nav';
+import {ErrorBox} from '@solana/components';
+import {useAppState} from '@solana/context';
 import type {ErrorT} from '@solana/types';
 import {useEffect, useState} from 'react';
 import {Keypair} from '@solana/web3.js';
@@ -20,12 +21,23 @@ const tailLayout = {
 const {Text} = Typography;
 
 const Transfer = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [recipient, setRecipient] = useState<string | null>(null);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      if (globalState.valid < 5) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 5,
+        });
+      }
+    }
+  }, [hash, setHash]);
 
   const generate = () => {
     const keypair = Keypair.generate();
@@ -76,7 +88,7 @@ const Transfer = () => {
   const explorerUrl = transactionExplorer(hash ?? '', state.network);
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Form
         {...layout}
         name="transfer"

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Alert, Button, Col, Space, Typography} from 'antd';
-import {useAppState} from '@polkadot/hooks';
+import {useAppState} from '@polka/hooks';
 import axios from 'axios';
 
 const {Text} = Typography;
@@ -83,7 +83,7 @@ const Account = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Button
         type="primary"
         onClick={generateKeypair}

@@ -1,6 +1,7 @@
 import {Alert, Button, Col, Space, Typography, Modal} from 'antd';
 import type {ErrorT} from '@solana/types';
-import {ErrorBox} from '@solana/components/nav';
+import {useAppState} from '@solana/context';
+import {ErrorBox} from '@solana/components';
 import {useEffect, useState} from 'react';
 import {prettyError} from '@solana/lib';
 import {useGlobalState} from 'context';
@@ -9,11 +10,22 @@ import axios from 'axios';
 const {Text} = Typography;
 
 const Keypair = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [address, setAddress] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
+  const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (address) {
+      if (globalState.valid < 2) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 2,
+        });
+      }
+    }
+  }, [address, setAddress]);
 
   useEffect(() => {
     if (error) {
@@ -41,11 +53,11 @@ const Keypair = () => {
       const response = await axios.get(`/api/solana/keypair`);
       setAddress(response.data.address);
       dispatch({
-        type: 'SetSolanaSecret',
+        type: 'SetSecret',
         secret: response.data.secret,
       });
       dispatch({
-        type: 'SetSolanaAddress',
+        type: 'SetAddress',
         address: response.data.address,
       });
     } catch (error) {
@@ -56,7 +68,7 @@ const Keypair = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical">
         <Button
           type="primary"

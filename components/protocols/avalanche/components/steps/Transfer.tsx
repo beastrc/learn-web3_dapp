@@ -1,5 +1,6 @@
 import {Form, Input, Button, Alert, Space, Typography, Col} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
+import {useAppState} from '@avalanche/context';
 import {transactionUrl} from '@avalanche/lib';
 import {useState, useEffect} from 'react';
 import {useGlobalState} from 'context';
@@ -19,11 +20,22 @@ const recipient = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
 const {Text} = Typography;
 
 const Transfer = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.avalanche;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      if (globalState.valid < 4) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 4,
+        });
+      }
+    }
+  }, [hash, setHash]);
 
   const transfer = async (values: any) => {
     setFetching(true);
@@ -47,7 +59,7 @@ const Transfer = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Form
         {...layout}
         name="transfer"

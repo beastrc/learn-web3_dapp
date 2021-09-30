@@ -1,5 +1,3 @@
-export const STATUS = 'DEPRECATED';
-/*
 import {Alert, Col, Typography, Space} from 'antd';
 import {ArrowUpRight} from 'react-feather';
 import styled from 'styled-components';
@@ -54,4 +52,3 @@ const Link = styled.div`
 `;
 
 export default Header;
-*/

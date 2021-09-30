@@ -29,7 +29,7 @@ const Connect = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <LoadingOutlined style={{fontSize: 24}} spin hidden={!fetching} />
       {version ? (
         <Alert

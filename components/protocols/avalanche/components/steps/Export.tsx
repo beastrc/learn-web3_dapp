@@ -1,15 +1,27 @@
 import {Col, Button, Alert, Space} from 'antd';
+import {useAppState} from '@avalanche/context';
 import {transactionUrl} from '@avalanche/lib';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {useGlobalState} from 'context';
 import axios from 'axios';
 
 const Export = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.avalanche;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      if (globalState.valid < 5) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 5,
+        });
+      }
+    }
+  }, [hash, setHash]);
 
   const exportToken = async () => {
     setFetching(true);
@@ -24,7 +36,7 @@ const Export = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical">
         <Button type="primary" onClick={exportToken} loading={fetching}>
           Export 0.05 AVAX

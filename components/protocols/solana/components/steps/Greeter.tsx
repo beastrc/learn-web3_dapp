@@ -1,6 +1,7 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {accountExplorer, transactionExplorer} from '@solana/lib';
-import {ErrorBox} from '@solana/components/nav';
+import {ErrorBox} from '@solana/components';
+import {useAppState} from '@solana/context';
 import {useState, useEffect} from 'react';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
@@ -10,11 +11,22 @@ import {useGlobalState} from 'context';
 const {Text} = Typography;
 
 const Greeter = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
+  const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      if (globalState.valid < 7) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 7,
+        });
+      }
+    }
+  }, [hash, setHash]);
 
   useEffect(() => {
     if (error) {
@@ -39,7 +51,7 @@ const Greeter = () => {
       const response = await axios.post(`/api/solana/greeter`, state);
       setHash(response.data.hash);
       dispatch({
-        type: 'SetSolanaGreeter',
+        type: 'SetGreeter',
         greeter: response.data.greeter,
       });
     } catch (error) {
@@ -51,7 +63,7 @@ const Greeter = () => {
 
   if (state?.greeter) {
     return (
-      <Col>
+      <Col style={{minHeight: '350px', maxWidth: '600px'}}>
         <Space direction="vertical">
           <Text>Greeter account created</Text>
           <Alert
@@ -90,7 +102,7 @@ const Greeter = () => {
   }
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>
