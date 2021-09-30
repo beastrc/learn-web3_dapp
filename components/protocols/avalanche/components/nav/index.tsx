@@ -3,7 +3,6 @@ import {Typography, Popover, Button, Select} from 'antd';
 import type {EntryT} from '@avalanche/types';
 import {useGlobalState} from 'context';
 import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
-import {resetStepsStatus} from 'utils';
 
 const {Option} = Select;
 
@@ -49,10 +48,6 @@ const Nav = () => {
     dispatch({
       type: 'SetHighestCompletedStepIndex',
       highestCompletedStepIndex: 0,
-    });
-    dispatch({
-      type: 'SetAvalancheStepsStatus',
-      stepsStatus: resetStepsStatus(globalState.avalanche.stepsStatus),
     });
     trackStorageCleared(globalState.chainId as string);
   };

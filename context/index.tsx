@@ -11,14 +11,12 @@ export type GlobalState = {
     secret?: string;
     programId?: string;
     greeter?: string;
-    stepsStatus?: string;
   };
   // Avalanche global state
   avalanche: {
     network: string;
     secret?: string;
     address?: string;
-    stepsStatus?: string;
   };
   // Near global state
   near: {
@@ -26,38 +24,11 @@ export type GlobalState = {
     accountId?: string;
     secret?: string;
     contractId?: string;
-    stepsStatus?: string;
   };
   // Polygon global state
   polygon: {
     network?: string;
     address?: string;
-    stepsStatus?: string;
-  };
-  // Celo global state
-  celo: {
-    network: string;
-    stepsStatus?: string;
-  };
-  // The Graph global state
-  the_graph: {
-    network: string;
-    stepsStatus?: string;
-  };
-  // Polkadot global state
-  polkadot: {
-    network: string;
-    stepsStatus?: string;
-  };
-  // Tezos global state
-  tezos: {
-    network: string;
-    stepsStatus?: string;
-  };
-  // Secret global state
-  secret: {
-    network: string;
-    stepsStatus?: string;
   };
 };
 
@@ -71,40 +42,18 @@ type Action =
   | {type: 'SetSolanaSecret'; secret?: string}
   | {type: 'SetSolanaProgramId'; programId?: string}
   | {type: 'SetSolanaGreeter'; greeter?: string}
-  | {type: 'SetSolanaStepsStatus'; stepsStatus?: string}
-  // Avalanche actions
+  // Avalanche Actions
   | {type: 'SetAvalancheNetwork'; network: string}
   | {type: 'SetAvalancheAddress'; address?: string}
   | {type: 'SetAvalancheSecret'; secret?: string}
-  | {
-      type: 'SetAvalancheStepsStatus';
-      stepsStatus?: string;
-    }
-  // Near actions
+  // Near Actions
   | {type: 'SetNearNetwork'; network: string}
   | {type: 'SetNearAccountId'; accountId?: string}
   | {type: 'SetNearSecret'; secret?: string}
   | {type: 'SetNearConractId'; contractId?: string}
-  | {type: 'SetNearStepsStatus'; stepsStatus?: string}
-  // Polygon actions
-  | {type: 'SetPolygonNetwork'; network: string | undefined}
-  | {type: 'SetPolygonAddress'; address?: string | undefined}
-  | {type: 'SetPolygonStepsStatus'; stepsStatus?: string}
-  // Celo actions
-  | {type: 'SetCeloNetwork'; network: string}
-  | {type: 'SetCeloStepsStatus'; stepsStatus?: string}
-  // Tezos actions
-  | {type: 'SetTezosNetwork'; network: string}
-  | {type: 'SetTezosStepsStatus'; stepsStatus?: string}
-  // Polkadot actions
-  | {type: 'SetPolkadotNetwork'; network: string}
-  | {type: 'SetPolkadotStepsStatus'; stepsStatus?: string}
-  // Secret actions
-  | {type: 'SetSecretNetwork'; network: string}
-  | {type: 'SetSecretStepsStatus'; stepsStatus?: string}
-  // The Graph actions
-  | {type: 'SetTheGraphNetwork'; network: string}
-  | {type: 'SetTheGraphStepsStatus'; stepsStatus?: string};
+  // Polygon Actions
+  | {type: 'SetPolygonNetwork'; network: string}
+  | {type: 'SetPolygonAddress'; address?: string};
 
 const initialGlobalState = {
   currentStepIndex: 0,
@@ -123,30 +72,6 @@ const initialGlobalState = {
   },
   // Polygon initial state
   polygon: {
-    network: 'datahub',
-  },
-  // Celo initial state
-  celo: {
-    network: 'datahub',
-  },
-  // The Graph initial state
-  network: {
-    network: 'datahub',
-  },
-  // Secret initial state
-  secret: {
-    network: 'datahub',
-  },
-  // Tezos initial state
-  tezos: {
-    network: 'datahub',
-  },
-  // Polkadot initial state
-  polkadot: {
-    network: 'datahub',
-  },
-  // The Graph initial state
-  the_graph: {
     network: 'datahub',
   },
 };
@@ -209,15 +134,6 @@ function globalStateReducer(state: GlobalState, action: Action): GlobalState {
         },
       };
     }
-    case 'SetSolanaStepsStatus': {
-      return {
-        ...state,
-        solana: {
-          ...state.solana,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
     // Avalanche State
     case 'SetAvalancheNetwork': {
       return {
@@ -243,15 +159,6 @@ function globalStateReducer(state: GlobalState, action: Action): GlobalState {
         avalanche: {
           ...state.avalanche,
           secret: action.secret,
-        },
-      };
-    }
-    case 'SetAvalancheStepsStatus': {
-      return {
-        ...state,
-        avalanche: {
-          ...state.avalanche,
-          stepsStatus: action.stepsStatus,
         },
       };
     }
@@ -292,15 +199,6 @@ function globalStateReducer(state: GlobalState, action: Action): GlobalState {
         },
       };
     }
-    case 'SetNearStepsStatus': {
-      return {
-        ...state,
-        near: {
-          ...state.near,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
     // Polygon state
     case 'SetPolygonAddress': {
       return {
@@ -317,101 +215,6 @@ function globalStateReducer(state: GlobalState, action: Action): GlobalState {
         polygon: {
           ...state.polygon,
           network: action.network,
-        },
-      };
-    }
-    case 'SetPolygonStepsStatus': {
-      return {
-        ...state,
-        polygon: {
-          ...state.polygon,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
-    // Celo state
-    case 'SetCeloNetwork': {
-      return {
-        ...state,
-        celo: {
-          ...state.celo,
-          network: action.network,
-        },
-      };
-    }
-    case 'SetCeloStepsStatus': {
-      return {
-        ...state,
-        celo: {
-          ...state.celo,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
-    // Polkadot state
-    case 'SetPolkadotNetwork': {
-      return {
-        ...state,
-        polkadot: {
-          ...state.polkadot,
-          network: action.network,
-        },
-      };
-    }
-    case 'SetPolkadotStepsStatus': {
-      return {
-        ...state,
-        polkadot: {
-          ...state.polkadot,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
-    // Tezos state
-    case 'SetTezosNetwork': {
-      return {
-        ...state,
-        tezos: {
-          ...state.tezos,
-          network: action.network,
-        },
-      };
-    }
-    case 'SetTezosStepsStatus': {
-      return {
-        ...state,
-        tezos: {
-          ...state.tezos,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
-    // Secret state
-    case 'SetSecretStepsStatus': {
-      return {
-        ...state,
-        secret: {
-          ...state.secret,
-          stepsStatus: action.stepsStatus,
-        },
-      };
-    }
-    // The Graph state
-    case 'SetTheGraphNetwork': {
-      return {
-        ...state,
-        the_graph: {
-          ...state.the_graph,
-          network: action.network,
-        },
-      };
-    }
-    case 'SetTheGraphStepsStatus': {
-      return {
-        ...state,
-        the_graph: {
-          ...state.the_graph,
-          stepsStatus: action.stepsStatus,
         },
       };
     }

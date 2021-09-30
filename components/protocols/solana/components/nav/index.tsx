@@ -4,7 +4,6 @@ import type {EntryT, ErrorT} from '@solana/types';
 import ReactJson from 'react-json-view';
 import {useGlobalState} from 'context';
 import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
-import {resetStepsStatus} from 'utils';
 
 const {Option} = Select;
 
@@ -56,10 +55,6 @@ const Nav = () => {
     dispatch({
       type: 'SetHighestCompletedStepIndex',
       highestCompletedStepIndex: 0,
-    });
-    dispatch({
-      type: 'SetSolanaStepsStatus',
-      stepsStatus: resetStepsStatus(globalState.solana.stepsStatus),
     });
     trackStorageCleared(globalState.chainId as string);
   };

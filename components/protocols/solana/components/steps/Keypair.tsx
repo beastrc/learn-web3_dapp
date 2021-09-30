@@ -5,11 +5,10 @@ import {useEffect, useState} from 'react';
 import {prettyError} from '@solana/lib';
 import {useGlobalState} from 'context';
 import axios from 'axios';
-import {setStepsStatus} from 'utils';
 
 const {Text} = Typography;
 
-const Keypair = ({stepId}: {stepId: string}) => {
+const Keypair = () => {
   const {state: globalState, dispatch} = useGlobalState();
   const state = globalState.solana;
   const [address, setAddress] = useState<string | null>(null);
@@ -48,10 +47,6 @@ const Keypair = ({stepId}: {stepId: string}) => {
       dispatch({
         type: 'SetSolanaAddress',
         address: response.data.address,
-      });
-      dispatch({
-        type: 'SetSolanaStepsStatus',
-        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
       });
     } catch (error) {
       setError(prettyError(error));

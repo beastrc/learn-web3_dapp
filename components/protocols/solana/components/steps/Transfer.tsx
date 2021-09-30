@@ -7,7 +7,6 @@ import {useEffect, useState} from 'react';
 import {Keypair} from '@solana/web3.js';
 import {useGlobalState} from 'context';
 import axios from 'axios';
-import {setStepsStatus} from 'utils';
 
 const layout = {
   labelCol: {span: 4},
@@ -20,7 +19,7 @@ const tailLayout = {
 
 const {Text} = Typography;
 
-const Transfer = ({stepId}: {stepId: string}) => {
+const Transfer = () => {
   const {state: globalState, dispatch} = useGlobalState();
   const state = globalState.solana;
   const [recipient, setRecipient] = useState<string | null>(null);
@@ -63,10 +62,6 @@ const Transfer = ({stepId}: {stepId: string}) => {
         recipient,
       });
       setHash(response.data);
-      dispatch({
-        type: 'SetSolanaStepsStatus',
-        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
-      });
     } catch (error) {
       if (error.message === 'invalid amount') {
         setError({message: 'invalid amount'});
