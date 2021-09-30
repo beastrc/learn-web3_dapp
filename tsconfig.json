@@ -16,14 +16,13 @@
     "baseUrl": ".",
     "paths": {
       "@near/*": ["components/protocols/near/*"],
-      "@polka/*": ["components/protocols/polkadot/*"],
+      "@polkadot/*": ["components/protocols/polkadot/*"],
       "@solana/*": ["components/protocols/solana/*"],
-      "@ccelo/*": ["components/protocols/celo/*"],
+      "@celo/*": ["components/protocols/celo/*"],
       "@tezos/*": ["components/protocols/tezos/*"],
       "@avalanche/*": ["components/protocols/avalanche/*"],
       "@secret/*": ["components/protocols/secret/*"],
       "@polygon/*": ["components/protocols/polygon/*"],
-      "@ceramic/*": ["components/protocols/ceramic/*"],
       "@funnel/*": ["utils/*"]
     }
   },
