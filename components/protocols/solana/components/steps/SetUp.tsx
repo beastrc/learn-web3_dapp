@@ -1,10 +1,15 @@
 import {Col, Space, Button} from 'antd';
-import {useGlobalState} from 'context';
-import {setStepsStatus} from 'utils';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getChainCurrentStepId,
+} from 'context';
 
-const SetUp = ({stepId}: {stepId: string}) => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.solana;
+const Setup = () => {
+  const {state, dispatch} = useGlobalState();
+  const chainId = getCurrentChainId(state);
+  const stepId = getChainCurrentStepId(state, chainId);
+  console.log('here setup');
 
   return (
     <Col>
@@ -13,8 +18,10 @@ const SetUp = ({stepId}: {stepId: string}) => {
           type="primary"
           onClick={() =>
             dispatch({
-              type: 'SetSolanaStepsStatus',
-              stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
+              type: 'SetChainProgressIsCompleted',
+              chainId,
+              stepId,
+              value: true,
             })
           }
           size="large"
@@ -26,4 +33,4 @@ const SetUp = ({stepId}: {stepId: string}) => {
   );
 };
 
-export default SetUp;
+export default Setup;
