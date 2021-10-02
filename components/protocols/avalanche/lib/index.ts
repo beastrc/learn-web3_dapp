@@ -1,24 +1,21 @@
-import {CHAINS, AVALANCHE_NETWORKS} from 'types';
-import {getNodeURL as getNodeUrl} from 'utils/datahub';
 import {Avalanche} from 'avalanche';
 
-const AVALANCHE_NETWORK_ID = 5;
-const AVALANCHE_NETWORK_NAME = 'fuji';
+export enum AVALANCHE_NETWORKS {
+  MAINNET = 'MAINNET',
+  FUJI = 'FUJI',
+}
 
-const getNodeURL = (network: string) =>
-  getNodeUrl(CHAINS.AVALANCHE, AVALANCHE_NETWORKS.FUJI, undefined, network);
-
-const getAvalancheClient = (network: string) => {
-  const url = new URL(getNodeURL(network));
+export const getAvalancheClient = () => {
+  const url = new URL(getDataHubAvalancheNodeUrl(AVALANCHE_NETWORKS.FUJI));
 
   const client = new Avalanche(
     url.hostname,
     parseInt(url.port),
     url.protocol.replace(':', ''),
-    AVALANCHE_NETWORK_ID,
+    parseInt(process.env.AVALANCHE_NETWORK_ID as string),
     'X',
     'C',
-    AVALANCHE_NETWORK_NAME,
+    process.env.AVALANCHE_NETWORK_NAME,
   );
 
   client.setAuthToken(process.env.DATAHUB_AVALANCHE_API_KEY as string);
@@ -26,8 +23,13 @@ const getAvalancheClient = (network: string) => {
   return client;
 };
 
-const transactionUrl = (txId: string) => {
+export const transactionUrl = (txId: string) => {
   return `https://explorer.avax-test.network/tx/${txId}`;
 };
 
-export {transactionUrl, getAvalancheClient};
+export const getDataHubAvalancheNodeUrl = (
+  network: AVALANCHE_NETWORKS,
+): string =>
+  network === AVALANCHE_NETWORKS.MAINNET
+    ? `https://${process.env.DATAHUB_AVALANCHE_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_AVALANCHE_API_KEY}`
+    : `https://${process.env.DATAHUB_AVALANCHE_FUJI_RPC_URL}/apikey/${process.env.DATAHUB_AVALANCHE_API_KEY}`;

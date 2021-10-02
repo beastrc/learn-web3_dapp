@@ -1,48 +1,32 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
 import {accountExplorer, transactionExplorer} from '@solana/lib';
-import {ErrorBox} from '@solana/components/nav';
+import {ErrorBox} from '@solana/components';
+import {useAppState} from '@solana/context';
 import {useState, useEffect} from 'react';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import axios from 'axios';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getChainCurrentStepId,
-  getChainNetwork,
-  getChainInnerState,
-} from 'context';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
+import {useGlobalState} from 'context';
 
 const {Text} = Typography;
 
 const Greeter = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const stepId = getChainCurrentStepId(state, chainId);
-  const network = getChainNetwork(state, chainId);
-
-  const secret = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.SECRET,
-  ) as string;
-  const programId = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
-  ) as string;
-  console.log(programId);
-
-  const greeter = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.GREETER,
-  ) as string;
-
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
+  const {state, dispatch} = useAppState();
+
+  useEffect(() => {
+    if (hash) {
+      if (globalState.valid < 7) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 7,
+        });
+      }
+    }
+  }, [hash, setHash]);
 
   useEffect(() => {
     if (error) {
@@ -64,23 +48,11 @@ const Greeter = () => {
     setHash(null);
     setFetching(true);
     try {
-      const response = await axios.post(`/api/solana/greeter`, {
-        network,
-        secret,
-        programId,
-      });
+      const response = await axios.post(`/api/solana/greeter`, state);
       setHash(response.data.hash);
       dispatch({
-        type: 'SetChainInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.GREETER,
-        value: programId,
-      });
-      dispatch({
-        type: 'SetChainProgressIsCompleted',
-        chainId,
-        stepId,
-        value: true,
+        type: 'SetGreeter',
+        greeter: response.data.greeter,
       });
     } catch (error) {
       setError(prettyError(error));
@@ -89,15 +61,15 @@ const Greeter = () => {
     }
   };
 
-  if (greeter) {
+  if (state?.greeter) {
     return (
-      <Col>
+      <Col style={{minHeight: '350px', maxWidth: '600px'}}>
         <Space direction="vertical">
           <Text>Greeter account created</Text>
           <Alert
             message={
               <a
-                href={accountExplorer(greeter, network)}
+                href={accountExplorer(state?.greeter ?? '', state.network)}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -112,7 +84,7 @@ const Greeter = () => {
               message={
                 <Text>
                   <a
-                    href={transactionExplorer(hash, network)}
+                    href={transactionExplorer(hash ?? '', state.network)}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -130,14 +102,14 @@ const Greeter = () => {
   }
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>
             We&apos;re going to derive the greeter account from the programId
           </Text>
           <Input
-            placeholder={programId}
+            placeholder={state?.programId}
             disabled={true}
             style={{width: '500px'}}
           />

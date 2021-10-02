@@ -1,37 +1,45 @@
-import {Col, Button, Alert, Space} from 'antd';
+import {useState} from 'react';
+import {Col, Button, Alert, Space, Typography} from 'antd';
+import {useAppState} from '@avalanche/hooks';
 import {transactionUrl} from '@avalanche/lib';
-import {useEffect, useState} from 'react';
-import {useGlobalState} from 'context';
 import axios from 'axios';
-import {setStepsStatus} from 'utils';
 
-const Import = ({stepId}: {stepId: string}) => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.avalanche;
+const layout = {
+  labelCol: {span: 4},
+  wrapperCol: {span: 20},
+};
+
+const tailLayout = {
+  wrapperCol: {offset: 4, span: 20},
+};
+
+const {Text} = Typography;
+
+const Import = () => {
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
+  const {state} = useAppState();
 
-  const importToken = async () => {
+  const exchangeUSD = () => {
     setFetching(true);
-    try {
-      const response = await axios.post(`/api/avalanche/import`, state);
-      setHash(response.data);
-      dispatch({
-        type: 'SetAvalancheStepsStatus',
-        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
+    axios
+      .post(`/api/avalanche/import`, state)
+      .then((res) => {
+        const hash = res.data;
+        setHash(hash);
+        setFetching(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setFetching(false);
       });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setFetching(false);
-    }
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical">
-        <Button type="primary" onClick={importToken} loading={fetching}>
+        <Button type="primary" onClick={exchangeUSD} loading={fetching}>
           Import to C-Chain
         </Button>
         {hash && (

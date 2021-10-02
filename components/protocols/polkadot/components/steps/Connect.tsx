@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Alert, Col, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@polkadot/hooks';
+import {useAppState} from '@polka/hooks';
 
 const {Text} = Typography;
 
@@ -38,7 +38,7 @@ const Connect = () => {
   }, [version, setVersion]);
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       {fetchingVersion ? (
         <LoadingOutlined style={{fontSize: 24}} spin />
       ) : version ? (

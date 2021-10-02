@@ -1,60 +1,50 @@
-import {GlobalContext, globalStateReducer, initialGlobalState} from 'context';
-import {ChainType, MarkdownForChainT, GlobalStateT} from 'types';
-import {GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
-import React, {useEffect, useReducer} from 'react';
-import styled from 'styled-components';
-import {useLocalStorage} from 'hooks';
-import Sidebar from './Sidebar';
-import {Row, Col} from 'antd';
 import Footer from './Footer';
-import Nav from './Nav';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import {useEffect, useReducer} from 'react';
+import {ChainType, StepType} from 'types';
+import {useLocalStorage} from 'hooks';
+import {Row, Col} from 'antd';
+import {
+  GlobalContext,
+  globalStateReducer,
+  initialGlobalState,
+  GlobalState,
+} from 'context';
 
-const Layout = (
-  Protocol: React.FC,
-  chain: ChainType,
-  markdown: MarkdownForChainT,
-) => {
-  const [storageState, setStorageState] = useLocalStorage<GlobalStateT>(
-    'figment',
+const Layout = (Protocol: React.FC<{step: StepType}>, chain: ChainType) => {
+  const storageKey = chain.id + '-nav';
+  const [storageState, setStorageState] = useLocalStorage<GlobalState>(
+    storageKey,
     initialGlobalState,
   );
-
   const [state, dispatch] = useReducer(globalStateReducer, storageState);
 
   useEffect(() => {
     dispatch({
-      type: 'SetChainId',
-      currentChainId: chain.id,
+      type: 'SetChain',
+      chain: chain.id,
     });
-  }, [chain]);
+  }, []);
 
   useEffect(() => {
     setStorageState(state);
-  }, [state, dispatch]);
+  }, [state]);
 
-  if (!state.currentChainId) {
-    return <div> Loading </div>;
-  }
+  const step = chain.steps[state.index];
 
   return (
     <GlobalContext.Provider value={{state, dispatch}}>
-      <Col>
-        <Nav />
-        <BelowNav>
-          <Sidebar markdown={markdown} />
-          <Col span={GRID_LAYOUT[1]} style={{padding: '120px 60px 60px 60px'}}>
-            <Protocol />
-          </Col>
-        </BelowNav>
-        <Footer />
-      </Col>
+      <Row>
+        <Sidebar steps={chain.steps} label={chain.label} />
+        <Col span={16} style={{padding: '60px', height: '100vh'}}>
+          <Header title={step.title} url={step.url} />
+          <Protocol step={step} />
+          <Footer steps={chain.steps} />
+        </Col>
+      </Row>
     </GlobalContext.Provider>
   );
 };
-
-const BelowNav = styled(Row)`
-  margin-top: ${HEADER_HEIGHT}px;
-  position: fixed;
-`;
 
 export default Layout;

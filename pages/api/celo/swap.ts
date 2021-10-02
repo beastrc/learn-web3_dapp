@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getSafeUrl} from '@celo/lib';
+import {getSafeUrl} from '@ccelo/lib';
 import {newKit} from '@celo/contractkit';
 
 type ResponseT = {

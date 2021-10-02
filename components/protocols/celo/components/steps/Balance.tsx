@@ -1,5 +1,5 @@
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
-import {useAppState} from '@celo/hooks';
+import {useAppState} from '@ccelo/hooks';
 import {useState} from 'react';
 import axios from 'axios';
 
@@ -39,7 +39,7 @@ const Balance = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="vertical">
           <Text>

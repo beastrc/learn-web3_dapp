@@ -1,28 +1,32 @@
 import {Col, Alert, Space, Typography, Button, Modal} from 'antd';
 import {PoweroffOutlined} from '@ant-design/icons';
-import {ErrorBox} from '@solana/components/nav';
 import {useEffect, useState} from 'react';
+import {useAppState} from '@solana/context';
+import {ErrorBox} from '@solana/components';
 import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getChainCurrentStepId,
-  getChainNetwork,
-} from 'context';
+import {useGlobalState} from 'context';
 import axios from 'axios';
 
 const {Text} = Typography;
 
 const Connect = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const stepId = getChainCurrentStepId(state, chainId);
-  const network = getChainNetwork(state, chainId);
-
+  const {state: globalState, dispatch: globalDispatch} = useGlobalState();
   const [version, setVersion] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
+  const {state} = useAppState();
+
+  useEffect(() => {
+    if (version) {
+      if (globalState.valid < 1) {
+        globalDispatch({
+          type: 'SetValid',
+          valid: 1,
+        });
+      }
+    }
+  }, [version, setVersion]);
 
   useEffect(() => {
     if (error) {
@@ -43,14 +47,8 @@ const Connect = () => {
     setFetching(true);
     setError(null);
     try {
-      const response = await axios.post(`/api/solana/connect`, {network});
+      const response = await axios.post(`/api/solana/connect`, state);
       setVersion(response.data);
-      dispatch({
-        type: 'SetChainProgressIsCompleted',
-        chainId,
-        stepId,
-        value: true,
-      });
     } catch (error) {
       setError(prettyError(error));
       setVersion(null);
@@ -60,11 +58,11 @@ const Connect = () => {
   };
 
   return (
-    <Col>
+    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
         <Space direction="horizontal" size="large">
           <Button
-            type="primary"
+            type="ghost"
             icon={<PoweroffOutlined />}
             onClick={getConnection}
             loading={fetching}

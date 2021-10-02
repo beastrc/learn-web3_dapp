@@ -7,8 +7,8 @@ export default async function transfer(
   res: NextApiResponse<string>,
 ) {
   try {
-    const {secret, navax, recipient, address, network} = req.body;
-    const client = getAvalancheClient(network);
+    const {secret, amount, recipient, address} = req.body;
+    const client = getAvalancheClient();
     const chain = client.XChain();
     const keychain = chain.keyChain();
     // Using keychain, load the private key to sign transactions
@@ -31,6 +31,7 @@ export default async function transfer(
 
     res.status(200).json(hash);
   } catch (error) {
-    res.status(500).json(error.message);
+    console.error(error);
+    res.status(500).json('failed to get balance');
   }
 }
