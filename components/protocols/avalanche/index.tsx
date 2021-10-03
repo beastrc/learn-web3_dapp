@@ -1,5 +1,3 @@
-import {useEffect, useReducer} from 'react';
-import {Row} from 'antd';
 import {
   Connect,
   Account,
@@ -7,80 +5,33 @@ import {
   Transfer,
   Import,
   Export,
+  SetUp,
 } from '@avalanche/components/steps';
-import {
-  appStateReducer,
-  initialState,
-  AvalancheContext,
-} from '@avalanche/context';
-import {useAppState, useLocalStorage} from '@avalanche/hooks';
-import {Sidebar, Step} from '@avalanche/components/layout';
-import {Nav} from '@avalanche/components';
-import type {AppI} from '@avalanche/types';
-import {trackTutorialStepViewed} from '../../../utils/tracking-utils';
+import Nav from '@avalanche/components/nav';
+import Layout from 'components/shared/Layout';
+import React from 'react';
+import {StepType, ChainType} from 'types';
 
-const AvalancheApp: React.FC<AppI> = ({chain}) => {
-  const {state, dispatch} = useAppState();
-  const {steps} = chain;
-  const step = steps[state.index];
-  const nextHandler = () => {
-    const index = state.index + 1;
-    dispatch({
-      type: 'SetIndex',
-      index: state.index + 1,
-    });
-    trackTutorialStepViewed(chain.id, steps[index].title, 'next');
-  };
-  const prevHandler = () => {
-    const index = state.index - 1;
-    dispatch({
-      type: 'SetIndex',
-      index: state.index - 1,
-    });
-    trackTutorialStepViewed(chain.id, steps[index].title, 'prev');
-  };
-  const isFirstStep = state.index == 0;
-  const isLastStep = state.index === steps.length - 1;
-
+const Avalanche: React.FC<{step: StepType}> = ({step}) => {
   return (
-    <Row>
-      <Sidebar steps={steps} stepIndex={state.index} />
-      <Step
-        step={step}
-        isFirstStep={isFirstStep}
-        isLastStep={isLastStep}
-        prev={prevHandler}
-        next={nextHandler}
-        body={
-          <>
-            {step.id === 'connect' && <Connect />}
-            {step.id === 'account' && <Account />}
-            {step.id === 'balance' && <Balance />}
-            {step.id === 'transfer' && <Transfer />}
-            {step.id === 'export' && <Export />}
-            {step.id === 'import' && <Import />}
-          </>
-        }
-        nav={<Nav />}
-      />
-    </Row>
+    <>
+      {step.id === 'setup' && <SetUp stepId={step.id} />}
+      {step.id === 'connect' && <Connect stepId={step.id} />}
+      {step.id === 'account' && <Account stepId={step.id} />}
+      {step.id === 'balance' && <Balance stepId={step.id} />}
+      {step.id === 'transfer' && <Transfer stepId={step.id} />}
+      {step.id === 'export' && <Export stepId={step.id} />}
+      {step.id === 'import' && <Import stepId={step.id} />}
+      <Nav />
+    </>
   );
 };
 
-const Avalanche: React.FC<AppI> = ({chain}) => {
-  const [storageState, setStorageState] = useLocalStorage(
-    'avalanche',
-    initialState,
-  );
-  const [state, dispatch] = useReducer(appStateReducer, storageState);
-  useEffect(() => {
-    setStorageState(state);
-  }, [state]);
-  return (
-    <AvalancheContext.Provider value={{state, dispatch}}>
-      <AvalancheApp chain={chain} />
-    </AvalancheContext.Provider>
-  );
+const WithLayoutAvalanche: React.FC<{chain: ChainType; markdown: any}> = ({
+  chain,
+  markdown,
+}) => {
+  return Layout(Avalanche, chain, markdown);
 };
 
-export default Avalanche;
+export default WithLayoutAvalanche;

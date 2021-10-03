@@ -7,8 +7,10 @@ import Getter from '@solana/components/steps/Getter';
 import Deploy from '@solana/components/steps/Deploy';
 import Setter from '@solana/components/steps/Setter';
 import Fund from '@solana/components/steps/Fund';
+import Setup from '@solana/components/steps/Setup';
 
 export {
+  Setup,
   Keypair,
   Balance,
   Connect,

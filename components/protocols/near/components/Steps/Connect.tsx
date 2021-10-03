@@ -1,49 +1,62 @@
-import {useEffect, useState} from 'react';
-import {Alert, Col, Typography} from 'antd';
-import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@near/hooks';
+import {Alert, Col, Space, Typography, Button} from 'antd';
+import {PoweroffOutlined} from '@ant-design/icons';
+import {useGlobalState} from 'context';
+import {useState} from 'react';
 import axios from 'axios';
 
 const {Text} = Typography;
 
 const Connect = () => {
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.near;
   const [version, setVersion] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
-  const {state} = useAppState();
-
-  useEffect(() => {
-    getConnection();
-  }, []);
+  console.log(state);
 
   const getConnection = async () => {
     setFetching(true);
     try {
       const response = await axios.post(`/api/near/connect`, state);
-      const version = response.data;
-      setVersion(version);
+      setVersion(response.data);
     } catch (error) {
-      console.error(error);
+      setVersion(null);
     } finally {
       setFetching(false);
     }
   };
 
   return (
-    <Col style={{minHeight: '350px', maxWidth: '600px'}}>
-      <LoadingOutlined style={{fontSize: 24}} spin hidden={!fetching} />
-      {version ? (
-        <Alert
-          message={
-            <Text strong>
-              Connected to NEAR! version <Text code>{version}</Text>
-            </Text>
-          }
-          type="success"
-          showIcon
-        />
-      ) : (
-        <Alert message={`Not connected to NEAR`} type="error" showIcon />
-      )}
+    <Col>
+      <Space direction="vertical" size="large">
+        <Space direction="horizontal" size="large">
+          <Button
+            type="primary"
+            icon={<PoweroffOutlined />}
+            onClick={getConnection}
+            loading={fetching}
+            size="large"
+          />
+          {version ? (
+            <Alert
+              message={
+                <Space>
+                  Connected to {globalState.chainId}:
+                  <Text code>version {version}</Text>
+                </Space>
+              }
+              type="success"
+              showIcon
+              onClick={getConnection}
+            />
+          ) : (
+            <Alert
+              message={`Not connected to ${globalState.chainId}`}
+              type="error"
+              showIcon
+            />
+          )}
+        </Space>
+      </Space>
     </Col>
   );
 };

@@ -14,7 +14,7 @@ export default async function (
 
     const near = await connect(config);
     const account = await near.account(accountId);
-    // Look at functionCall and pass the expected args
+    // Look at functionCall and pass the rexpected agrs
     // ... fill here
     return res.status(200).json(response.transaction.hash);
   } catch (error) {
