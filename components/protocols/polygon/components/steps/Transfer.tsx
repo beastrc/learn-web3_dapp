@@ -2,6 +2,11 @@ import {Button, Alert, Space, Typography, Col} from 'antd';
 import {getPolygonTxExplorerURL} from '@polygon/lib';
 import {useState, useEffect} from 'react';
 import {ethers} from 'ethers';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
 
 // A random test's address
 const recipient = '0xb11D554F2139d843F5c94a3185d17C4d5762a7c7';
@@ -13,17 +18,30 @@ const {Text} = Typography;
 declare let window: any;
 
 const Transfer = () => {
+  const {state, dispatch} = useGlobalState();
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
-  const [balance, setBalance] = useState('');
-  const [hash, setHash] = useState('');
+  const [balance, setBalance] = useState<string | null>(null);
+  const [hash, setHash] = useState<string | null>(null);
 
   useEffect(() => {
     checkBalance();
   }, []);
 
+  useEffect(() => {
+    if (balance) {
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
+    }
+  }, [balance, setBalance]);
+
   const checkBalance = async () => {
     setFetching(true);
+    setBalance(null);
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const selectedAddress = window.ethereum.selectedAddress;
@@ -41,6 +59,8 @@ const Transfer = () => {
 
   const transfer = async () => {
     setFetching(true);
+    setError(null);
+    setHash(null);
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const send_account = provider.getSigner().getAddress();
