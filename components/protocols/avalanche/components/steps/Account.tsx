@@ -1,36 +1,20 @@
 import {Alert, Button, Col, Space, Typography} from 'antd';
 import {useEffect, useState} from 'react';
+import {useGlobalState} from 'context';
+import {setStepsStatus} from 'utils';
 import axios from 'axios';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
-import {getAvalancheInnerState} from '@avalanche/lib';
 
 const {Text} = Typography;
 
-const Account = () => {
-  const {state, dispatch} = useGlobalState();
-  const avalancheState = getAvalancheInnerState(state);
+const Account = ({stepId}: {stepId: string}) => {
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.avalanche;
   const [address, setAddress] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
-    if (address) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [address, setAddress]);
-
-  useEffect(() => {
-    if (avalancheState.address) {
-      setAddress(avalancheState.address);
+    if (state?.address) {
+      setAddress(state.address);
     }
   }, []);
 
@@ -41,22 +25,16 @@ const Account = () => {
       setAddress(response.data.address);
       setFetching(false);
       dispatch({
-        type: 'SetStepInnerState',
-        chainId: getCurrentChainId(state),
-        innerStateId: PROTOCOL_INNER_STATES_ID.SECRET,
-        value: response.data.secret,
+        type: 'SetAvalancheSecret',
+        secret: response.data.secret,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId: getCurrentChainId(state),
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: response.data.address,
+        type: 'SetAvalancheAddress',
+        address: response.data.address,
       });
       dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
+        type: 'SetAvalancheStepsStatus',
+        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
       });
     } catch (error) {
       console.error(error);

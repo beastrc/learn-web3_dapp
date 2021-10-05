@@ -2,13 +2,9 @@ import {Form, Input, Button, Alert, Space, Typography, Col} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {transactionUrl} from '@avalanche/lib';
 import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
 import axios from 'axios';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
-import {getAvalancheInnerState} from '@avalanche/lib';
+import {setStepsStatus} from 'utils';
 
 const layout = {
   labelCol: {span: 4},
@@ -23,38 +19,31 @@ const recipient = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
 
 const {Text} = Typography;
 
-const Transfer = () => {
-  const {state, dispatch} = useGlobalState();
-  const avalancheState = getAvalancheInnerState(state);
+const Transfer = ({stepId}: {stepId: string}) => {
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.avalanche;
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
 
-  useEffect(() => {
-    if (hash) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [hash, setHash]);
-
   const transfer = async (values: any) => {
     setFetching(true);
-    setError(null);
     const navax = parseFloat(values.amount);
     try {
       if (isNaN(navax)) {
         throw new Error('invalid amount');
       }
+
       const response = await axios.post(`/api/avalanche/transfer`, {
-        ...avalancheState,
+        ...state,
         navax,
         recipient,
       });
       setHash(response.data);
+      dispatch({
+        type: 'SetAvalancheStepsStatus',
+        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
+      });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -70,13 +59,13 @@ const Transfer = () => {
         layout="horizontal"
         onFinish={transfer}
         initialValues={{
-          from: avalancheState.ADDRESS,
+          from: state.address,
           amount: 1,
           to: recipient,
         }}
       >
         <Form.Item label="Sender" name="from" required>
-          <Text code>{avalancheState.ADDRESS}</Text>
+          <Text code>{state.address}</Text>
         </Form.Item>
 
         <Form.Item
@@ -142,7 +131,7 @@ const Transfer = () => {
               showIcon
               closable
               message={error}
-              onClose={() => setError(null)}
+              onClose={() => setError('')}
             />
           </Form.Item>
         )}

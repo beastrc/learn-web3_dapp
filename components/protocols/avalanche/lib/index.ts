@@ -1,15 +1,4 @@
-import {
-  CHAINS,
-  AVALANCHE_NETWORKS,
-  PROTOCOL_INNER_STATES_ID,
-  GlobalStateT,
-  InnerStateT,
-} from 'types';
-import {
-  getCurrentChainId,
-  getChainInnerState,
-  getNetworkForCurrentChain,
-} from 'context';
+import {CHAINS, AVALANCHE_NETWORKS} from 'types';
 import {getNodeURL as getNodeUrl} from 'utils/datahub';
 import {Avalanche} from 'avalanche';
 
@@ -41,34 +30,4 @@ const transactionUrl = (txId: string) => {
   return `https://explorer.avax-test.network/tx/${txId}`;
 };
 
-const getAvalancheInnerState = (state: GlobalStateT) => {
-  const avalancheInnerState: any = {};
-  const chainId = getCurrentChainId(state);
-  const address = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.ADDRESS,
-  );
-
-  if (address) {
-    avalancheInnerState.address = address;
-  }
-  const secret = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.METAMASK_NETWORK_NAME,
-  );
-
-  if (secret) {
-    avalancheInnerState.secret = secret;
-  }
-
-  const network = getNetworkForCurrentChain(state);
-  if (network) {
-    avalancheInnerState.network = network;
-  }
-
-  return avalancheInnerState;
-};
-
-export {transactionUrl, getAvalancheClient, getAvalancheInnerState};
+export {transactionUrl, getAvalancheClient};
