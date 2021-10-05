@@ -414,4 +414,35 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
+  [CHAINS.THE_GRAPH]: {
+    id: CHAINS.THE_GRAPH,
+    label: 'The Graph',
+    active: true,
+    logoUrl: 'https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=013',
+    protocol: TEZOS_PROTOCOLS.RPC,
+    network: TEZOS_NETWORKS.TESTNET,
+    steps: [
+      {
+        id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
+        title: 'Setup the project',
+        skippable: true,
+      },
+      {
+        id: PROTOCOL_STEPS_ID.RUN_A_GRAPH_NODE,
+        title: 'Run a Graph node',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.SCAFFOLD_A_SUBGRAPH,
+        title: 'Scaffold a subgraph',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.HACKING_THE_MANIFEST,
+        title: 'Hacking the Manifest',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.QUERY_THE_PUNK,
+        title: 'Query your custom subgraph',
+      },
+    ],
+  },
 };
