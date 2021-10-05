@@ -62,5 +62,3 @@ contracts/near/target/
 /secrets
 
 /docker
-
-/pages/api/solana/*

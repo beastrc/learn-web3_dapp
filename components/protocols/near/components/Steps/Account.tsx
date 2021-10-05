@@ -1,51 +1,39 @@
-import {Alert, Button, Col, Space, Typography, Input} from 'antd';
-import {getPublicKey, getAccountUrl} from '@near/lib';
-import {useGlobalState} from 'context';
 import {useState} from 'react';
 import axios from 'axios';
+import {Alert, Button, Col, Space, Typography, Input} from 'antd';
+import {useAppState} from '@near/hooks';
+import {getPublicKey} from '@near/lib';
+import {getAccountUrl} from '@near/lib';
+import {Notify} from '@near/components/nav';
 
 import type {CheckAccountIdT, AlertT} from '@near/types';
 
 const {Text} = Typography;
 
-const Notify = ({msg, status}: {msg: string; status: AlertT}) => (
-  <Alert
-    message={
-      <Space>
-        <Text strong>{msg}</Text>
-      </Space>
-    }
-    type={status}
-    showIcon
-  />
-);
-
 const Account = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.near;
   const [freeAccountId, setFreeAccountId] = useState<string>('');
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isFreeAccountId, setIsFreeAccountId] = useState<boolean>(false);
+  const {state, dispatch} = useAppState();
   const {network, accountId} = state;
 
-  const createAccountWithId = async () => {
-    const publicKey = state?.secret && getPublicKey(state.secret);
+  const createAccountWithId = () => {
     setIsFetching(true);
-    try {
-      const response = await axios.post(`/api/near/create-account`, {
-        freeAccountId,
-        publicKey,
-        network,
+    const publicKey = state?.secret && getPublicKey(state.secret);
+    axios
+      .post(`/api/near/create-account`, {freeAccountId, publicKey, network})
+      .then((res) => {
+        const accountId = res.data;
+        dispatch({
+          type: 'SetAccountId',
+          accountId,
+        });
+        setIsFetching(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setIsFetching(false);
       });
-      dispatch({
-        type: 'SetNearAccountId',
-        accountId: response.data,
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsFetching(false);
-    }
   };
 
   const checkAccountIdProps = {
@@ -80,7 +68,7 @@ const Account = () => {
                   }
                   description={
                     <a
-                      href={getAccountUrl(accountId ?? '')}
+                      href={getAccountUrl(network)(accountId ?? '')}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -111,30 +99,29 @@ const CheckAccountId: React.FC<CheckAccountIdT> = ({
   );
   const [alertStatus, setAlertStatus] = useState<AlertT>('info');
 
-  const checkAvailabilityOfAccountId = async () => {
+  const checkAvailabilityOfAccountId = () => {
     setIsFetching(true);
-    try {
-      const response = await axios.post(`/api/near/check-account`, {
-        freeAccountId,
-        network,
-      });
-      if (response.data) {
-        setIsFreeAccountId(response.data);
-        setAlertStatus('success');
-        setAlertMsg(`Account ${freeAccountId} is available`);
-      } else {
-        setIsFreeAccountId(response.data);
+    axios
+      .post(`/api/near/check-account`, {freeAccountId, network})
+      .then((res) => {
+        if (res.data) {
+          setIsFreeAccountId(res.data);
+          setAlertStatus('success');
+          setAlertMsg(`Account ${freeAccountId} is available`);
+        } else {
+          setIsFreeAccountId(res.data);
+          setAlertStatus('error');
+          setAlertMsg(`Account ${freeAccountId} is not available`);
+        }
+        setIsFetching(false);
+      })
+      .catch((err) => {
+        console.error(err);
         setAlertStatus('error');
-        setAlertMsg(`Account ${freeAccountId} is not available`);
-      }
-    } catch (error) {
-      console.error(error);
-      setAlertStatus('error');
-      setAlertMsg(`NEAR connection failed`);
-      setIsFreeAccountId(true);
-    } finally {
-      setIsFetching(false);
-    }
+        setAlertMsg(`NEAR connection failed`);
+        setIsFreeAccountId(true);
+        setIsFetching(false);
+      });
   };
 
   const onInputChange = (e: any) => {

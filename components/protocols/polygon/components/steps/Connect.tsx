@@ -3,14 +3,8 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import {Alert, Button, Col, Space, Typography} from 'antd';
 import {Network} from '@ethersproject/networks';
 import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
 import {ethers} from 'ethers';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-  getChainInnerState,
-} from 'context';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
 
 const {Text} = Typography;
 
@@ -19,44 +13,20 @@ const {Text} = Typography;
 declare let window: any;
 
 const Connect = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const stepId = getCurrentStepIdForCurrentChain(state);
-
-  const metamaskNetwork = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.METAMASK_NETWORK_NAME,
-  );
-
-  const polygonAddress = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.ADDRESS,
-  );
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.polygon;
   const [network, setNetwork] = useState<Network | undefined>(undefined);
   const [address, setAddress] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (address && network) {
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: address,
+        type: 'SetPolygonAddress',
+        address: address,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.METAMASK_NETWORK_NAME,
-        value: network.name,
-      });
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId,
-        stepId,
-        value: true,
+        type: 'SetPolygonNetwork',
+        network: network.name,
       });
     }
   }, [address, network]);
@@ -85,14 +55,14 @@ const Connect = () => {
         <Button type="primary" onClick={connect}>
           Check Metamask Connection
         </Button>
-        {polygonAddress && metamaskNetwork && (
+        {state.address && state.network && (
           <Alert
             message={<Text strong>{`Connected to ${network?.name}`}</Text>}
             type="success"
             showIcon
           />
         )}
-        {!metamaskNetwork && !polygonAddress && (
+        {!network && !state.address && (
           <Alert message="Not connected to Polygon" type="error" showIcon />
         )}
       </Space>

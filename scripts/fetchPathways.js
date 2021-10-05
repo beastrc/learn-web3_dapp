@@ -21,8 +21,8 @@ function fetchPathways() {
             console.log(`Created directory md/${chain}`);
           }
           fs.writeFileSync(`md/${chain}/${stepId}.md`, res.data);
-        } catch (error) {
-          console.error(error.message);
+        } catch (e) {
+          console.error('An error occurred.');
         }
       });
     });

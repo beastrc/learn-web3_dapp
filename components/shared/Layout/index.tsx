@@ -1,44 +1,67 @@
-import {GlobalContext, globalStateReducer, initialGlobalState} from 'context';
-import {ChainType, MarkdownForChainIdT, GlobalStateT} from 'types';
-import {GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
+import {ChainType, MarkdownForChainT, StepType} from 'types';
 import React, {useEffect, useReducer} from 'react';
-import styled from 'styled-components';
 import {useLocalStorage} from 'hooks';
 import Sidebar from './Sidebar';
 import {Row, Col} from 'antd';
-import Footer from './Footer';
 import Nav from './Nav';
+import {
+  GlobalContext,
+  globalStateReducer,
+  initialGlobalState,
+  GlobalState,
+} from 'context';
+import {GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
+import styled from 'styled-components';
+import Footer from './Footer';
 
 const Layout = (
-  Protocol: React.FC,
+  Protocol: React.FC<{step: StepType}>,
   chain: ChainType,
-  markdown: MarkdownForChainIdT,
+  markdown: MarkdownForChainT,
 ) => {
-  const [state, dispatch] = useReducer(globalStateReducer, initialGlobalState);
+  const [storageState, setStorageState] = useLocalStorage<GlobalState>(
+    'figment',
+    initialGlobalState,
+  );
+  const [state, dispatch] = useReducer(globalStateReducer, storageState);
 
   useEffect(() => {
     dispatch({
-      type: 'SetCurrentChainId',
-      currentChainId: chain.id,
+      type: 'SetChainId',
+      chainId: chain.id,
     });
   }, []);
 
-  // Add spinner
-  if (!state.currentChainId) {
-    return <div> Loading </div>;
-  }
+  useEffect(() => {
+    setStorageState(state);
+  }, [state]);
+
+  const step = chain.steps[state.currentStepIndex];
+  const prevStep =
+    state.currentStepIndex - 1 >= 0
+      ? chain.steps[state.currentStepIndex - 1]
+      : null;
+  const nextStep =
+    state.currentStepIndex < chain.steps.length - 1
+      ? chain.steps[state.currentStepIndex + 1]
+      : null;
 
   return (
     <GlobalContext.Provider value={{state, dispatch}}>
       <Col>
-        <Nav />
+        <Nav chain={chain} />
         <BelowNav>
-          <Sidebar markdown={markdown} />
+          <Sidebar step={step} steps={chain.steps} markdown={markdown} />
           <Col span={GRID_LAYOUT[1]} style={{padding: '120px 60px 60px 60px'}}>
-            <Protocol />
+            <Protocol step={step} />
           </Col>
         </BelowNav>
-        <Footer />
+        <Footer
+          step={step}
+          steps={chain.steps}
+          prevStep={prevStep}
+          nextStep={nextStep}
+        />
       </Col>
     </GlobalContext.Provider>
   );

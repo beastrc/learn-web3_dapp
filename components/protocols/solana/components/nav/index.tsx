@@ -2,25 +2,17 @@ import {trackStorageCleared} from 'utils/tracking-utils';
 import {Typography, Popover, Button, Select} from 'antd';
 import type {EntryT, ErrorT} from '@solana/types';
 import ReactJson from 'react-json-view';
+import {useGlobalState} from 'context';
 import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getNetworkForCurrentChain,
-  isFirstStepForCurrentStepId,
-  getFirstStepIdForCurrentChain,
-} from 'context';
-import {PROTOCOL_INNER_STATES_ID, SOLANA_NETWORKS} from 'types';
-import {getSolanaInnerState} from '@solana/lib';
 
 const {Option} = Select;
 
 const {Text, Paragraph} = Typography;
 
 const Nav = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const {address, secret, programId, greeter} = getSolanaInnerState(state);
+  const {state: globalState, dispatch} = useGlobalState();
+  const {address, programId, secret, greeter} = globalState.solana;
+
   const displayAddress = (address: string) =>
     `${address.slice(0, 5)}...${address.slice(-5)}`;
 
@@ -55,50 +47,44 @@ const Nav = () => {
     );
   };
 
+  const clear = () => {
+    dispatch({
+      type: 'SetCurrentStepIndex',
+      currentStepIndex: 0,
+    });
+    dispatch({
+      type: 'SetHighestCompletedStepIndex',
+      highestCompletedStepIndex: 0,
+    });
+    trackStorageCleared(globalState.chainId as string);
+  };
+
   const clearKeychain = () => {
     const proceed = confirm('Are you sure you want to clear the storage?');
     if (proceed) {
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: null,
+        type: 'SetSolanaAddress',
+        address: undefined,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.SECRET,
-        value: null,
+        type: 'SetSolanaSecret',
+        secret: undefined,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.GREETER,
-        value: null,
+        type: 'SetSolanaProgramId',
+        programId: undefined,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.PROGRAM_ID,
-        value: null,
+        type: 'SetSolanaGreeter',
+        greeter: undefined,
       });
-      dispatch({
-        type: 'ClearStepProgression',
-        chainId,
-      });
-      dispatch({
-        type: 'SetChainCurrentStepId',
-        chainId: chainId,
-        currentStepId: getFirstStepIdForCurrentChain(state),
-      });
-      trackStorageCleared(chainId);
+      clear();
     }
   };
 
-  const toggleLocal = (network: SOLANA_NETWORKS) => {
+  const toggleLocal = (network: string) => {
     dispatch({
-      type: 'SetChainNetwork',
-      chainId,
+      type: 'SetSolanaNetwork',
       network: network,
     });
   };
@@ -109,14 +95,14 @@ const Nav = () => {
         <Button type="ghost">Keychain</Button>
       </Popover>
       <Select
-        defaultValue={getNetworkForCurrentChain(state) as SOLANA_NETWORKS}
+        defaultValue={globalState.solana.network}
         style={{width: 120}}
         onChange={toggleLocal}
-        disabled={!isFirstStepForCurrentStepId(state)}
+        disabled={globalState.currentStepIndex != 0}
       >
-        <Option value={SOLANA_NETWORKS.DATAHUB}>Datahub</Option>
-        <Option value={SOLANA_NETWORKS.DEVNET}>Devnet</Option>
-        <Option value={SOLANA_NETWORKS.LOCALNET}>Localnet</Option>
+        <Option value="datahub">Datahub</Option>
+        <Option value="devnet">Devnet</Option>
+        <Option value="localnet">Localnet</Option>
       </Select>
     </StepMenuBar>
   );

@@ -31,11 +31,10 @@ export default async function swap(
     const goldAmount = undefined;
     const sellTx = undefined;
 
-    await sellReceipt.waitReceipt();
-    const hash = await sellReceipt.getHash();
+    const sellReceipt = await sellTx.waitReceipt();
     res.status(200).json({
       celo: goldAmount.toString(),
-      hash,
+      hash: sellReceipt.transactionHash,
     });
   } catch (error) {
     console.error(error);

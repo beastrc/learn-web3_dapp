@@ -5,15 +5,8 @@ import {ErrorBox} from '@solana/components/nav';
 import type {ErrorT} from '@solana/types';
 import {useEffect, useState} from 'react';
 import {Keypair} from '@solana/web3.js';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-  getNetworkForCurrentChain,
-  getChainInnerState,
-} from 'context';
+import {useGlobalState} from 'context';
 import axios from 'axios';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
 
 const layout = {
   labelCol: {span: 4},
@@ -27,20 +20,8 @@ const tailLayout = {
 const {Text} = Typography;
 
 const Transfer = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const network = getNetworkForCurrentChain(state);
-  const address = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.ADDRESS,
-  );
-  const secret = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.SECRET,
-  );
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.solana;
   const [recipient, setRecipient] = useState<string | null>(null);
   const [error, setError] = useState<ErrorT | null>(null);
   const [hash, setHash] = useState<string | null>(null);
@@ -74,20 +55,13 @@ const Transfer = () => {
       if (isNaN(lamports)) {
         throw new Error('invalid amount');
       }
+
       const response = await axios.post(`/api/solana/transfer`, {
-        address,
-        secret,
-        network,
+        ...state,
         lamports,
         recipient,
       });
       setHash(response.data);
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
     } catch (error) {
       if (error.message === 'invalid amount') {
         setError({message: 'invalid amount'});
@@ -99,7 +73,7 @@ const Transfer = () => {
     }
   };
 
-  const explorerUrl = transactionExplorer(hash ?? '', network);
+  const explorerUrl = transactionExplorer(hash ?? '', state.network);
 
   return (
     <Col>
@@ -109,11 +83,11 @@ const Transfer = () => {
         layout="horizontal"
         onFinish={transfer}
         initialValues={{
-          from: address,
+          from: state?.address,
         }}
       >
         <Form.Item label="Sender" name="from" required>
-          <Text code>{address}</Text>
+          <Text code>{state?.address}</Text>
         </Form.Item>
 
         <Form.Item

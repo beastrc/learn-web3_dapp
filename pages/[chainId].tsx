@@ -1,23 +1,23 @@
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import {CHAINS_CONFIG} from 'lib/constants';
-import {CHAINS, ChainType, MarkdownForChainIdT} from 'types';
+import {CHAINS, ChainType, MarkdownForChainT} from 'types';
 import {ComponentType} from 'react';
 import styled from 'styled-components';
 import {LoadingOutlined} from '@ant-design/icons';
 import {getChainColors} from 'utils/colors';
-import {fetchMarkdownForChainId} from 'utils/markdown';
+import {markdownFetch} from 'utils/markdown';
 
 type DynChainT = ComponentType<{
   chain: ChainType;
-  markdown: MarkdownForChainIdT;
+  markdown: MarkdownForChainT;
 }>;
 
 export async function getServerSideProps(context: any) {
   return {
     props: {
-      chain: CHAINS_CONFIG[context.query.chainId as CHAINS],
-      markdown: fetchMarkdownForChainId(context.query.chainId),
+      chain: CHAINS_CONFIG[context.query.chainId],
+      markdown: markdownFetch(context.query.chainId),
     },
   };
 }
@@ -27,7 +27,7 @@ export default function Chain({
   markdown,
 }: {
   chain: ChainType;
-  markdown: MarkdownForChainIdT;
+  markdown: MarkdownForChainT;
 }) {
   const chainLabel = chain.label;
   const chainId = chain.id;
@@ -78,6 +78,11 @@ export default function Chain({
       );
     if (chainId === CHAINS.TEZOS)
       return dynamic(() => import('../components/protocols/tezos'), dynOptions);
+    if (chainId === CHAINS.CERAMIC)
+      return dynamic(
+        () => import('../components/protocols/ceramic'),
+        dynOptions,
+      );
   })() as DynChainT;
 
   return (

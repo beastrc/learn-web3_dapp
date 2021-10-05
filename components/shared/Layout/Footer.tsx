@@ -3,78 +3,66 @@ import {trackTutorialStepViewed} from 'utils/tracking-utils';
 import {getChainColors} from 'utils/colors';
 import {Button, Col, Row} from 'antd';
 import styled from 'styled-components';
-import {
-  useGlobalState,
-  getPreviousStepIdForCurrentStepId,
-  getCurrentChainId,
-  getTitleForCurrentStepId,
-  getNextStepIdForCurrentStepId,
-  getIsCompletedForCurrentStepId,
-  getPreviousStepForCurrentStepId,
-  getNextStepForCurrentStepId,
-  getIsSkippableForCurrentStepId,
-} from 'context';
+import {useGlobalState} from 'context';
+import {CHAINS, StepType} from 'types';
 import React from 'react';
 import {FOOTER_HEIGHT} from 'lib/constants';
-import {PROTOCOL_STEPS_ID} from 'types';
 
-const Footer = () => {
+const Footer = ({
+  step,
+  steps,
+  prevStep,
+  nextStep,
+}: {
+  step: StepType;
+  steps: StepType[];
+  prevStep: StepType | null;
+  nextStep: StepType | null;
+}) => {
   const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const isCompleted =
-    getIsSkippableForCurrentStepId(state) ||
-    getIsCompletedForCurrentStepId(state);
-
   const next = () => {
-    const title = getTitleForCurrentStepId(state);
+    const currentStepIndex = state.currentStepIndex + 1;
     dispatch({
-      type: 'SetChainCurrentStepId',
-      chainId: chainId,
-      currentStepId: getNextStepIdForCurrentStepId(state) as PROTOCOL_STEPS_ID,
+      type: 'SetCurrentStepIndex',
+      currentStepIndex,
     });
-    trackTutorialStepViewed(chainId, title, 'next');
+    trackTutorialStepViewed(
+      state.chainId as CHAINS,
+      steps[state.currentStepIndex].title,
+      'next',
+    );
   };
 
   const prev = () => {
-    const title = getTitleForCurrentStepId(state);
+    const currentStepIndex = state.currentStepIndex - 1;
     dispatch({
-      type: 'SetChainCurrentStepId',
-      chainId: chainId,
-      currentStepId: getPreviousStepIdForCurrentStepId(
-        state,
-      ) as PROTOCOL_STEPS_ID,
+      type: 'SetCurrentStepIndex',
+      currentStepIndex,
     });
-    trackTutorialStepViewed(chainId, title, 'prev');
+    trackTutorialStepViewed(
+      state.chainId as CHAINS,
+      steps[state.currentStepIndex].title,
+      'next',
+    );
   };
 
-  const {primaryColor, secondaryColor} = getChainColors(chainId);
-  const previousStep = getPreviousStepForCurrentStepId(state);
-  const nextStep = getNextStepForCurrentStepId(state);
-
-  // To optimize
-  const isFirstStep = previousStep === null ? true : false;
-  const isLastStep = nextStep === null ? true : false;
-
-  let justify: 'start' | 'end' | 'space-between';
-  if (isFirstStep) {
-    justify = 'end';
-  } else if (isLastStep) {
-    justify = 'start';
-  } else {
-    justify = 'space-between';
-  }
+  const {primaryColor, secondaryColor} = getChainColors(
+    state.chainId as CHAINS,
+  );
+  const justify =
+    prevStep && nextStep ? 'space-between' : prevStep ? 'start' : 'end';
 
   return (
     <Col span={24}>
       <StepFooter justify={justify} align="middle">
-        {previousStep && (
+        {prevStep && (
           <PrevButton
             size="large"
             style={{marginRight: '8px'}}
             onClick={() => prev()}
             icon={<ArrowLeftOutlined />}
           >
-            {`Prev: ${previousStep.title}`}
+            {`Prev: ${prevStep.title}`}
           </PrevButton>
         )}
         {nextStep && (
@@ -84,7 +72,7 @@ const Footer = () => {
             onClick={() => next()}
             secondary_color={secondaryColor}
             primary_color={primaryColor}
-            disabled={!isCompleted}
+            // disabled={state.valid == state.index}
           >
             <Row align="middle">
               {`Next: ${nextStep.title}`}

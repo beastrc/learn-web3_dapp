@@ -2,55 +2,56 @@ import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {getTransactionUrl} from '@near/lib';
 import {useEffect, useState} from 'react';
-import {useGlobalState} from 'context';
+import {useAppState} from '@near/hooks';
 import axios from 'axios';
 
 const {Text} = Typography;
 
 const Setter = () => {
-  const {state: globalState, dispatch} = useGlobalState();
-  const state = globalState.near;
   const [fetching, setFetching] = useState<boolean>(false);
   const [resetting, setResetting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [newMessage, setNewMessage] = useState<string>('');
+  const {state} = useAppState();
 
   useEffect(() => {
-    const contractGetter = async () => {
+    const contractGetter = () => {
       setError(null);
       setFetching(true);
-      try {
-        const response = await axios.post(`/api/near/getter`, state);
-        setMessage(response.data);
-      } catch (error) {
-        setError(error.response.data);
-      } finally {
-        setFetching(false);
-      }
+      axios
+        .post(`/api/near/getter`, state)
+        .then((res) => {
+          setMessage(res.data);
+          setFetching(false);
+        })
+        .catch((err) => {
+          const data = err.response.data;
+          setFetching(false);
+          setError(data.message);
+        });
     };
     contractGetter();
   }, [txHash, state]);
 
-  const contractSetter = async () => {
+  const contractSetter = () => {
     setError(null);
     setResetting(true);
-    try {
-      const response = await axios.post(`/api/near/setter`, {
-        ...state,
-        newMessage,
+    axios
+      .post(`/api/near/setter`, {...state, newMessage})
+      .then((res) => {
+        setTxHash(res.data);
+        setResetting(false);
+      })
+      .catch((err) => {
+        const data = err.response.data;
+        setResetting(false);
+        setError(data.message);
       });
-      setTxHash(response.data);
-      setResetting(false);
-    } catch (error) {
-      setError(error.response.data);
-    } finally {
-      setResetting(false);
-    }
   };
 
-  const txUrl = getTransactionUrl(txHash);
+  const txUrl = getTransactionUrl(state.network)(txHash);
 
   return (
     <Col>

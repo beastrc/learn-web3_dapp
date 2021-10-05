@@ -3,11 +3,7 @@ import {Alert, Button, Col, Space, Typography} from 'antd';
 import {getPolygonAddressExplorerURL} from '@polygon/lib';
 import {useState, useEffect} from 'react';
 import {ethers} from 'ethers';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
+import {useGlobalState} from 'context';
 
 const {Text} = Typography;
 
@@ -16,7 +12,8 @@ const {Text} = Typography;
 declare let window: any;
 
 const Balance = () => {
-  const {state, dispatch} = useGlobalState();
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.polygon;
   const [balance, setBalance] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -29,12 +26,6 @@ const Balance = () => {
       const selectedAddressBalance = undefined;
       const balanceToDisplay = undefined;
       setBalance(balanceToDisplay);
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
     } catch (error) {
       setError(error.message);
     } finally {

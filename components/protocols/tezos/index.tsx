@@ -11,14 +11,10 @@ import {
 import {appStateReducer, initialState, TezosContext} from '@tezos/context';
 import {useLocalStorage} from '@tezos/hooks';
 import Nav from '@tezos/components/nav';
-import {PROTOCOL_STEPS_ID, ChainType, MarkdownForChainIdT} from 'types';
+import {ChainType, StepType} from 'types';
 import Layout from 'components/shared/Layout';
-import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
 
-const Tezos: React.FC = () => {
-  const {state: global_state} = useGlobalState();
-  const stepId = getCurrentStepIdForCurrentChain(global_state);
-
+const Tezos: React.FC<{step: StepType}> = ({step}) => {
   const [storageState, setStorageState] = useLocalStorage(
     'tezos',
     initialState,
@@ -32,21 +28,21 @@ const Tezos: React.FC = () => {
   return (
     <TezosContext.Provider value={{state, dispatch}}>
       <Nav />
-      {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
-      {stepId === PROTOCOL_STEPS_ID.CREATE_ACCOUNT && <Account />}
-      {stepId === PROTOCOL_STEPS_ID.GET_BALANCE && <Balance />}
-      {stepId === PROTOCOL_STEPS_ID.TRANSFER_TOKEN && <Transfer />}
-      {stepId === PROTOCOL_STEPS_ID.DEPLOY_CONTRACT && <Deploy />}
-      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Getter />}
-      {stepId === PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE && <Setter />}
+      {step.id === 'connect' && <Connect />}
+      {step.id === 'account' && <Account />}
+      {step.id === 'balance' && <Balance />}
+      {step.id === 'transfer' && <Transfer />}
+      {step.id === 'deploy' && <Deploy />}
+      {step.id === 'getter' && <Getter />}
+      {step.id === 'setter' && <Setter />}
     </TezosContext.Provider>
   );
 };
 
-const WithLayoutTezos: React.FC<{
-  chain: ChainType;
-  markdown: MarkdownForChainIdT;
-}> = ({chain, markdown}) => {
+const WithLayoutTezos: React.FC<{chain: ChainType; markdown: any}> = ({
+  chain,
+  markdown,
+}) => {
   return Layout(Tezos, chain, markdown);
 };
 

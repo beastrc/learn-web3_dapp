@@ -5,27 +5,13 @@ import type {ErrorT} from '@solana/types';
 import {prettyError} from '@solana/lib';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getNetworkForCurrentChain,
-  getChainInnerState,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
+import {useGlobalState} from 'context';
 
 const {Text} = Typography;
 
 const Deploy = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const network = getNetworkForCurrentChain(state);
-  const programId = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
-  );
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.solana;
   const [value, setValue] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
@@ -52,21 +38,13 @@ const Deploy = () => {
     setFetching(true);
     try {
       const response = await axios.post(`/api/solana/deploy`, {
-        network,
+        ...state,
         programId: value,
       });
       setChecked(response.data);
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
-        value: value,
-      });
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId,
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
+        type: 'SetSolanaProgramId',
+        programId: value as string,
       });
     } catch (error) {
       setError(prettyError(error));
@@ -97,7 +75,7 @@ const Deploy = () => {
             message={<Text strong>{`The program is correctly deployed`}</Text>}
             description={
               <a
-                href={accountExplorer(programId ?? '', network)}
+                href={accountExplorer(state?.programId ?? '', state.network)}
                 target="_blank"
                 rel="noreferrer"
               >

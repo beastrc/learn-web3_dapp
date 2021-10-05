@@ -3,22 +3,16 @@ import {Typography, Popover, Button, Tag, Space, Select} from 'antd';
 import type {EntryT} from '@polygon/types';
 import {trackStorageCleared} from '@funnel/tracking-utils';
 import {FundViewOutlined} from '@ant-design/icons';
+import {useGlobalState} from 'context';
 import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
-import {getCurrentChainId, useGlobalState, getChainInnerState} from 'context';
-import {PROTOCOL_INNER_STATES_ID, POLYGON_NETWORKS} from 'types';
 
 const {Paragraph} = Typography;
 
 const {Option} = Select;
 
 const Nav = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const polygonAddress = getChainInnerState(
-    state,
-    chainId,
-    PROTOCOL_INNER_STATES_ID.ADDRESS,
-  );
+  const {state: globalState, dispatch} = useGlobalState();
+  const {address} = globalState.polygon;
 
   const displayAddress = (address: string) =>
     `${address.slice(0, 6)}...${address.slice(-4)}`;
@@ -44,38 +38,38 @@ const Nav = () => {
     );
   };
 
+  const clear = () => {
+    dispatch({
+      type: 'SetCurrentStepIndex',
+      currentStepIndex: 0,
+    });
+    dispatch({
+      type: 'SetHighestCompletedStepIndex',
+      highestCompletedStepIndex: 0,
+    });
+    trackStorageCleared(globalState.chainId as string);
+  };
+
   const clearKeychain = () => {
     const proceed = confirm('Are you sure you want to clear the keychain?');
     if (proceed) {
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: null,
+        type: 'SetPolygonAddress',
+        address: undefined,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.METAMASK_NETWORK_NAME,
-        value: null,
+        type: 'SetPolygonNetwork',
+        network: 'datahub',
       });
-      dispatch({
-        type: 'ClearStepProgression',
-        chainId,
-      });
-      trackStorageCleared(chainId);
+      clear();
     }
   };
 
   const AppState = () => {
     return (
       <>
-        {polygonAddress && (
-          <Address
-            msg={'Address: '}
-            value={polygonAddress}
-            display={displayAddress}
-          />
+        {address && (
+          <Address msg={'Address: '} value={address} display={displayAddress} />
         )}
         <Button danger onClick={clearKeychain} size={'small'}>
           Clear Keychain
@@ -90,12 +84,14 @@ const Nav = () => {
         <Button type="ghost">Keychain</Button>
       </Popover>
       <Select
-        defaultValue={POLYGON_NETWORKS.TESTNET}
+        defaultValue={'datahub'}
         style={{width: 100, textAlign: 'center'}}
         disabled={true}
         showArrow={false}
       >
-        <Option value={POLYGON_NETWORKS.TESTNET}>Testnet</Option>
+        <Option value="datahub">Datahub</Option>
+        <Option value="testnet">Testnet</Option>
+        <Option value="localhost">Localhost</Option>
       </Select>
     </StepMenuBar>
   );

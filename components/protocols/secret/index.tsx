@@ -12,13 +12,9 @@ import {appStateReducer, initialState, SecretContext} from '@secret/context';
 import {useLocalStorage} from '@secret/hooks';
 import Nav from '@secret/components/nav';
 import Layout from 'components/shared/Layout';
-import {PROTOCOL_STEPS_ID, ChainType} from 'types';
-import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
+import {ChainType, StepType} from 'types';
 
-const Secret: React.FC = () => {
-  const {state: global_state} = useGlobalState();
-  const stepId = getCurrentStepIdForCurrentChain(global_state);
-
+const Secret: React.FC<{step: StepType}> = ({step}) => {
   const [storageState, setStorageState] = useLocalStorage(
     'secret',
     initialState,
@@ -32,13 +28,13 @@ const Secret: React.FC = () => {
   return (
     <SecretContext.Provider value={{state, dispatch}}>
       <Nav />
-      {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
-      {stepId === PROTOCOL_STEPS_ID.CREATE_ACCOUNT && <Account />}
-      {stepId === PROTOCOL_STEPS_ID.GET_BALANCE && <Balance />}
-      {stepId === PROTOCOL_STEPS_ID.TRANSFER_TOKEN && <Transfer />}
-      {stepId === PROTOCOL_STEPS_ID.DEPLOY_CONTRACT && <Deploy />}
-      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Getter />}
-      {stepId === PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE && <Setter />}
+      {step.id === 'connect' && <Connect />}
+      {step.id === 'account' && <Account />}
+      {step.id === 'balance' && <Balance />}
+      {step.id === 'transfer' && <Transfer />}
+      {step.id === 'deploy' && <Deploy />}
+      {step.id === 'getter' && <Getter />}
+      {step.id === 'setter' && <Setter />}
     </SecretContext.Provider>
   );
 };
