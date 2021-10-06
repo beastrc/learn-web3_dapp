@@ -78,9 +78,9 @@ export default function Chain({
       );
     if (chainId === CHAINS.TEZOS)
       return dynamic(() => import('../components/protocols/tezos'), dynOptions);
-    if (chainId === CHAINS.THE_GRAPH)
+    if (chainId === CHAINS.CERAMIC)
       return dynamic(
-        () => import('../components/protocols/the_graph'),
+        () => import('../components/protocols/ceramic'),
         dynOptions,
       );
   })() as DynChainT;

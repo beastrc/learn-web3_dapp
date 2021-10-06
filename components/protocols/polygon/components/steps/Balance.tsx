@@ -2,7 +2,6 @@
 import {Alert, Button, Col, Space, Typography} from 'antd';
 import {getPolygonAddressExplorerURL} from '@polygon/lib';
 import {useState, useEffect} from 'react';
-import {getPolygonInnerState} from '@polygon/lib';
 import {ethers} from 'ethers';
 import {
   getCurrentChainId,
@@ -18,36 +17,24 @@ declare let window: any;
 
 const Balance = () => {
   const {state, dispatch} = useGlobalState();
-  const {ADDRESS} = getPolygonInnerState(state);
-
-  const [balance, setBalance] = useState<string | null>(null);
+  const [balance, setBalance] = useState<string | undefined>(undefined);
   const [error, setError] = useState<string | undefined>(undefined);
   const [fetching, setFetching] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (balance) {
+  const checkBalance = async () => {
+    setFetching(true);
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const selectedAddress = window.ethereum.selectedAddress;
+      const selectedAddressBalance = undefined;
+      const balanceToDisplay = undefined;
+      setBalance(balanceToDisplay);
       dispatch({
         type: 'SetStepIsCompleted',
         chainId: getCurrentChainId(state),
         stepId: getCurrentStepIdForCurrentChain(state),
         value: true,
       });
-    }
-  }, [balance, setBalance]);
-
-  const checkBalance = async () => {
-    setFetching(true);
-    setBalance(null);
-    setError(undefined);
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const selectedAddress = window.ethereum.selectedAddress;
-      const selectedAddressBalance = undefined;
-      const balanceToDisplay = undefined;
-      if (!balanceToDisplay) {
-        throw new Error('Please complete the code');
-      }
-      setBalance(balanceToDisplay);
     } catch (error) {
       setError(error.message);
     } finally {
@@ -74,10 +61,10 @@ const Balance = () => {
             type="success"
             showIcon
             closable={true}
-            onClose={() => setBalance(null)}
+            onClose={() => setBalance(undefined)}
             description={
               <a
-                href={getPolygonAddressExplorerURL(ADDRESS ?? '')}
+                href={getPolygonAddressExplorerURL(state.address ?? '')}
                 target="_blank"
                 rel="noreferrer"
               >

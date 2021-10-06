@@ -3,7 +3,7 @@ import SimpleStorageJson from 'contracts/polygon/SimpleStorage/build/contracts/S
 import {Alert, Button, Col, InputNumber, Space, Typography} from 'antd';
 import {getPolygonTxExplorerURL} from '@polygon/lib';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {ethers} from 'ethers';
 import {
   getCurrentChainId,
@@ -23,17 +23,6 @@ const Setter = () => {
   const [fetchingSet, setFetchingSet] = useState<boolean>(false);
   const [txHash, setTxHash] = useState<string | null>(null);
   const [confirming, setConfirming] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (txHash) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [txHash, setTxHash]);
 
   const setValue = async () => {
     setFetchingSet(true);
@@ -57,6 +46,12 @@ const Setter = () => {
       const receipt = await transactionResult.wait();
       setTxHash(receipt.transactionHash);
       setConfirming(false);
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
     } catch (error) {
       setFetchingSet(false);
     }
