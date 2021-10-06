@@ -17,8 +17,6 @@ import {
   SOLANA_PROTOCOLS,
   SOLANA_NETWORKS,
   POLKADOT_NETWORKS,
-  CERAMIC_PROTOCOLS,
-  CERAMIC_NETWORKS,
 } from 'types';
 
 export const GRID_LAYOUT = [13, 11];
@@ -416,34 +414,48 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
-  [CHAINS.CERAMIC]: {
-    id: CHAINS.CERAMIC,
-    label: 'Ceramic',
+  [CHAINS.THE_GRAPH]: {
+    id: CHAINS.THE_GRAPH,
+    label: 'The Graph',
     active: true,
-    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
-    protocol: CERAMIC_PROTOCOLS.HTTP,
-    network: CERAMIC_NETWORKS.TESTNET,
+    logoUrl: 'https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=013',
+    protocol: TEZOS_PROTOCOLS.RPC,
+    network: TEZOS_NETWORKS.TESTNET,
     steps: [
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
-        title: 'Introduction',
+        title: 'Setup the project',
         skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
-        title: 'Connect using MetaMask',
+        id: PROTOCOL_STEPS_ID.RUN_A_GRAPH_NODE,
+        title: 'Run a local Graph node',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.LOGIN,
-        title: 'Log in with IDX',
+        id: PROTOCOL_STEPS_ID.SCAFFOLD_A_SUBGRAPH,
+        title: 'Create a subgraph scaffold',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.BASIC_PROFILE,
-        title: 'Update and read your profile',
+        id: PROTOCOL_STEPS_ID.HACKING_THE_MANIFEST,
+        title: 'Tweak the Manifest',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.CUSTOM_DEFINITION,
-        title: 'Deploy and use custom definition',
+        id: PROTOCOL_STEPS_ID.ENTITY_AND_RELATION,
+        title: 'Entity and relation',
+        skippable: true,
+      },
+      {
+        id: PROTOCOL_STEPS_ID.DEFINE_THE_MAPPING,
+        title: 'Define the mapping',
+        skippable: true,
+      },
+      {
+        id: PROTOCOL_STEPS_ID.QUERYING_THE_SUBGRAPH,
+        title: 'Query a custom subgraph',
+        skippable: true,
       },
     ],
   },
