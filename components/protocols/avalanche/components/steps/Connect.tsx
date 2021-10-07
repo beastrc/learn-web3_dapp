@@ -1,46 +1,26 @@
 import {Alert, Col, Space, Typography, Button} from 'antd';
 import {PoweroffOutlined} from '@ant-design/icons';
-import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
+import {useState} from 'react';
 import axios from 'axios';
-import {
-  getCurrentChainId,
-  useGlobalState,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
-import {getAvalancheInnerState} from '@avalanche/lib';
+import {setStepsStatus} from 'utils';
 
 const {Text} = Typography;
 
-const Connect = () => {
-  const {state, dispatch} = useGlobalState();
-  const avalancheState = getAvalancheInnerState(state);
+const Connect = ({stepId}: {stepId: string}) => {
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.avalanche;
   const [version, setVersion] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (version) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [version, setVersion]);
 
   const getConnection = async () => {
     setFetching(true);
     try {
-      const response = await axios.post(
-        `/api/avalanche/connect`,
-        avalancheState,
-      );
+      const response = await axios.post(`/api/avalanche/connect`, state);
       setVersion(response.data);
       dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
+        type: 'SetAvalancheStepsStatus',
+        stepsStatus: setStepsStatus(state.stepsStatus, stepId, true),
       });
     } catch (error) {
       setVersion(null);
@@ -64,7 +44,7 @@ const Connect = () => {
             <Alert
               message={
                 <Space>
-                  Connected to {getCurrentChainId(state)}:
+                  Connected to {globalState.chainId}:
                   <Text code>version {version}</Text>
                 </Space>
               }
@@ -74,7 +54,7 @@ const Connect = () => {
             />
           ) : (
             <Alert
-              message={`Not connected to ${getCurrentChainId(state)}`}
+              message={`Not connected to ${globalState.chainId}`}
               type="error"
               showIcon
             />

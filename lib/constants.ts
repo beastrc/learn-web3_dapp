@@ -17,8 +17,8 @@ import {
   SOLANA_PROTOCOLS,
   SOLANA_NETWORKS,
   POLKADOT_NETWORKS,
-  THE_GRAPH_NETWORKS,
-  THE_GRAPH_PROTOCOLS,
+  CERAMIC_PROTOCOLS,
+  CERAMIC_NETWORKS,
 } from 'types';
 
 export const GRID_LAYOUT = [13, 11];
@@ -29,10 +29,10 @@ export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.AVALANCHE]: {
     id: CHAINS.AVALANCHE,
     label: 'Avalanche',
-    active: true,
+    active: false,
     logoUrl: 'https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010',
     protocol: AVALANCHE_PROTOCOLS.RPC,
-    network: AVALANCHE_NETWORKS.DATAHUB,
+    network: AVALANCHE_NETWORKS.FUJI,
     steps: [
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
@@ -416,13 +416,13 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
-  [CHAINS.THE_GRAPH]: {
-    id: CHAINS.THE_GRAPH,
-    label: 'The Graph',
+  [CHAINS.CERAMIC]: {
+    id: CHAINS.CERAMIC,
+    label: 'Ceramic',
     active: true,
-    logoUrl: 'https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=013',
-    protocol: THE_GRAPH_PROTOCOLS.GRAPHQL,
-    network: THE_GRAPH_NETWORKS.LOCALNET,
+    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
+    protocol: CERAMIC_PROTOCOLS.HTTP,
+    network: CERAMIC_NETWORKS.TESTNET,
     steps: [
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
@@ -430,34 +430,20 @@ export const CHAINS_CONFIG: ChainsType = {
         skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.GRAPH_NODE,
-        title: 'Run a local Graph node',
-        skippable: true,
+        id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
+        title: 'Connect using MetaMask',
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_SCAFFOLD,
-        title: 'Create a subgraph scaffold',
-        skippable: true,
+        id: PROTOCOL_STEPS_ID.LOGIN,
+        title: 'Log in with IDX',
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_MANIFEST,
-        title: 'Tweak the Manifest',
-        // skippable: true,
+        id: PROTOCOL_STEPS_ID.BASIC_PROFILE,
+        title: 'Update and read your profile',
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_SCHEMA,
-        title: 'Define the schema',
-        skippable: true,
-      },
-      {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_MAPPINGS,
-        title: 'Implement the mappings',
-        skippable: true,
-      },
-      {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_QUERY,
-        title: 'Query the subgraph',
-        skippable: true,
+        id: PROTOCOL_STEPS_ID.CUSTOM_DEFINITION,
+        title: 'Deploy and use custom definition',
       },
     ],
   },

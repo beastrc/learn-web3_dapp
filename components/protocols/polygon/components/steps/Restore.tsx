@@ -21,8 +21,6 @@ const Restore = () => {
   const [value, setValue] = useState<string>('');
 
   const restore = () => {
-    setError(null);
-    setAddress(null);
     try {
       const wallet = undefined;
       const selectedAddress = window.ethereum.selectedAddress;
@@ -39,6 +37,8 @@ const Restore = () => {
         value: true,
       });
     } catch (error) {
+      setAddress(null);
+      setSecret(null);
       setError('Invalid mnemonic');
     }
   };

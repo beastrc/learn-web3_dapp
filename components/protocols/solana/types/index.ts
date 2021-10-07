@@ -7,5 +7,5 @@ export type EntryT = {
 export type ErrorT = {
   message: string;
   file?: string;
-  args?: string;
+  agrs?: string;
 };

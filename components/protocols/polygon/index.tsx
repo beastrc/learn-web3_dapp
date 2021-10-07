@@ -1,4 +1,4 @@
-import Nav from '@polygon/components/nav';
+// import Nav from '@polygon/components/nav';
 import Layout from 'components/shared/Layout';
 import {ChainType, MarkdownForChainIdT, PROTOCOL_STEPS_ID} from 'types';
 import {
@@ -12,7 +12,6 @@ import {
   Transfer,
 } from '@polygon/components/steps';
 import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
-import SetupWizard from 'components/shared/SetupWizard';
 
 const Polygon: React.FC = () => {
   const {state: global_state} = useGlobalState();
@@ -20,17 +19,14 @@ const Polygon: React.FC = () => {
 
   return (
     <>
-      <Nav />
-      {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP && (
-        <SetupWizard showText={true} />
-      )}
+      {/* <Nav /> */}
       {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
       {stepId === PROTOCOL_STEPS_ID.QUERY_CHAIN && <Query />}
       {stepId === PROTOCOL_STEPS_ID.GET_BALANCE && <Balance />}
       {stepId === PROTOCOL_STEPS_ID.TRANSFER_TOKEN && <Transfer />}
       {stepId === PROTOCOL_STEPS_ID.DEPLOY_CONTRACT && <Deploy />}
-      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Getter />}
       {stepId === PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE && <Setter />}
+      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Getter />}
       {stepId === PROTOCOL_STEPS_ID.RESTORE_ACCOUNT && <Restore />}
     </>
   );
