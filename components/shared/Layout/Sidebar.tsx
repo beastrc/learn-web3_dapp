@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Col, Space, Menu, Dropdown, Progress} from 'antd';
-import {DownOutlined} from '@ant-design/icons';
+import {Col, Space, Menu, Dropdown} from 'antd';
+import {OrderedListOutlined} from '@ant-design/icons';
 import Markdown from 'components/shared/CustomMarkdown';
 
 import {FOOTER_HEIGHT, GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
@@ -39,18 +39,10 @@ const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
     <Left span={GRID_LAYOUT[0]} key={currentStepId}>
       <StepHeader size="large" align="center">
         <StepTitle>{stepTitle}</StepTitle>
+        <StepNumber>{`(${stepIndex}/${steps.length})`}</StepNumber>
         <Dropdown overlay={menu}>
-          <DownOutlined size={20} style={{cursor: 'pointer'}} />
+          <OrderedListOutlined style={{fontSize: 20}} />
         </Dropdown>
-        <Progress
-          type="circle"
-          percent={(stepIndex / steps.length) * 100}
-          format={(percent) =>
-            `${(percent * steps.length) / 100}/${steps.length}`
-          }
-          width={50}
-          trailColor={'white'}
-        />
       </StepHeader>
 
       <Markdown captureMessage={() => {}}>{md}</Markdown>
@@ -76,6 +68,13 @@ const StepHeader = styled(Space)`
 const StepTitle = styled.div`
   font-size: 36px;
   font-weight: 600;
+  margin-bottom: 10px;
+`;
+
+const StepNumber = styled.div`
+  font-size: 24px;
+  font-weight: 600;
+  color: #666;
 `;
 
 const StyledMenu = styled(Menu)`

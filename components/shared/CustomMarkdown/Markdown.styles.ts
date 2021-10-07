@@ -1,7 +1,5 @@
 import styled, {css} from 'styled-components';
-import {Alert, Typography} from 'antd';
-
-const {Text} = Typography;
+import {Alert} from 'antd';
 
 const headingWithLinkMixin = css`
   margin-left: -20px;
@@ -24,18 +22,7 @@ export const StyledListItem = styled.li`
 `;
 
 export const StyledAlert = styled(Alert)`
-  margin: 1em 0;
-  border-radius: 5px;
-  align-items: start;
-
-  .ant-typography {
-    margin-bottom: 0;
-  }
-
-  .ant-alert-icon {
-    margin-top: 5px;
-    margin-right: 14px;
-  }
+  margin: 30px 0;
 `;
 
 export const StyledLink = styled.a`
@@ -49,29 +36,31 @@ export const StyledLink = styled.a`
 `;
 
 export const StyledH1 = styled.h1`
-  margin: 1em 0;
+  font-size: 30px;
 
   ${headingWithLinkMixin}
 `;
 
 export const StyledH2 = styled.h2`
-  margin: 0.75em 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
   font-size: 24px;
 
   ${headingWithLinkMixin}
 `;
 
 export const StyledH3 = styled.h3`
-  margin-top: 0.75em 0;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
   font-size: 17px;
 
   ${headingWithLinkMixin}
 `;
 
 export const StyledImage = styled.img`
-  max-width: 70%;
+  width: 100%;
   height: auto;
-  margin: 20px 0;
+  margin: 30px 0;
 `;
 
 export const LinkIcon = styled.div`
@@ -83,14 +72,4 @@ export const LinkIcon = styled.div`
     color: #777;
     width: 18px;
   }
-`;
-
-export const TextCode = styled(Text)`
-  padding: 0.2em 0.4em;
-  margin: 0;
-  color: #25292e;
-  background-color: #dbdbdb;
-  font-family: 'Monaco';
-  font-size: 85%;
-  border-radius: 6px;
 `;
