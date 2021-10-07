@@ -5,20 +5,18 @@ We made this decentralized application (dApp) to help developers learn about Web
 We will guide you to build up a simple web client using the various blockchain's JavaScript SDKs to interact with their networks. Each protocol is slightly different, but we have attempted to standardize the workflow so that you can quickly get up to speed on networks like Solana, NEAR, Polygon and more!
 
 **Supported** ✅
-
-- Solana
-- Polygon
-- Avalanche
-- NEAR
-- Tezos
-- Secret
-- Polkadot
+- Solana  
+- Polygon  
+- Avalanche  
+- NEAR  
+- Tezos  
+- Secret  
+- Polkadot  
 
 **Coming soon!** 🔜
-
-- The Graph
-- Ceramic
-- Arweave
+- The Graph  
+- Ceramic  
+- Arweave  
 
 Learn more about [Figment](https://figment.io/) and [Figment Learn](https://learn.figment.io/)
 
@@ -26,7 +24,7 @@ Learn more about [Figment](https://figment.io/) and [Figment Learn](https://lear
 
 # 🧑‍💻 Get started
 
-Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Node](https://nodejs.org/en/) and [yarn](https://yarnpkg.com/getting-started/install) installed. Then clone the repo and run the `yarn` command to install the dependencies:
+Make sure you have [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git), [Node](https://nodejs.org/en/) (you'll need v14.17.0 or greater) and [yarn](https://yarnpkg.com/getting-started/install) installed. Then clone the repo and run the `yarn` command to install the dependencies:
 
 ```
 git clone https://github.com/figment-networks/learn-web3-dapp.git
