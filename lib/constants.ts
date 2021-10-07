@@ -17,8 +17,6 @@ import {
   SOLANA_PROTOCOLS,
   SOLANA_NETWORKS,
   POLKADOT_NETWORKS,
-  CERAMIC_PROTOCOLS,
-  CERAMIC_NETWORKS,
 } from 'types';
 
 export const GRID_LAYOUT = [13, 11];
@@ -29,10 +27,10 @@ export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.AVALANCHE]: {
     id: CHAINS.AVALANCHE,
     label: 'Avalanche',
-    active: false,
+    active: true,
     logoUrl: 'https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=010',
     protocol: AVALANCHE_PROTOCOLS.RPC,
-    network: AVALANCHE_NETWORKS.FUJI,
+    network: AVALANCHE_NETWORKS.DATAHUB,
     steps: [
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
@@ -413,37 +411,6 @@ export const CHAINS_CONFIG: ChainsType = {
         id: PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE,
         title: 'Set the storage of a smart contract',
         skippable: true,
-      },
-    ],
-  },
-  [CHAINS.CERAMIC]: {
-    id: CHAINS.CERAMIC,
-    label: 'Ceramic',
-    active: true,
-    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
-    protocol: CERAMIC_PROTOCOLS.HTTP,
-    network: CERAMIC_NETWORKS.TESTNET,
-    steps: [
-      {
-        id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
-        title: 'Introduction',
-        skippable: true,
-      },
-      {
-        id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
-        title: 'Connect using MetaMask',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.LOGIN,
-        title: 'Log in with IDX',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.BASIC_PROFILE,
-        title: 'Update and read your profile',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.CUSTOM_DEFINITION,
-        title: 'Deploy and use custom definition',
       },
     ],
   },
