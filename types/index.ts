@@ -7,6 +7,7 @@ export enum CHAINS {
   SECRET = 'secret',
   SOLANA = 'solana',
   TEZOS = 'tezos',
+  CERAMIC = 'ceramic',
 }
 
 // Protocol's Enum
@@ -18,7 +19,8 @@ export type PROTOCOLS =
   | SECRET_PROTOCOLS
   | NEAR_PROTOCOLS
   | CELO_PROTOCOLS
-  | TEZOS_PROTOCOLS;
+  | TEZOS_PROTOCOLS
+  | CERAMIC_PROTOCOLS;
 
 export enum AVALANCHE_PROTOCOLS {
   RPC = 'RPC',
@@ -110,7 +112,16 @@ export enum SOLANA_NETWORKS {
   LOCALNET = 'localnet',
 }
 
+// -----------------------------  Ceramic
+export enum CERAMIC_NETWORKS {
+  TESTNET = 'TESTNET',
+}
+
+export enum CERAMIC_PROTOCOLS {
+  HTTP = 'HTTP',
+}
 // -----------------------------
+
 export type NETWORKS =
   | POLYGON_NETWORKS
   | AVALANCHE_NETWORKS
@@ -119,7 +130,8 @@ export type NETWORKS =
   | NEAR_NETWORKS
   | SECRET_NETWORKS
   | CELO_NETWORKS
-  | TEZOS_NETWORKS;
+  | TEZOS_NETWORKS
+  | CERAMIC_NETWORKS;
 
 // ---------------------------------------------------
 export type ChainType = {
@@ -211,6 +223,7 @@ export enum PROTOCOL_INNER_STATES_ID {
   PROGRAM_ID = 'PROGRAM_ID',
   GREETER = 'GREETER',
   METAMASK_NETWORK_NAME = 'METAMASK_NETWORK_NAME',
+  DID = 'DID',
 }
 
 export enum PROTOCOL_STEPS_ID {
@@ -232,4 +245,8 @@ export enum PROTOCOL_STEPS_ID {
   DEPLOY_CONTRACT = 'DEPLOY_CONTRACT',
   GET_CONTRACT_VALUE = 'GET_CONTRACT_VALUE',
   SET_CONTRACT_VALUE = 'SET_CONTRACT_VALUE',
+  INTRO = 'INTRO',
+  LOGIN = 'LOGIN',
+  BASIC_PROFILE = 'BASIC_PROFILE',
+  CUSTOM_DEFINITION = 'CUSTOM_DEFINITION',
 }
