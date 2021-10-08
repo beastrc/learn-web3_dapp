@@ -1,9 +1,5 @@
 import {CHAINS} from 'types';
 
-export const colors = {
-  figmentYellow: '#FFF29B',
-};
-
 type ChainColorsType = {
   primaryColor: string;
   secondaryColor: string;

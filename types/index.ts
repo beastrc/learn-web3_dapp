@@ -1,5 +1,4 @@
 export enum CHAINS {
-  ARWEAVE = 'arweave',
   AVALANCHE = 'avalanche',
   CELO = 'celo',
   NEAR = 'near',
@@ -21,8 +20,7 @@ export type PROTOCOLS =
   | NEAR_PROTOCOLS
   | CELO_PROTOCOLS
   | TEZOS_PROTOCOLS
-  | THE_GRAPH_PROTOCOLS
-  | ARWEAVE_PROTOCOLS;
+  | THE_GRAPH_PROTOCOLS;
 
 export enum THE_GRAPH_PROTOCOLS {
   GRAPHQL = 'GRAPHQL',
@@ -63,10 +61,6 @@ export enum POLKADOT_PROTOCOLS {
 export enum SOLANA_PROTOCOLS {
   RPC = 'RPC',
   WS = 'WS',
-}
-
-export enum ARWEAVE_PROTOCOLS {
-  RPC = 'RPC',
 }
 
 // BlockChain Providers -----------------------
@@ -127,10 +121,6 @@ export enum THE_GRAPH_NETWORKS {
   STUDIO = 'studio',
 }
 
-export enum ARWEAVE_NETWORKS {
-  MAINNET = 'mainnet',
-}
-
 // -----------------------------
 export type NETWORKS =
   | POLYGON_NETWORKS
@@ -141,8 +131,7 @@ export type NETWORKS =
   | SECRET_NETWORKS
   | CELO_NETWORKS
   | THE_GRAPH_NETWORKS
-  | TEZOS_NETWORKS
-  | ARWEAVE_NETWORKS;
+  | TEZOS_NETWORKS;
 
 // ---------------------------------------------------
 export type ChainType = {

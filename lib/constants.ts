@@ -19,8 +19,6 @@ import {
   POLKADOT_NETWORKS,
   THE_GRAPH_NETWORKS,
   THE_GRAPH_PROTOCOLS,
-  ARWEAVE_PROTOCOLS,
-  ARWEAVE_NETWORKS,
 } from 'types';
 
 export const GRID_LAYOUT = [13, 11];
@@ -421,7 +419,7 @@ export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.THE_GRAPH]: {
     id: CHAINS.THE_GRAPH,
     label: 'The Graph',
-    active: false,
+    active: true,
     logoUrl: 'https://cryptologos.cc/logos/the-graph-grt-logo.svg?v=013',
     protocol: THE_GRAPH_PROTOCOLS.GRAPHQL,
     network: THE_GRAPH_NETWORKS.LOCALNET,
@@ -462,14 +460,5 @@ export const CHAINS_CONFIG: ChainsType = {
         skippable: true,
       },
     ],
-  },
-  [CHAINS.ARWEAVE]: {
-    id: CHAINS.ARWEAVE,
-    label: 'Arweave',
-    active: false,
-    logoUrl: 'https://cryptologos.cc/logos/arweave-ar-logo.svg?v=014',
-    protocol: ARWEAVE_PROTOCOLS.RPC,
-    network: ARWEAVE_NETWORKS.MAINNET,
-    steps: [],
   },
 };

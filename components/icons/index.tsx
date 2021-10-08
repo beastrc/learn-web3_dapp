@@ -4,25 +4,19 @@ import {CHAINS_CONFIG} from 'lib/constants';
 import {CHAINS} from 'types';
 import {PolygonLogo} from './polygon';
 
-const ProtocolLogo = ({
-  chainId,
-  size = 35,
-}: {
-  chainId: CHAINS;
-  size: number;
-}) => {
+const ProtocolLogo = ({chainId}: {chainId: CHAINS}) => {
   const {logoUrl} = CHAINS_CONFIG[chainId];
 
   if (chainId === CHAINS.POLYGON) {
-    return <PolygonLogo size={size} />;
+    return <PolygonLogo />;
   } else {
-    return <Logo src={logoUrl} size={size} />;
+    return <Logo src={logoUrl} />;
   }
 };
 
-const Logo = styled.img<{size: number}>`
-  height: ${({size}) => `${size}px`};
-  margin-bottom: 10px;
+const Logo = styled.img`
+  height: 50px;
+  margin-bottom: 20px;
 `;
 
 export default ProtocolLogo;
