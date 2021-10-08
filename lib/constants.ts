@@ -17,10 +17,10 @@ import {
   SOLANA_PROTOCOLS,
   SOLANA_NETWORKS,
   POLKADOT_NETWORKS,
-  CERAMIC_PROTOCOLS,
-  CERAMIC_NETWORKS,
-  THE_GRAPH_PROTOCOLS,
   THE_GRAPH_NETWORKS,
+  THE_GRAPH_PROTOCOLS,
+  ARWEAVE_PROTOCOLS,
+  ARWEAVE_NETWORKS,
 } from 'types';
 
 export const GRID_LAYOUT = [13, 11];
@@ -418,32 +418,6 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
-  [CHAINS.CERAMIC]: {
-    id: CHAINS.CERAMIC,
-    label: 'Ceramic',
-    active: true,
-    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
-    protocol: CERAMIC_PROTOCOLS.HTTP,
-    network: CERAMIC_NETWORKS.TESTNET,
-    steps: [
-      {
-        id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
-        title: 'Connect with MetaMask',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.LOGIN,
-        title: 'Login with IDX',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.BASIC_PROFILE,
-        title: 'Update and read your profile',
-      },
-      {
-        id: PROTOCOL_STEPS_ID.CUSTOM_DEFINITION,
-        title: 'Deploy and use custom definition',
-      },
-    ],
-  },
   [CHAINS.THE_GRAPH]: {
     id: CHAINS.THE_GRAPH,
     label: 'The Graph',
@@ -488,5 +462,14 @@ export const CHAINS_CONFIG: ChainsType = {
         skippable: true,
       },
     ],
+  },
+  [CHAINS.ARWEAVE]: {
+    id: CHAINS.ARWEAVE,
+    label: 'Arweave',
+    active: false,
+    logoUrl: 'https://cryptologos.cc/logos/arweave-ar-logo.svg?v=014',
+    protocol: ARWEAVE_PROTOCOLS.RPC,
+    network: ARWEAVE_NETWORKS.MAINNET,
+    steps: [],
   },
 };

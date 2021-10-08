@@ -1,4 +1,5 @@
 export enum CHAINS {
+  ARWEAVE = 'arweave',
   AVALANCHE = 'avalanche',
   CELO = 'celo',
   NEAR = 'near',
@@ -7,7 +8,6 @@ export enum CHAINS {
   SECRET = 'secret',
   SOLANA = 'solana',
   TEZOS = 'tezos',
-  CERAMIC = 'ceramic',
   THE_GRAPH = 'the_graph',
 }
 
@@ -21,8 +21,8 @@ export type PROTOCOLS =
   | NEAR_PROTOCOLS
   | CELO_PROTOCOLS
   | TEZOS_PROTOCOLS
-  | CERAMIC_PROTOCOLS
-  | THE_GRAPH_PROTOCOLS;
+  | THE_GRAPH_PROTOCOLS
+  | ARWEAVE_PROTOCOLS;
 
 export enum THE_GRAPH_PROTOCOLS {
   GRAPHQL = 'GRAPHQL',
@@ -63,6 +63,10 @@ export enum POLKADOT_PROTOCOLS {
 export enum SOLANA_PROTOCOLS {
   RPC = 'RPC',
   WS = 'WS',
+}
+
+export enum ARWEAVE_PROTOCOLS {
+  RPC = 'RPC',
 }
 
 // BlockChain Providers -----------------------
@@ -118,21 +122,16 @@ export enum SOLANA_NETWORKS {
   LOCALNET = 'localnet',
 }
 
-export enum CERAMIC_NETWORKS {
-  TESTNET = 'TESTNET',
-}
-
-export enum CERAMIC_PROTOCOLS {
-  HTTP = 'HTTP',
-}
-
 export enum THE_GRAPH_NETWORKS {
   LOCALNET = 'localnet',
   STUDIO = 'studio',
 }
 
-// -----------------------------
+export enum ARWEAVE_NETWORKS {
+  MAINNET = 'mainnet',
+}
 
+// -----------------------------
 export type NETWORKS =
   | POLYGON_NETWORKS
   | AVALANCHE_NETWORKS
@@ -141,9 +140,9 @@ export type NETWORKS =
   | NEAR_NETWORKS
   | SECRET_NETWORKS
   | CELO_NETWORKS
-  | TEZOS_NETWORKS
   | THE_GRAPH_NETWORKS
-  | CERAMIC_NETWORKS;
+  | TEZOS_NETWORKS
+  | ARWEAVE_NETWORKS;
 
 // ---------------------------------------------------
 export type ChainType = {
@@ -244,7 +243,6 @@ export enum PROTOCOL_INNER_STATES_ID {
   PROGRAM_ID = 'PROGRAM_ID',
   GREETER = 'GREETER',
   METAMASK_NETWORK_NAME = 'METAMASK_NETWORK_NAME',
-  DID = 'DID',
 }
 
 export enum PROTOCOL_STEPS_ID {
@@ -266,10 +264,6 @@ export enum PROTOCOL_STEPS_ID {
   DEPLOY_CONTRACT = 'DEPLOY_CONTRACT',
   GET_CONTRACT_VALUE = 'GET_CONTRACT_VALUE',
   SET_CONTRACT_VALUE = 'SET_CONTRACT_VALUE',
-  INTRO = 'INTRO',
-  LOGIN = 'LOGIN',
-  BASIC_PROFILE = 'BASIC_PROFILE',
-  CUSTOM_DEFINITION = 'CUSTOM_DEFINITION',
   GRAPH_NODE = 'GRAPH_NODE',
   SUBGRAPH_SCAFFOLD = 'SUBGRAPH_SCAFFOLD',
   SUBGRAPH_MANIFEST = 'SUBGRAPH_MANIFEST',
