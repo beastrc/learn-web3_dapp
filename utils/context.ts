@@ -23,7 +23,7 @@ export const prepareGlobalState = (
     (acc: GlobalStateT['protocols'], el: CHAINS) => {
       acc[el] = {
         ...initialGlobalState.protocols[el],
-        ...(localStorage ? localStorage[el] : {}),
+        ...localStorage[el],
       };
       return acc;
     },

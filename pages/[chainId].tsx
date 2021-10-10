@@ -3,9 +3,10 @@ import dynamic from 'next/dynamic';
 import {CHAINS_CONFIG} from 'lib/constants';
 import {CHAINS, ChainType, MarkdownForChainIdT} from 'types';
 import {ComponentType} from 'react';
-import {colors} from 'utils/colors';
+import styled from 'styled-components';
+import {LoadingOutlined} from '@ant-design/icons';
+import {getChainColors} from 'utils/colors';
 import {fetchMarkdownForChainId} from 'utils/markdown';
-import {Spinner} from 'components/shared/Layout/Spinner';
 
 type DynChainT = ComponentType<{
   chain: ChainType;
@@ -30,14 +31,21 @@ export default function Chain({
 }) {
   const chainLabel = chain.label;
   const chainId = chain.id;
+  const {primaryColor: spinnerColor} = getChainColors(chainId);
 
+  const Spinner = ({color}: {color: string}) => {
+    return (
+      <SpinContainer>
+        <LoadingOutlined style={{fontSize: '64px', color}} spin />
+      </SpinContainer>
+    );
+  };
   const dynOptions = {
     loading: function spinner() {
-      return <Spinner color={colors.figmentYellow} />;
+      return <Spinner color={spinnerColor} />;
     },
     ssr: false,
   };
-
   const DynChain = (() => {
     if (chainId === CHAINS.AVALANCHE)
       return dynamic(
@@ -75,6 +83,8 @@ export default function Chain({
         () => import('../components/protocols/the_graph'),
         dynOptions,
       );
+    if (chainId === CHAINS.CERAMIC)
+      return dynamic(() => import('../components/protocols/ceramic'));
   })() as DynChainT;
 
   return (
@@ -88,3 +98,10 @@ export default function Chain({
     </>
   );
 }
+
+const SpinContainer = styled.div`
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;

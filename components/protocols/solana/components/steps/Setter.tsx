@@ -60,17 +60,6 @@ const Setter = () => {
   }
 
   useEffect(() => {
-    if (message === -1) return;
-
-    dispatch({
-      type: 'SetStepIsCompleted',
-      chainId,
-      stepId: getCurrentStepIdForCurrentChain(state),
-      value: true,
-    });
-  }, [message]);
-
-  useEffect(() => {
     const getGreeting = async () => {
       setError(null);
       setFetching(true);
@@ -82,6 +71,12 @@ const Setter = () => {
           network,
         });
         setMessage(response.data);
+        dispatch({
+          type: 'SetStepIsCompleted',
+          chainId,
+          stepId: getCurrentStepIdForCurrentChain(state),
+          value: true,
+        });
       } catch (error) {
         setError(prettyError(error));
       } finally {
