@@ -17,8 +17,10 @@ import {
   SOLANA_PROTOCOLS,
   SOLANA_NETWORKS,
   POLKADOT_NETWORKS,
-  THE_GRAPH_NETWORKS,
+  CERAMIC_PROTOCOLS,
+  CERAMIC_NETWORKS,
   THE_GRAPH_PROTOCOLS,
+  THE_GRAPH_NETWORKS,
   ARWEAVE_PROTOCOLS,
   ARWEAVE_NETWORKS,
 } from 'types';
@@ -418,6 +420,37 @@ export const CHAINS_CONFIG: ChainsType = {
       },
     ],
   },
+  [CHAINS.CERAMIC]: {
+    id: CHAINS.CERAMIC,
+    label: 'Ceramic',
+    active: true,
+    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
+    protocol: CERAMIC_PROTOCOLS.HTTP,
+    network: CERAMIC_NETWORKS.TESTNET,
+    steps: [
+      {
+        id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
+        title: 'Introduction',
+        skippable: true,
+      },
+      {
+        id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
+        title: 'Connect with MetaMask',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.LOGIN,
+        title: 'Login with IDX',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.BASIC_PROFILE,
+        title: 'Update and read your profile',
+      },
+      {
+        id: PROTOCOL_STEPS_ID.CUSTOM_DEFINITION,
+        title: 'Deploy and use custom definition',
+      },
+    ],
+  },
   [CHAINS.THE_GRAPH]: {
     id: CHAINS.THE_GRAPH,
     label: 'The Graph',
@@ -434,37 +467,34 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.GRAPH_NODE,
         title: 'Run a local Graph node',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_SCAFFOLD,
+        id: PROTOCOL_STEPS_ID.SCAFFOLD,
         title: 'Create a subgraph scaffold',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_MANIFEST,
+        id: PROTOCOL_STEPS_ID.MANIFEST,
         title: 'Tweak the Manifest',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_SCHEMA,
+        id: PROTOCOL_STEPS_ID.ENTITIES,
         title: 'Define the schema',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_MAPPINGS,
+        id: PROTOCOL_STEPS_ID.MAPPINGS,
         title: 'Implement the mappings',
+        skippable: true,
       },
       {
-        id: PROTOCOL_STEPS_ID.SUBGRAPH_QUERY,
+        id: PROTOCOL_STEPS_ID.QUERY,
         title: 'Query the subgraph',
+        skippable: true,
       },
     ],
-  },
-  [CHAINS.CERAMIC]: {
-    id: CHAINS.CERAMIC,
-    label: 'Ceramic',
-    active: false,
-    logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
-    protocol: ARWEAVE_PROTOCOLS.RPC,
-    network: ARWEAVE_NETWORKS.MAINNET,
-    steps: [],
   },
   [CHAINS.ARWEAVE]: {
     id: CHAINS.ARWEAVE,
