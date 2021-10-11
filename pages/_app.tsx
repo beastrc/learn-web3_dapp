@@ -1,7 +1,6 @@
 import type {AppProps} from 'next/app';
 import {createGlobalStyle, ThemeProvider} from 'styled-components';
 import NextNprogress from 'nextjs-progressbar';
-import SimpleReactLightbox from 'simple-react-lightbox';
 import 'antd/dist/antd.css';
 import {colors} from 'utils/colors';
 
@@ -26,9 +25,7 @@ function MyApp({Component, pageProps}: AppProps) {
     <>
       <GlobalStyle />
       <ThemeProvider theme={theme}>
-        <SimpleReactLightbox>
-          <Component {...pageProps} />
-        </SimpleReactLightbox>
+        <Component {...pageProps} />
       </ThemeProvider>
       <NextNprogress
         color={colors.figmentYellow}

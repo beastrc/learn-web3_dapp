@@ -4,7 +4,6 @@ import {dracula} from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import gfm from 'remark-gfm';
 import {Typography, Divider, Tag} from 'antd';
 import {FileOutlined, LinkOutlined} from '@ant-design/icons';
-import {SRLWrapper} from 'simple-react-lightbox';
 
 import {extractStringFromTree, stringToCssId} from './utils/string-utils';
 import {GitbookHintType, gitbookHintTypeToAntd} from './utils/markdown-utils';
@@ -22,21 +21,6 @@ import {
   StyledLink,
   TextCode,
 } from './Markdown.styles';
-
-const lightboxOptions = {
-  buttons: {
-    showAutoplayButton: false,
-    showCloseButton: true,
-    showDownloadButton: true,
-    showFullscreenButton: true,
-    showNextButton: false,
-    showPrevButton: false,
-    showThumbnailsButton: false,
-  },
-  thumbnails: {
-    showThumbnails: false,
-  },
-};
 
 const {Text, Paragraph} = Typography;
 
@@ -235,7 +219,6 @@ const Markdown = ({
         },
         img: ({...props}) => {
           const src = props.src as string;
-          const alt = props.alt as string;
           const isRelativeGitbookUrl =
             src.includes('.gitbook') &&
             !src.includes('http') &&
@@ -245,26 +228,9 @@ const Markdown = ({
             const prefix =
               'https://raw.githubusercontent.com/figment-networks/datahub-learn/master/';
             const absoluteSrc = `${prefix}${src.replace(/\.{1,2}\//g, '')}`;
-
-            return (
-              <SRLWrapper options={lightboxOptions}>
-                <a href={absoluteSrc}>
-                  <StyledImage
-                    src={absoluteSrc}
-                    alt={alt}
-                    srl_gallery_image="true"
-                  />
-                </a>
-              </SRLWrapper>
-            );
+            return <StyledImage src={absoluteSrc} />;
           } else {
-            return (
-              <SRLWrapper options={lightboxOptions}>
-                <a href={src}>
-                  <StyledImage src={src} srl_gallery_image="true" alt={alt} />
-                </a>
-              </SRLWrapper>
-            );
+            return <StyledImage src={src} />;
           }
         },
       }}

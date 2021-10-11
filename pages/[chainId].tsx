@@ -75,8 +75,6 @@ export default function Chain({
         () => import('../components/protocols/the_graph'),
         dynOptions,
       );
-    if (chainId === CHAINS.CERAMIC)
-      return dynamic(() => import('../components/protocols/ceramic'));
   })() as DynChainT;
 
   return (
