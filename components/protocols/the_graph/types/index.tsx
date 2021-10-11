@@ -66,12 +66,10 @@ export type ManifestStepStatusT = {
 
 type PunkdataT = {
   id: any;
-  index: any;
-  owner?: {id: string};
-  value: any;
-  date: any;
-  svgString?: string;
-  traits?: string;
+  tokenId: any;
+  currentOwner?: {id: string};
+  lastValue: any;
+  tradeDate: any;
 };
 
 export type {ErrorT, EntryT, manifestT, PunkdataT};
