@@ -1,10 +1,10 @@
-import {ManifestStepStatusesT, EntityStepStatusesT} from '@the-graph/types';
+import {ManifestStepStatusesT} from '@the-graph/types';
 
-export const getEtherScanContract = (address: string) => {
+const getEtherScanContract = (address: string) => {
   return `https://etherscan.io/address/${address}`;
 };
 
-export const defaultManifestStatus: ManifestStepStatusesT = {
+const defaultStatus: ManifestStepStatusesT = {
   block: {
     valid: false,
     message: 'Invalid startBlock',
@@ -19,25 +19,9 @@ export const defaultManifestStatus: ManifestStepStatusesT = {
   },
 };
 
-export const defaultEntityStatus: EntityStepStatusesT = {
-  entities: {
-    valid: false,
-    message: 'Too many entities',
-  },
-  account: {
-    valid: false,
-    message: 'Account entity is missing',
-  },
-  punk: {
-    valid: false,
-    message: 'Punk entity is missing',
-  },
-};
-
 type WEI = string;
 type ETH = string;
-
-export const toEther = (amountInWei: WEI): ETH => {
+const toEther = (amountInWei: WEI): ETH => {
   // 1 ETH = 10**18 wei
   const DECIMAL_OFFSET = 10 ** 18;
   const centiEther = parseFloat(
@@ -45,3 +29,8 @@ export const toEther = (amountInWei: WEI): ETH => {
   );
   return (centiEther / 100).toFixed(2);
 };
+
+const toDate = (timeStamp: number) =>
+  new Date(timeStamp * 1000).toLocaleDateString();
+
+export {getEtherScanContract, defaultStatus, toDate, toEther};

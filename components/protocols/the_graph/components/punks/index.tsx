@@ -1,13 +1,14 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 import CryptopunksData from 'contracts/the_graph/CryptopunksData.abi.json';
 import detectEthereumProvider from '@metamask/detect-provider';
 import React, {useEffect, useState} from 'react';
-import {toEther} from '@the-graph/lib';
+import {toDate, toEther} from '@the-graph/lib';
 import {PunkdataT} from '@the-graph/types';
 import styled from 'styled-components';
 import {ethers} from 'ethers';
-import {Card, Row, Space, Typography} from 'antd';
+import {Card, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import * as dayjs from 'dayjs';
 // No type definition available for the following package
 // @ts-ignore
 import Identicon from 'react-identicons';
@@ -25,52 +26,47 @@ declare let window: {
 
 const {Meta} = Card;
 
-const PunkSvg = ({
-  svgString,
-  index,
-  size = 100,
-}: {
-  svgString: string;
-  index: number;
-  size?: number;
-}) => {
+const PunkSvg = ({svgString, size}: {svgString?: string; size: number}) => {
   return (
-    <PunkImageWrapper>
-      <PunkIndex>{index + 1}</PunkIndex>
-      <PunkImg
-        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgString ?? '')}`}
-        width={size}
-        height={size}
-      />
-    </PunkImageWrapper>
+    <img
+      src={`data:image/svg+xml;utf8,${encodeURIComponent(svgString ?? '')}`}
+      width={size}
+      height={size}
+    />
   );
 };
 
 const DisplayedPunk = ({
-  index,
   data,
   loading,
 }: {
-  index: number;
   data: PunkdataT;
   loading: boolean;
 }) => {
   return (
-    <StyledCard
+    <Card
+      hoverable
+      style={{
+        width: 165,
+        height: 165,
+        margin: '10px',
+        background: 'gainsboro',
+      }}
       loading={loading}
-      cover={<PunkSvg index={index} svgString={data?.svgString || ''} />}
+      cover={<PunkSvg svgString={data?.svgString} size={50} />}
     >
       <Meta
-        title={`#${data.index}`}
+        style={{fontSize: '12px'}}
+        title={data.traits?.split(',')[1]}
         description={
           <Space direction="vertical">
             <Text>{toEther(data.value)} Ξ</Text>
-            <Traits>{data.traits}</Traits>
-            <Date>{dayjs.unix(data.date).format('MMM D, YYYY')}</Date>
+            <Text>{toDate(parseFloat(data.date))}</Text>
           </Space>
         }
+        avatar={<Identicon string={data.owner?.id} size={24} />}
       />
-    </StyledCard>
+    </Card>
   );
 };
 
@@ -134,71 +130,36 @@ const Punks = ({data}: {data: PunkdataT[]}) => {
     fetchAllData().then((data) => setPunksData(data));
   }, []);
 
-  console.log(punksData);
-
   return (
-    <Row>
+    <CardsContainer>
       {punksData ? (
-        <Space direction="vertical">
-          <ResultsTitle>
-            Most valuable CryptoPunks since Block #13100000 (Aug-26-2021)
-          </ResultsTitle>
-          <Row>
-            {punksData.map((punk: PunkdataT, index: number) => {
-              return (
-                <DisplayedPunk
-                  data={punk}
-                  key={punk.id}
-                  loading={loading}
-                  index={index}
-                />
-              );
-            })}
-          </Row>
-        </Space>
+        punksData.map((punk: PunkdataT) => {
+          return <DisplayedPunk data={punk} key={punk.id} loading={loading} />;
+        })
       ) : loading ? (
-        <LoadingOutlined style={{fontSize: '64px'}} spin />
+        <LoadingOutlinedStyle>
+          <LoadingOutlined style={{fontSize: '64px'}} spin />
+        </LoadingOutlinedStyle>
       ) : null}
-    </Row>
+    </CardsContainer>
   );
 };
 
-const ResultsTitle = styled.div`
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 20px;
+const CardsContainer = styled.div`
+  display: flex;
+  max-width: 700px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 350px;
 `;
 
-const Traits = styled.div`
-  font-size: 12px;
-`;
-
-const Date = styled.div`
-  font-size: 12px;
-  color: #aaa;
-`;
-
-const PunkImageWrapper = styled.div`
-  position: relative;
-`;
-
-const PunkIndex = styled.div`
-  position: absolute;
-  top: 10;
-  left: 10;
-  font-size: 20px;
-  font-weight: 600;
-  color: #5943d0;
-`;
-
-const PunkImg = styled.img`
-  background: #dbdbdb;
-  width: 100%;
-`;
-
-const StyledCard = styled(Card)`
-  width: 200px;
-  margin: 0 20px 20px 0;
+const LoadingOutlinedStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  min-width: 100%;
 `;
 
 export default Punks;

@@ -46,20 +46,20 @@ type manifestT = {
 };
 
 export type ManifestStepStatusesT = {
-  block: StepStatusT;
-  entities: StepStatusT;
-  eventHandlers: StepStatusT;
+  block: ManifestStepStatusT;
+  entities: ManifestStepStatusT;
+  eventHandlers: ManifestStepStatusT;
 };
 
-export type EntityStepStatusesT = {
-  entities: StepStatusT;
-  account: StepStatusT;
-  punk: StepStatusT;
-};
+type StatusMessageT =
+  | 'Valid startBlock'
+  | 'Valid entities'
+  | 'Valid eventHandlers'
+  | 'Invalid startBlock'
+  | 'Invalid entities'
+  | 'Invalid eventHandlers';
 
-type StatusMessageT = string;
-
-export type StepStatusT = {
+export type ManifestStepStatusT = {
   valid: boolean;
   message: StatusMessageT;
 };
