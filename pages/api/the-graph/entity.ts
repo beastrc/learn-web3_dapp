@@ -25,21 +25,21 @@ export default async function entity(
 
     if (entities.length === 2) {
       status.entities = {
-        isValid: true,
+        valid: true,
         message: 'Two entities defined',
       };
     }
 
     if (entities[0] === 'Account') {
       status.account = {
-        isValid: true,
+        valid: true,
         message: 'Account entity defined',
       };
     }
 
     if (entities[1] === 'Punk') {
       status.punk = {
-        isValid: true,
+        valid: true,
         message: 'Punk entity defined',
       };
     }

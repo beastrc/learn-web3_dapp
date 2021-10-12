@@ -60,7 +60,7 @@ export type EntityStepStatusesT = {
 type StatusMessageT = string;
 
 export type StepStatusT = {
-  isValid: boolean;
+  valid: boolean;
   message: StatusMessageT;
 };
 

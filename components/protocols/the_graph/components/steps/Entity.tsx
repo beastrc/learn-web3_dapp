@@ -31,7 +31,7 @@ const Entity = () => {
 
   const isValid = () =>
     Object.values(status).reduce((completion, statusField) => {
-      return completion && statusField.isValid;
+      return completion && statusField.valid;
     }, true);
 
   useEffect(() => {
@@ -130,7 +130,7 @@ const EntityStatus = ({
           return (
             <Space direction="horizontal" key={index}>
               <div>
-                {status.isValid ? (
+                {status.valid ? (
                   <CheckOutlined size={16} style={{color: 'green'}} />
                 ) : (
                   <CloseOutlined size={16} style={{color: 'red'}} />

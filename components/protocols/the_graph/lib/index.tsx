@@ -6,30 +6,30 @@ export const getEtherScanContract = (address: string) => {
 
 export const defaultManifestStatus: ManifestStepStatusesT = {
   block: {
-    isValid: false,
+    valid: false,
     message: 'Invalid startBlock',
   },
   entities: {
-    isValid: false,
+    valid: false,
     message: 'Invalid entities',
   },
   eventHandlers: {
-    isValid: false,
+    valid: false,
     message: 'Invalid eventHandlers',
   },
 };
 
 export const defaultEntityStatus: EntityStepStatusesT = {
   entities: {
-    isValid: false,
+    valid: false,
     message: 'Too many entities',
   },
   account: {
-    isValid: false,
+    valid: false,
     message: 'Account entity is missing',
   },
   punk: {
-    isValid: false,
+    valid: false,
     message: 'Punk entity is missing',
   },
 };
