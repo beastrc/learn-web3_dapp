@@ -13,7 +13,6 @@ export default async function connect(
     const version = undefined;
     res.status(200).json(version['solana-core']);
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }

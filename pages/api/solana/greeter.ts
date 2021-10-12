@@ -69,7 +69,6 @@ export default async function greeter(
       greeter: greetedPubkey.toBase58(),
     });
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }
