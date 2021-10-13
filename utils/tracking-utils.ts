@@ -18,6 +18,8 @@ export const trackEvent = (
 ): void => {
   if (global?.analytics) {
     global.analytics.track(eventName, data);
+  } else {
+    console.error('Analytics is not setup properly');
   }
 };
 
@@ -42,5 +44,7 @@ export const trackStorageCleared = (chainId: string) => {
 export const trackPageView = (url: string): void => {
   if (typeof window !== 'undefined' && window.analytics) {
     window.analytics.page(url);
+  } else {
+    console.error('Analytics is not setup properly');
   }
 };
