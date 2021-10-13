@@ -1,10 +1,9 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import type {ManifestStepStatusesT} from '@the-graph/types';
 import {manifestT} from '@the-graph/types';
-// import {defaultManifestStatus} from '@the-graph/lib';
+import {defaultManifestStatus} from '@the-graph/lib';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import {defaultManifestStatus} from '@the-graph/lib';
 
 const START_BLOCK = 13100000;
 const MANIFEST_PATH = './subgraphs/punks/subgraph.yaml';
@@ -25,21 +24,19 @@ const loadManifest = () => {
     eventHandlers,
   };
 };
+
 export default async function manifest(
   _req: NextApiRequest,
   res: NextApiResponse<ManifestStepStatusesT | string>,
 ) {
   try {
-    let status = defaultManifestStatus;
+    const status = defaultManifestStatus;
     const {startBlock, entities, eventHandlers} = loadManifest();
 
     if (startBlock === START_BLOCK) {
-      status = {
-        ...status,
-        block: {
-          isValid: true,
-          message: 'startBlock is 13100000',
-        },
+      status.block = {
+        isValid: true,
+        message: 'startBlock is 13100000',
       };
     }
 
@@ -48,12 +45,9 @@ export default async function manifest(
       entities.includes('Account') &&
       entities.length == 2
     ) {
-      status = {
-        ...status,
-        entities: {
-          isValid: true,
-          message: 'Punk and Account entities',
-        },
+      status.entities = {
+        isValid: true,
+        message: 'Punk and Account entities',
       };
     }
 
@@ -62,12 +56,9 @@ export default async function manifest(
       eventHandlers[0]['event'] === EVENT &&
       eventHandlers[0]['handler'] === HANDLER
     ) {
-      status = {
-        ...status,
-        eventHandlers: {
-          isValid: true,
-          message: 'PunkBought event with handlePunkBought handler',
-        },
+      status.eventHandlers = {
+        isValid: true,
+        message: 'PunkBought event with handlePunkBought handler',
       };
     }
 

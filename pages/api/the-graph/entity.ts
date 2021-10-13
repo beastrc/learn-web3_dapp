@@ -10,7 +10,7 @@ export default async function entity(
   res: NextApiResponse<EntityStepStatusesT | {message: string}>,
 ) {
   try {
-    let status = defaultEntityStatus;
+    const status = defaultEntityStatus;
 
     let generatedSchema = fs.readFileSync(GENERATED_PATH, 'utf8');
     // better to use a regex, need some regex expert here!
@@ -24,32 +24,23 @@ export default async function entity(
       .sort();
 
     if (entities.length === 2) {
-      status = {
-        ...status,
-        entities: {
-          isValid: true,
-          message: 'Two entities defined',
-        },
+      status.entities = {
+        isValid: true,
+        message: 'Two entities defined',
       };
     }
 
     if (entities.includes('Account')) {
-      status = {
-        ...status,
-        account: {
-          isValid: true,
-          message: 'Account entity defined',
-        },
+      status.account = {
+        isValid: true,
+        message: 'Account entity defined',
       };
     }
 
     if (entities.includes('Punk')) {
-      status = {
-        ...status,
-        punk: {
-          isValid: true,
-          message: 'Punk entity defined',
-        },
+      status.punk = {
+        isValid: true,
+        message: 'Punk entity defined',
       };
     }
 
