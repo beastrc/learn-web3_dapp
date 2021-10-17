@@ -1,51 +1,34 @@
-const {toPairs} = require('lodash');
 const axios = require('axios');
-const path = require('path');
 const fs = require('fs');
-
 const markdownURLs = require('../lib/markdownURLs');
 
-const MARKDOWN_PATH = path.resolve('md');
-
-function displayError(error) {
-  if (error.isAxiosError) {
-    console.error({
-      message: error.message,
-      status: error.response.status,
-      header: error.config.headers,
-      method: error.config.method,
-      url: error.config.url,
-    });
-  } else {
-    console.error(error);
+function fetchPathways() {
+  if (!fs.existsSync('md')) {
+    fs.mkdirSync('md');
+    console.log(`✓ Created /md in root directory`);
   }
-}
 
-function createDirectory(path) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path);
-    console.log(`✓ Created ${path} in root directory`);
-  }
-}
+  Object.keys(markdownURLs).forEach((chain) => {
+    const steps = markdownURLs[chain];
 
-(function fetchPathways() {
-  createDirectory(MARKDOWN_PATH);
-  toPairs(markdownURLs).forEach(([chain, steps]) => {
-    toPairs(steps).forEach(([id, url]) => {
-      createDirectory(path.join(MARKDOWN_PATH, chain));
-      axios
-        .get(url)
-        .then((response) =>
-          fs.writeFileSync(
-            path.join(MARKDOWN_PATH, chain, `${id}.md`),
-            response.data,
-          ),
-        )
-        .catch((error) => {
-          displayError(error);
-          process.exit(1);
-        });
+    Object.keys(steps).forEach((stepId) => {
+      const stepMarkdownURL = steps[stepId];
+
+      axios.get(stepMarkdownURL).then((res) => {
+        try {
+          if (!fs.existsSync(`md/${chain}`)) {
+            fs.mkdirSync(`md/${chain}`);
+            console.log(`Created directory md/${chain}`);
+          }
+          fs.writeFileSync(`md/${chain}/${stepId}.md`, res.data);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
     });
+
     console.log(`✓ Fetched pathways for ${chain}`);
   });
-})();
+}
+
+fetchPathways();
