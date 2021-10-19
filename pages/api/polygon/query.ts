@@ -1,9 +1,6 @@
-import {
-  PolygonQueryResponse,
-  PolygonQueryErrorResponse,
-} from '@figment-polygon/types';
+import {PolygonQueryResponse, PolygonQueryErrorResponse} from '@polygon/types';
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeURL} from '@figment-polygon/lib';
+import {getNodeURL} from '@polygon/lib';
 import {ethers} from 'ethers';
 
 export default async function query(

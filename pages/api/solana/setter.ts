@@ -7,7 +7,7 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeURL} from '@figment-solana/lib';
+import {getNodeURL} from '@solana/lib';
 
 export default async function setter(
   req: NextApiRequest,

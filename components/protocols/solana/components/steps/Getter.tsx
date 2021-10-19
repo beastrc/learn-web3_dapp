@@ -1,8 +1,8 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
-import {ErrorBox} from '@figment-solana/components/nav';
-import type {ErrorT} from '@figment-solana/types';
+import {ErrorBox} from '@solana/components/nav';
+import type {ErrorT} from '@solana/types';
 import {useState, useEffect} from 'react';
-import {prettyError} from '@figment-solana/lib';
+import {prettyError} from '@solana/lib';
 import {
   getCurrentChainId,
   useGlobalState,

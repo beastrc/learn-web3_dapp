@@ -1,7 +1,7 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {TezosToolkit} from '@taquito/taquito';
 import {validateChain} from '@taquito/utils';
-import {getTezosUrl} from '@figment-tezos/lib';
+import {getTezosUrl} from '@tezos/lib';
 
 export default async function connect(
   _req: NextApiRequest,
