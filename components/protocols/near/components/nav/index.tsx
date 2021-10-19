@@ -1,34 +1,24 @@
-import {
-  NEAR_NETWORKS,
-  NETWORKS,
-  PROTOCOL_INNER_STATES_ID,
-  PROTOCOL_STEPS_ID,
-} from 'types';
-import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
-import {
-  useGlobalState,
-  getCurrentChainId,
-  getCurrentStepIdForCurrentChain,
-} from 'context';
 import {Select, Typography, Popover, Button} from 'antd';
-import {getPrettyPublicKey} from '@figment-near/lib';
-import type {EntryT} from '@figment-near/types';
-import {getNearState} from '@figment-near/lib';
+import {useGlobalState} from 'context';
+import {getPrettyPublicKey} from '@near/lib';
+import type {EntryT} from '@near/types';
+import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
+import {trackStorageCleared} from 'utils/tracking-utils';
 
 const {Option} = Select;
 
 const {Text, Paragraph} = Typography;
 
 const Nav = () => {
-  const {state, dispatch} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const {SECRET, ACCOUNT_ID, NETWORK} = getNearState(state);
+  const {state: globalState, dispatch} = useGlobalState();
+  const {network, secret, accountId, contractId} = globalState.near;
 
   const displaySecret = (secret: string) =>
     `${getPrettyPublicKey(secret).slice(0, 5)}...${getPrettyPublicKey(
       secret,
     ).slice(-5)}`;
   const displayAccountId = (accountId: string) => accountId;
+  const displayContractId = (contractId: string) => contractId;
 
   const Entry = ({msg, display, value}: EntryT) => {
     return (
@@ -42,14 +32,21 @@ const Nav = () => {
   const AppState = () => {
     return (
       <>
-        {SECRET && (
-          <Entry msg={'Secret: '} value={SECRET} display={displaySecret} />
+        {secret && (
+          <Entry msg={'Secret: '} value={secret} display={displaySecret} />
         )}
-        {ACCOUNT_ID && (
+        {accountId && (
           <Entry
             msg={'Account: '}
-            value={ACCOUNT_ID}
+            value={accountId}
             display={displayAccountId}
+          />
+        )}
+        {contractId && (
+          <Entry
+            msg={'Contract: '}
+            value={contractId}
+            display={displayContractId}
           />
         )}
         <Button danger onClick={clearKeychain} size={'small'}>
@@ -59,32 +56,44 @@ const Nav = () => {
     );
   };
 
+  const clear = () => {
+    dispatch({
+      type: 'SetCurrentStepIndex',
+      currentStepIndex: 0,
+    });
+    dispatch({
+      type: 'SetHighestCompletedStepIndex',
+      highestCompletedStepIndex: 0,
+    });
+    trackStorageCleared(globalState.chainId as string);
+  };
+
   const clearKeychain = () => {
     const proceed = confirm('Are you sure you want to clear the keychain?');
     if (proceed) {
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ACCOUNT_ID,
-        value: null,
+        type: 'SetNearSecret',
+        secret: undefined,
       });
       dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.SECRET,
-        value: null,
+        type: 'SetNearAccountId',
+        accountId: undefined,
       });
       dispatch({
-        type: 'ClearStepProgression',
-        chainId,
+        type: 'SetCurrentStepIndex',
+        currentStepIndex: 0,
       });
+      dispatch({
+        type: 'SetNearConractId',
+        contractId: undefined,
+      });
+      clear();
     }
   };
 
-  const toggleLocal = (network: NETWORKS) => {
+  const toggleLocal = (network: string) => {
     dispatch({
-      type: 'SetChainNetwork',
-      chainId: chainId,
+      type: 'SetNearNetwork',
       network: network,
     });
   };
@@ -95,16 +104,14 @@ const Nav = () => {
         <Button type="ghost">Keychain</Button>
       </Popover>
       <Select
-        defaultValue={NETWORK}
+        defaultValue={globalState.near.network}
         style={{width: 100, textAlign: 'center'}}
         onChange={toggleLocal}
-        disabled={
-          getCurrentStepIdForCurrentChain(state) !==
-          PROTOCOL_STEPS_ID.CHAIN_CONNECTION
-        }
+        disabled={globalState.currentStepIndex != 0}
       >
-        <Option value={NEAR_NETWORKS.DATAHUB}>Datahub</Option>
-        <Option value={NEAR_NETWORKS.TESTNET}>Testnet</Option>
+        <Option value="datahub">Datahub</Option>
+        <Option value="testnet">Testnet</Option>
+        {/* <Option value="localnet">Localnet</Option> */}
       </Select>
     </StepMenuBar>
   );

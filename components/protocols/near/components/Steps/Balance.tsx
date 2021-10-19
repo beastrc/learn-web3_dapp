@@ -1,47 +1,31 @@
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import axios from 'axios';
-import {getAccountUrl} from '@figment-near/lib';
-import {
-  getCurrentStepIdForCurrentChain,
-  useGlobalState,
-  getCurrentChainId,
-} from 'context';
-import {getNearState} from '@figment-near/lib';
+import {useGlobalState} from 'context';
+import {getAccountUrl} from '@near/lib';
 
 const {Text} = Typography;
 
 const DECIMAL_OFFSET = 10 ** 24;
 
 const Balance = () => {
-  const {state, dispatch} = useGlobalState();
-  const nearState = getNearState(state);
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.near;
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [balance, setBalance] = useState<number>(0);
-
-  useEffect(() => {
-    if (balance) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [balance, setBalance]);
+  const {network, accountId} = state;
 
   const getBalance = async () => {
     setError(null);
     setFetching(true);
     setBalance(0);
     try {
-      const response = await axios.post(`/api/near/balance`, nearState);
+      const response = await axios.post(`/api/near/balance`, state);
       const intoNear = (parseFloat(response.data) / DECIMAL_OFFSET).toFixed();
       setBalance(parseFloat(intoNear));
-    } catch (error: any) {
+    } catch (error) {
       const data = error.data;
       setError(data);
     } finally {
@@ -49,7 +33,7 @@ const Balance = () => {
     }
   };
 
-  const explorerUrl = getAccountUrl(nearState.ACCOUNT_ID as string);
+  const explorerUrl = getAccountUrl(accountId as string);
 
   return (
     <Col>
@@ -62,7 +46,7 @@ const Balance = () => {
           <Input
             style={{width: '500px', fontWeight: 'bold'}}
             disabled={true}
-            defaultValue={nearState.ACCOUNT_ID as string}
+            defaultValue={accountId}
           />
           <Button type="primary" onClick={getBalance}>
             Check Balance

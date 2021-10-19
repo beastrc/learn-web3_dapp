@@ -10,7 +10,6 @@ import {
   PROTOCOL_INNER_STATES_ID,
   NETWORKS,
   PROTOCOLS,
-  InnerStateT,
 } from 'types';
 
 type StepsReducerHelperT = {
@@ -187,7 +186,6 @@ function globalStateReducer(state: GlobalStateT, action: Action): GlobalStateT {
 
     case 'ClearStepProgression': {
       const newSteps = clearStepProgression(getStepsForCurrentChain(state));
-      const firstStepId = getFirstStepIdForCurrentChain(state);
       return {
         ...state,
         protocols: {
@@ -195,7 +193,6 @@ function globalStateReducer(state: GlobalStateT, action: Action): GlobalStateT {
           [action.chainId]: {
             ...state.protocols[action.chainId],
             steps: newSteps,
-            currentStepId: firstStepId,
           },
         },
       };
@@ -359,11 +356,6 @@ export const getChainInnerState = (
   stateId: PROTOCOL_INNER_STATES_ID,
 ) => {
   return state.protocols[chainId].innerState?.[stateId] as string | null;
-};
-
-export const getChainInnerStates = (state: GlobalStateT): InnerStateT => {
-  const chainId = getCurrentChainId(state);
-  return state.protocols[chainId].innerState ?? ({} as InnerStateT);
 };
 
 //-------------------------------------------------

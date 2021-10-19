@@ -1,21 +1,15 @@
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {getTransactionUrl} from '@figment-near/lib';
+import {getTransactionUrl} from '@near/lib';
 import {useEffect, useState} from 'react';
+import {useGlobalState} from 'context';
 import axios from 'axios';
-import {
-  getCurrentStepIdForCurrentChain,
-  useGlobalState,
-  getCurrentChainId,
-} from 'context';
-import {getNearState} from '@figment-near/lib';
 
 const {Text} = Typography;
 
 const Setter = () => {
-  const {state, dispatch} = useGlobalState();
-  const nearState = getNearState(state);
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.near;
   const [fetching, setFetching] = useState<boolean>(false);
   const [resetting, setResetting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,42 +18,32 @@ const Setter = () => {
   const [newMessage, setNewMessage] = useState<string>('');
 
   useEffect(() => {
-    if (newMessage) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [newMessage, setNewMessage]);
-
-  useEffect(() => {
     const contractGetter = async () => {
       setError(null);
       setFetching(true);
       try {
-        const response = await axios.post(`/api/near/getter`, nearState);
+        const response = await axios.post(`/api/near/getter`, state);
         setMessage(response.data);
-      } catch (error: any) {
+      } catch (error) {
         setError(error.response.data);
       } finally {
         setFetching(false);
       }
     };
     contractGetter();
-  }, [txHash, setTxHash]);
+  }, [txHash, state]);
 
   const contractSetter = async () => {
     setError(null);
     setResetting(true);
     try {
       const response = await axios.post(`/api/near/setter`, {
-        ...nearState,
+        ...state,
         newMessage,
       });
       setTxHash(response.data);
-    } catch (error: any) {
+      setResetting(false);
+    } catch (error) {
       setError(error.response.data);
     } finally {
       setResetting(false);
