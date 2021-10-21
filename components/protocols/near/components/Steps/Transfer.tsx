@@ -1,14 +1,9 @@
 import {Form, Input, Button, Alert, Space, Typography, Col} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {getTransactionUrl} from '@figment-near/lib';
-import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
+import {useState} from 'react';
 import axios from 'axios';
-import {
-  getCurrentStepIdForCurrentChain,
-  useGlobalState,
-  getCurrentChainId,
-} from 'context';
-import {getNearState} from '@figment-near/lib';
 
 const layout = {
   labelCol: {span: 4},
@@ -22,24 +17,13 @@ const tailLayout = {
 const {Text} = Typography;
 
 const Transfer = () => {
-  const {state, dispatch} = useGlobalState();
-  const {NETWORK, SECRET, ACCOUNT_ID} = getNearState(state);
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.near;
   const [toAddress, _setToAddress] = useState('pizza.testnet');
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
-  const [hash, setHash] = useState(null);
-
-  useEffect(() => {
-    if (hash) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [hash, setHash]);
+  const [txSignature, setTxSignature] = useState(null);
+  const {network, secret, accountId} = state;
 
   const transfer = async (values: any) => {
     const isValidAmount = parseFloat(values.amount);
@@ -54,15 +38,16 @@ const Transfer = () => {
       txSender,
       txAmount,
       txReceiver,
-      NETWORK,
-      SECRET,
+      network,
+      secret,
     };
     setFetching(true);
     try {
       const response = await axios.post(`/api/near/transfer`, options);
-      setHash(response.data);
+      setTxSignature(response.data);
     } catch (error) {
       console.error(error);
+      setFetching(false);
     } finally {
       setFetching(false);
     }
@@ -76,13 +61,13 @@ const Transfer = () => {
         layout="horizontal"
         onFinish={transfer}
         initialValues={{
-          from: ACCOUNT_ID,
+          from: accountId,
           amount: 1,
           to: toAddress,
         }}
       >
         <Form.Item label="Sender" name="from" required>
-          <Text code>{ACCOUNT_ID}</Text>
+          <Text code>{accountId}</Text>
         </Form.Item>
 
         <Form.Item
@@ -117,7 +102,7 @@ const Transfer = () => {
           </Form.Item>
         )}
 
-        {hash && (
+        {txSignature && (
           <Form.Item {...tailLayout}>
             <Alert
               type="success"
@@ -125,7 +110,7 @@ const Transfer = () => {
               message={<Text strong>Transfer confirmed!</Text>}
               description={
                 <a
-                  href={getTransactionUrl(hash ?? '')}
+                  href={getTransactionUrl(txSignature ?? '')}
                   target="_blank"
                   rel="noreferrer"
                 >
