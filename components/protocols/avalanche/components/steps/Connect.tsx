@@ -8,17 +8,13 @@ import {
   getCurrentStepIdForCurrentChain,
 } from 'context';
 import {getAvalancheInnerState} from '@figment-avalanche/lib';
-import Confetti from 'react-confetti';
 
 const {Text} = Typography;
 
 const Connect = () => {
   const {state, dispatch} = useGlobalState();
   const avalancheState = getAvalancheInnerState(state);
-  const chainId = getCurrentChainId(state);
-
   const [version, setVersion] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
@@ -34,16 +30,20 @@ const Connect = () => {
 
   const getConnection = async () => {
     setFetching(true);
-    setError(null);
-    setVersion(null);
     try {
       const response = await axios.post(
         `/api/avalanche/connect`,
         avalancheState,
       );
       setVersion(response.data);
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
     } catch (error) {
-      setError(error.response.data);
+      setVersion(null);
     } finally {
       setFetching(false);
     }
@@ -51,9 +51,6 @@ const Connect = () => {
 
   return (
     <Col>
-      {version && (
-        <Confetti numberOfPieces={500} tweenDuration={1000} gravity={0.05} />
-      )}
       <Space direction="vertical" size="large">
         <Space direction="horizontal" size="large">
           <Button
@@ -67,19 +64,17 @@ const Connect = () => {
             <Alert
               message={
                 <Space>
-                  Connected to {chainId}:<Text code>version {version}</Text>
+                  Connected to {getCurrentChainId(state)}:
+                  <Text code>version {version}</Text>
                 </Space>
               }
               type="success"
               showIcon
+              onClick={getConnection}
             />
           ) : (
             <Alert
-              message={
-                <Space>
-                  Connected to {chainId}:<Text code>error: {error}</Text>
-                </Space>
-              }
+              message={`Not connected to ${getCurrentChainId(state)}`}
               type="error"
               showIcon
             />
