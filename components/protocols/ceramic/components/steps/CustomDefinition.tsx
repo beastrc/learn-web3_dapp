@@ -11,13 +11,16 @@ import {
 } from 'antd';
 import {useEffect, useState} from 'react';
 import {
+  getChainInnerState,
   getCurrentChainId,
   getCurrentStepIdForCurrentChain,
   useGlobalState,
 } from 'context';
-import {useIdx} from '@ceramic/context/idx';
-import {IdxSchema, QuoteSchemaT} from '@ceramic/types';
-import {aliases} from '@ceramic/lib';
+import {useIdx} from '@figment-ceramic/context/idx';
+import {IdxSchema, QuoteSchemaT} from '@figment-ceramic/types';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
+import Auth from '@figment-ceramic/components/auth';
+import {aliases} from '@figment-ceramic/lib';
 
 const layout = {
   labelCol: {span: 4},
@@ -42,7 +45,13 @@ const CustomDefinition = () => {
     QuoteSchemaT | null | undefined
   >(null);
 
-  const {idx, isAuthenticated, currentUserDID} = useIdx();
+  const {idx, isAuthenticated} = useIdx();
+
+  const idxDID = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.DID,
+  );
 
   useEffect(() => {
     if (myQuote && customDefinitionData) {
@@ -56,7 +65,7 @@ const CustomDefinition = () => {
   }, [myQuote, customDefinitionData]);
 
   const setAlias = () => {
-    const {aliases} = require('@ceramic/lib');
+    const {aliases} = require('@figment-ceramic/lib');
     idx._aliases = aliases;
   };
 
@@ -68,7 +77,6 @@ const CustomDefinition = () => {
 
     try {
       // Save quote information to custom schema (use IdxSchema.Figment enum)
-      await idx.set(IdxSchema.Figment, {text, author});
 
       setMyQuote({
         text,
@@ -86,7 +94,7 @@ const CustomDefinition = () => {
       setFetching(true);
 
       // Read quote (use IdxSchema.Figment enum)
-      const resp = await idx.get<QuoteSchemaT>(IdxSchema.Figment);
+      const resp = undefined;
 
       setCustomDefinitionData(resp);
     } catch (error) {
@@ -98,7 +106,11 @@ const CustomDefinition = () => {
 
   return (
     <Col style={{minHeight: '350px', maxWidth: '700px'}}>
-      {isAuthenticated && currentUserDID ? (
+      <div style={{marginBottom: '20px'}}>
+        <Auth />
+      </div>
+
+      {isAuthenticated && (
         <>
           <Card title="#1 - Set your favourite quote">
             <Form
@@ -107,11 +119,11 @@ const CustomDefinition = () => {
               layout="horizontal"
               onFinish={saveQuote}
               initialValues={{
-                from: currentUserDID,
+                from: idxDID,
               }}
             >
               <Form.Item label="DID" name="from" required>
-                <Text code>{currentUserDID}</Text>
+                <Text code>{idxDID}</Text>
               </Form.Item>
 
               <Form.Item
@@ -176,12 +188,6 @@ const CustomDefinition = () => {
             </div>
           )}
         </>
-      ) : (
-        <Alert
-          message="Please log in to submit transactions to Ceramic"
-          type="error"
-          showIcon
-        />
       )}
     </Col>
   );
