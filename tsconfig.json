@@ -24,7 +24,8 @@
       "@secret/*": ["components/protocols/secret/*"],
       "@polygon/*": ["components/protocols/polygon/*"],
       "@ceramic/*": ["components/protocols/ceramic/*"],
-      "@the-graph/*": ["components/protocols/the_graph/*"]
+      "@the-graph/*": ["components/protocols/the_graph/*"],
+      "@funnel/*": ["utils/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],

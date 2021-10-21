@@ -15,7 +15,7 @@ import axios from 'axios';
 import SetupWizard from 'components/shared/SetupWizard';
 import {StepButton} from 'components/shared/Button.styles';
 import {useColors} from 'hooks';
-import {defaultManifestStatus} from '@the-graph/lib';
+import {defaultStatus} from '@the-graph/lib';
 
 const {Text} = Typography;
 
@@ -23,15 +23,13 @@ const GraphNode = () => {
   const {state, dispatch} = useGlobalState();
   const {primaryColor, secondaryColor} = useColors(getCurrentChainId(state));
 
-  const [status, setStatus] = useState<ManifestStepStatusesT>(
-    defaultManifestStatus,
-  );
+  const [status, setStatus] = useState<ManifestStepStatusesT>(defaultStatus);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   const isValid = () =>
     Object.values(status).reduce((completion, statusField) => {
-      return completion && statusField.isValid;
+      return completion && statusField.valid;
     }, true);
 
   useEffect(() => {
@@ -48,9 +46,9 @@ const GraphNode = () => {
   const checkStep = async () => {
     setFetching(true);
     setError(null);
-
+    setStatus(defaultStatus);
     try {
-      const response = await axios.get(`/api/the-graph/manifest`);
+      const response = await axios.post(`/api/the-graph/manifest`, {status});
       setStatus(response.data);
     } catch (error) {
       setError(error.message);
@@ -132,7 +130,7 @@ const ManifestStatus = ({
           return (
             <Space direction="horizontal" key={index}>
               <div>
-                {status.isValid ? (
+                {status.valid ? (
                   <CheckOutlined size={16} style={{color: 'green'}} />
                 ) : (
                   <CloseOutlined size={16} style={{color: 'red'}} />
