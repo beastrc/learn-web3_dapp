@@ -11,8 +11,6 @@ import {
   getCurrentStepIdForCurrentChain,
 } from 'context';
 import {PROTOCOL_INNER_STATES_ID} from 'types';
-import Confetti from 'react-confetti';
-import {PoweroffOutlined} from '@ant-design/icons';
 
 const {Text} = Typography;
 
@@ -23,12 +21,9 @@ declare let window: any;
 const Connect = () => {
   const {state, dispatch} = useGlobalState();
   const {ADDRESS, METAMASK_NETWORK_NAME} = getPolygonInnerState(state);
-  const chainId = getCurrentChainId(state);
-
   const [error, setError] = useState<string | undefined>(undefined);
   const [network, setNetwork] = useState<Network | undefined>(undefined);
   const [address, setAddress] = useState<string | null>(null);
-  const [fetching, setFetching] = useState<boolean>(false);
 
   useEffect(() => {
     if (address && network) {
@@ -54,7 +49,6 @@ const Connect = () => {
   }, [address, network]);
 
   const connect = async () => {
-    setFetching(true);
     setAddress(null);
     setNetwork(undefined);
     setError(undefined);
@@ -63,17 +57,11 @@ const Connect = () => {
 
       if (provider) {
         // Connect to Polygon using Web3Provider and Metamask
-        // @ts-ignore
-        await provider.request({method: 'eth_requestAccounts'});
-        const web3provider = new ethers.providers.Web3Provider(
-          window.ethereum,
-          'any',
-        );
-        const signer = web3provider.getSigner();
-
         // Define address and network
-        const address = await signer.getAddress();
-        const network = ethers.providers.getNetwork(await signer.getChainId());
+        const web3provider = undefined;
+        const signer = undefined;
+        const address = null;
+        const network = undefined;
 
         if (!network) {
           throw new Error('Please complete the code');
@@ -85,57 +73,39 @@ const Connect = () => {
       }
     } catch (error) {
       setError(error.message);
-    } finally {
-      setFetching(false);
     }
   };
 
   return (
     <Col>
-      {address && network && (
-        <Confetti numberOfPieces={500} tweenDuration={1000} gravity={0.05} />
-      )}
-      <Space direction="vertical" size="large">
-        <Space direction="horizontal" size="large">
-          <Button
-            type="primary"
-            icon={<PoweroffOutlined />}
-            onClick={connect}
-            loading={fetching}
-            size="large"
+      <Space direction="vertical" style={{width: '100%'}}>
+        <Button type="primary" onClick={connect}>
+          Check Metamask Connection
+        </Button>
+        {ADDRESS && METAMASK_NETWORK_NAME && (
+          <Alert
+            message={
+              <Text strong>{`Connected to ${METAMASK_NETWORK_NAME}`}</Text>
+            }
+            type="success"
+            showIcon
           />
-          {address && network ? (
-            <Alert
-              message={
-                <Space>
-                  Connected to {chainId}:<Text code>address: {ADDRESS}</Text>
-                </Space>
-              }
-              type="success"
-              showIcon
-            />
-          ) : error ? (
-            <Alert
-              message={
-                <Space>
-                  <Text code>Error: {error}</Text>
-                </Space>
-              }
-              type="error"
-              showIcon
-            />
-          ) : (
-            <Alert
-              message={<Space>Not Connected to {chainId}</Space>}
-              type="error"
-              showIcon
-            />
-          )}
-        </Space>
+        )}
+        {!METAMASK_NETWORK_NAME && !ADDRESS && (
+          <Alert message="Not connected to Polygon" type="error" showIcon />
+        )}
+        {error && (
+          <Alert
+            message={error}
+            type="error"
+            showIcon
+            closable={true}
+            onClose={() => setError(undefined)}
+          />
+        )}
       </Space>
     </Col>
   );
 };
 
 export default Connect;
-// ADDRESS && METAMASK_NETWORK_NAME
