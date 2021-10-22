@@ -100,7 +100,6 @@ export enum SECRET_NETWORKS {
 export enum NEAR_NETWORKS {
   MAINNET = 'MAINNET',
   TESTNET = 'TESTNET',
-  DATAHUB = 'datahub',
 }
 
 export enum TEZOS_NETWORKS {

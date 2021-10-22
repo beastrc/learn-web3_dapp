@@ -55,17 +55,6 @@ const Greeter = () => {
     });
   }
 
-  useEffect(() => {
-    if (greeter) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId,
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, []);
-
   const setGreeterAccount = async () => {
     setError(null);
     setHash(null);
@@ -96,26 +85,24 @@ const Greeter = () => {
     }
   };
 
-  return (
-    <Col>
-      <Space direction="vertical" size="large">
+  if (greeter) {
+    return (
+      <Col>
         <Space direction="vertical">
-          <Text>
-            We&apos;re going to derive the greeter account from the programId
-          </Text>
-          <Input
-            placeholder={programId as string}
-            disabled={true}
-            style={{width: '500px'}}
+          <Text>Greeter account created</Text>
+          <Alert
+            message={
+              <a
+                href={accountExplorer(greeter, network)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View the account on Solana Explorer
+              </a>
+            }
+            type="success"
+            showIcon
           />
-          <Button
-            type="primary"
-            onClick={setGreeterAccount}
-            loading={fetching}
-            disabled={!!greeter}
-          >
-            Create Greeter
-          </Button>
           {hash && (
             <Alert
               message={
@@ -133,6 +120,26 @@ const Greeter = () => {
               showIcon
             />
           )}
+        </Space>
+      </Col>
+    );
+  }
+
+  return (
+    <Col>
+      <Space direction="vertical" size="large">
+        <Space direction="vertical">
+          <Text>
+            We&apos;re going to derive the greeter account from the programId
+          </Text>
+          <Input
+            placeholder={programId as string}
+            disabled={true}
+            style={{width: '500px'}}
+          />
+          <Button type="primary" onClick={setGreeterAccount} loading={fetching}>
+            Create Greeter
+          </Button>
         </Space>
       </Space>
     </Col>

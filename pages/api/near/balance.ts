@@ -7,15 +7,15 @@ export default async function (
   res: NextApiResponse<string>,
 ) {
   try {
-    const {NETWORK, ACCOUNT_ID} = req.body;
-    const config = configFromNetwork(NETWORK);
+    const {network, accountId} = req.body;
+    const config = configFromNetwork(network);
     const client = await connect(config);
     const account = undefined;
     const balance = undefined;
     console.log(balance);
     return res.status(200).json(balance);
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    return res.status(500).json(errorMessage);
+    console.error(error);
+    return res.status(500).json('Balance querying failed');
   }
 }

@@ -7,13 +7,13 @@ export default async function (
   res: NextApiResponse<string>,
 ) {
   try {
-    const {freeAccountId, publicKey, NETWORK} = req.body;
-    const config = configFromNetwork(NETWORK);
+    const {freeAccountId, publicKey, network} = req.body;
+    const config = configFromNetwork(network);
     const near = await connect(config);
     undefined;
     return res.status(200).json(freeAccountId);
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    return res.status(500).json(errorMessage);
+    console.error(error);
+    return res.status(500).json(`Account creation Failed`);
   }
 }

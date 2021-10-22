@@ -1,43 +1,26 @@
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {getTransactionUrl} from '@figment-near/lib';
-import {useState, useEffect} from 'react';
+import {useGlobalState} from 'context';
+import {useState} from 'react';
 import axios from 'axios';
-import {
-  getCurrentStepIdForCurrentChain,
-  useGlobalState,
-  getCurrentChainId,
-} from 'context';
-import {getNearState} from '@figment-near/lib';
 
 const {Text} = Typography;
 
 const Deploy = () => {
-  const {state, dispatch} = useGlobalState();
-  const nearState = getNearState(state);
-
+  const {state: globalState, dispatch} = useGlobalState();
+  const state = globalState.near;
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [txHash, setTxHash] = useState<string>('');
-
-  useEffect(() => {
-    if (txHash) {
-      dispatch({
-        type: 'SetStepIsCompleted',
-        chainId: getCurrentChainId(state),
-        stepId: getCurrentStepIdForCurrentChain(state),
-        value: true,
-      });
-    }
-  }, [txHash, setTxHash]);
 
   const deployContract = async () => {
     setError(null);
     setFetching(true);
     try {
-      const response = await axios.post(`/api/near/deploy`, nearState);
+      const response = await axios.post(`/api/near/deploy`, state);
       setTxHash(response.data);
-    } catch (error: any) {
+    } catch (error) {
       const data = error.response.data;
       setError(data);
     } finally {
@@ -61,7 +44,7 @@ const Deploy = () => {
               textAlign: 'center',
             }}
             disabled={true}
-            defaultValue={nearState.ACCOUNT_ID as string}
+            defaultValue={state.accountId}
           />
         </Space>
         {error && <Alert type="error" closable message={error} />}

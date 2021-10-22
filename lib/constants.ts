@@ -127,10 +127,10 @@ export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.NEAR]: {
     id: CHAINS.NEAR,
     label: 'NEAR',
-    active: true,
+    active: false,
     logoUrl: 'https://cryptologos.cc/logos/near-protocol-near-logo.svg?v=010',
     protocol: NEAR_PROTOCOLS.RPC,
-    network: NEAR_NETWORKS.DATAHUB,
+    network: NEAR_NETWORKS.TESTNET,
     steps: [
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
