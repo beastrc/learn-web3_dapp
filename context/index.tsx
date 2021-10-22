@@ -70,7 +70,7 @@ const protocolsReducerHelper = (
     network: CHAINS_CONFIG[chainId].network,
     isActive: CHAINS_CONFIG[chainId].active,
     protocol: CHAINS_CONFIG[chainId].protocol,
-    currentStepId: PROTOCOL_STEPS_ID.PREFACE,
+    currentStepId: PROTOCOL_STEPS_ID.PROJECT_SETUP,
     steps: steps.data,
     firstStepId,
     lastStepId,
