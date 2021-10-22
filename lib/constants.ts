@@ -41,7 +41,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Setup the project',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
@@ -135,7 +135,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Setup the project',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
@@ -232,7 +232,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Setup the project',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
@@ -253,7 +253,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.DEPLOY_CONTRACT,
         title: 'Deploy a Solidity smart contract',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE,
@@ -330,7 +330,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Setup the project',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
@@ -431,7 +431,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Introduction',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.CHAIN_CONNECTION,
@@ -462,7 +462,7 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.PROJECT_SETUP,
         title: 'Introduction',
-        isOneColumn: true,
+        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.GRAPH_NODE,
