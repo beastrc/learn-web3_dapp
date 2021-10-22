@@ -41,14 +41,15 @@ const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
       <StepHeader size="large" align="center">
         <StepTitle>{stepTitle}</StepTitle>
         <Dropdown overlay={menu}>
-          <Progress
-            type="circle"
-            percent={(stepIndex / steps.length) * 100}
-            format={() => `${stepIndex}/${steps.length}`}
-            width={50}
-            trailColor={'white'}
-          />
+          <DownOutlined size={20} style={{cursor: 'pointer'}} />
         </Dropdown>
+        <Progress
+          type="circle"
+          percent={(stepIndex / steps.length) * 100}
+          format={() => `${stepIndex}/${steps.length}`}
+          width={50}
+          trailColor={'white'}
+        />
       </StepHeader>
 
       <Markdown captureMessage={() => {}}>{md}</Markdown>
@@ -60,7 +61,7 @@ const Container = styled.div<{single_column: boolean}>`
   ${({theme, single_column}) =>
     single_column &&
     theme.media.xl`
-    width: 680px;
+    width: 50%;
     margin: 0 auto;
   `}
 `;
@@ -70,7 +71,7 @@ const StepHeader = styled(Space)`
 `;
 
 const StepTitle = styled.div`
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 600;
 `;
 
