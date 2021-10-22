@@ -15,11 +15,10 @@ In `pages/api/polkadot/balance.ts`, implement the function and try to query the 
   try {
     const { address } = req.body;
     const url = getSafeUrl();
-    provider = new WsProvider(url);
+    const provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
     const { data: balance } = undefined;
     const amount = undefined;
-    await provider.disconnect();
     res.status(200).json(amount);
   }
 //...
