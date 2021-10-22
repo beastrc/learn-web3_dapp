@@ -1,9 +1,10 @@
 import React from 'react';
-import styled, {withTheme} from 'styled-components';
-import {Space, Menu, Dropdown, Progress} from 'antd';
+import styled from 'styled-components';
+import {Col, Space, Menu, Dropdown, Progress} from 'antd';
 import {DownOutlined} from '@ant-design/icons';
 import Markdown from 'components/shared/CustomMarkdown';
 
+import {FOOTER_HEIGHT, GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
 import {MarkdownForChainIdT} from 'types';
 import {
   useGlobalState,
@@ -11,7 +12,6 @@ import {
   getStepsForCurrentChain,
   getPositionForCurrentStepId,
   getCurrentStepIdForCurrentChain,
-  getIsOneColumn,
 } from 'context';
 
 const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
@@ -23,7 +23,6 @@ const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
     const title = step.title as string;
     return {index, title};
   });
-  const isStepOneColumn = getIsOneColumn(state);
 
   const md = markdown[currentStepId];
   const stepIndex = getPositionForCurrentStepId(state);
@@ -37,7 +36,7 @@ const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
   );
 
   return (
-    <Container single_column={isStepOneColumn}>
+    <Left span={GRID_LAYOUT[0]} key={currentStepId}>
       <StepHeader size="large" align="center">
         <StepTitle>{stepTitle}</StepTitle>
         <Dropdown overlay={menu}>
@@ -53,17 +52,19 @@ const Sidebar = ({markdown}: {markdown: MarkdownForChainIdT}) => {
       </StepHeader>
 
       <Markdown captureMessage={() => {}}>{md}</Markdown>
-    </Container>
+    </Left>
   );
 };
 
-const Container = styled.div<{single_column: boolean}>`
-  ${({theme, single_column}) =>
-    single_column &&
-    theme.media.xl`
-    width: 50%;
-    margin: 0 auto;
-  `}
+const heightOffset = `${FOOTER_HEIGHT + HEADER_HEIGHT}px`;
+
+const Left = styled(Col)`
+  position: relative;
+  padding: 40px;
+  background: #f5f5f5;
+  border-right: solid 2px black;
+  overflow: scroll;
+  height: calc(100vh - ${heightOffset});
 `;
 
 const StepHeader = styled(Space)`
@@ -83,5 +84,4 @@ const MenuItem = styled.div`
   padding: 4px 12px;
 `;
 
-// @ts-ignore
-export default withTheme(Sidebar);
+export default Sidebar;
