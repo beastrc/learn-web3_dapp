@@ -66,12 +66,10 @@ const GraphNode = () => {
               message={<Text strong>We found a subgraph scaffold! 🎉</Text>}
               description={
                 <Space direction="vertical">
-                  <div>
-                    Sorry no confetti this time... But that's a great start.
-                  </div>
+                  <div>Nice. The pieces are coming together.</div>
                   <div>
                     Now let&apos;s tweak the subgraph to make it do something
-                    useful.
+                    useful. Let&apos;s go do the next step!
                   </div>
                 </Space>
               }

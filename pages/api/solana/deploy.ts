@@ -1,6 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {Connection, PublicKey} from '@solana/web3.js';
-import {getNodeURL} from '@figment-solana/lib';
+import {getNodeURL} from '@solana/lib';
 import path from 'path';
 import fs from 'mz/fs';
 
@@ -33,7 +33,6 @@ export default async function deploy(
 
     res.status(200).json(true);
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }

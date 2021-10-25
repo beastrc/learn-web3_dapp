@@ -2,8 +2,8 @@ import {useState} from 'react';
 import axios from 'axios';
 import {Alert, Col, Input, Button, Space, Typography} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@figment-tezos/hooks';
-import {transactionUrl} from '@figment-tezos/lib';
+import {useAppState} from '@tezos/hooks';
+import {transactionUrl} from '@tezos/lib';
 
 const {Text} = Typography;
 

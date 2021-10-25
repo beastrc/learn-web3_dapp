@@ -1,5 +1,5 @@
 import {Col, Button, Alert, Space} from 'antd';
-import {transactionUrl} from '@figment-avalanche/lib';
+import {transactionUrl} from '@avalanche/lib';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import {
@@ -7,7 +7,7 @@ import {
   useGlobalState,
   getCurrentStepIdForCurrentChain,
 } from 'context';
-import {getAvalancheInnerState} from '@figment-avalanche/lib';
+import {getAvalancheInnerState} from '@avalanche/lib';
 
 const Import = () => {
   const {state, dispatch} = useGlobalState();

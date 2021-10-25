@@ -7,7 +7,7 @@ import {
   sendAndConfirmTransaction,
 } from '@solana/web3.js';
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeURL} from '@figment-solana/lib';
+import {getNodeURL} from '@solana/lib';
 import * as borsh from 'borsh';
 
 // The state of a greeting account managed by the hello world program
@@ -69,7 +69,6 @@ export default async function greeter(
       greeter: greetedPubkey.toBase58(),
     });
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }

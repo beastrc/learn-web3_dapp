@@ -2,7 +2,7 @@ import type {Dispatch, SetStateAction} from 'react';
 
 // Components
 export type CheckAccountIdT = {
-  NETWORK: string;
+  network: string;
   freeAccountId: string;
   setFreeAccountId: Dispatch<SetStateAction<string>>;
   setIsFreeAccountId: Dispatch<SetStateAction<boolean>>;

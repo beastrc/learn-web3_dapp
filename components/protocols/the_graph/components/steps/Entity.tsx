@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Col, Alert, Space, Typography} from 'antd';
-import {
-  CheckOutlined,
-  CloseOutlined,
-  PoweroffOutlined,
-} from '@ant-design/icons';
+import {PoweroffOutlined} from '@ant-design/icons';
 import {
   getCurrentChainId,
   useGlobalState,
@@ -14,28 +10,18 @@ import axios from 'axios';
 import SetupWizard from 'components/shared/SetupWizard';
 import {StepButton} from 'components/shared/Button.styles';
 import {useColors} from 'hooks';
-import {EntityStepStatusesT} from '@figment-the-graph/types';
-import {defaultEntityStatus} from '@figment-the-graph/lib';
 
 const {Text} = Typography;
 
 const Entity = () => {
   const {state, dispatch} = useGlobalState();
-
-  const [status, setStatus] =
-    useState<EntityStepStatusesT>(defaultEntityStatus);
+  const [isValid, setIsValid] = useState<boolean>(false);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
   const {primaryColor, secondaryColor} = useColors(getCurrentChainId(state));
 
-  const isValid = () =>
-    Object.values(status).reduce((completion, statusField) => {
-      return completion && statusField.isValid;
-    }, true);
-
   useEffect(() => {
-    if (isValid()) {
+    if (isValid) {
       dispatch({
         type: 'SetStepIsCompleted',
         chainId: getCurrentChainId(state),
@@ -43,17 +29,17 @@ const Entity = () => {
         value: true,
       });
     }
-  }, [status, setStatus]);
+  }, [isValid, setIsValid]);
 
   const validStep = async () => {
     setFetching(true);
+    setIsValid(false);
     setError(null);
-
     try {
       const response = await axios.get(`/api/the-graph/entity`);
-      setStatus(response.data);
+      setIsValid(response.data);
     } catch (error) {
-      setError(error.response.data.message);
+      setError(error.message);
     } finally {
       setFetching(false);
     }
@@ -74,16 +60,15 @@ const Entity = () => {
         >
           Check for expected entities
         </StepButton>
-        {isValid() ? (
+        {isValid ? (
           <>
             <Alert
               message={<Text strong>We found the expected entities! 🎉</Text>}
               description={
                 <Space direction="vertical">
-                  <EntityStatus status={status} />
+                  <div>Nice. One more step done in the right direction.</div>
                   <div>
-                    Now let&apos;s map our entities to the smart contract
-                    events.
+                    Now let&apos;s map our entities to the smart-contract event!
                   </div>
                 </Space>
               }
@@ -92,72 +77,25 @@ const Entity = () => {
             />
             <SetupWizard />
           </>
-        ) : (
+        ) : error ? (
           <Alert
             message={
               <Text strong>We couldn&apos;t find the expected entities 😢</Text>
             }
             description={
-              <EntityStatus
-                status={status}
-                text="Make sure you ran 'yarn codegen'!"
-              />
+              <Space direction="vertical">
+                <Text>Are you sure the expected entities was created?</Text>
+                <Text code>{error}</Text>
+              </Space>
             }
-            type="error"
-            showIcon
-          />
-        )}
-        {error && (
-          <Alert
-            message={<Text strong>An unexpected error occured 😢</Text>}
-            description={<Text code>{error}</Text>}
             type="error"
             showIcon
             closable
           />
-        )}
+        ) : null}
       </Space>
     </Col>
   );
 };
 
-const EntityStatus = ({
-  status,
-  text,
-}: {
-  status: EntityStepStatusesT;
-  text?: string;
-}) => {
-  return (
-    <Space direction="vertical">
-      {text && <div>{text}</div>}
-      <Space direction="vertical">
-        {Object.values(status).map((status, index) => {
-          return (
-            <Space direction="horizontal" key={index}>
-              <div>
-                {status.isValid ? (
-                  <CheckOutlined size={16} style={{color: 'green'}} />
-                ) : (
-                  <CloseOutlined size={16} style={{color: 'red'}} />
-                )}
-              </div>
-              <div>{status.message}</div>
-            </Space>
-          );
-        })}
-      </Space>
-    </Space>
-  );
-};
-
 export default Entity;
-
-/*
-NB: It's very unlikely this error could occurs: 'yarn codegen' is automatically ran 
-when we scallfold the subgraph then the file 'generated/schema.ts' is already there.
-
-  {error.indexOf('ENOENT') > -1 && (
-    <Text>{`Are you sure you ran 'yarn codegen'?`}</Text>
-  )}
-*/

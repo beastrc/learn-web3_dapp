@@ -40,7 +40,7 @@ const GraphNode = () => {
       const response = await axios.get(`/api/the-graph/node`);
       setIsValid(response.data);
     } catch (error) {
-      setError(error.response.data);
+      setError(error.message);
     } finally {
       setFetching(false);
     }
