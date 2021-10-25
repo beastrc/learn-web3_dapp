@@ -1,11 +1,13 @@
 import {Col, Alert, Space, Typography} from 'antd';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {
+  getChainInnerState,
   getCurrentChainId,
   getCurrentStepIdForCurrentChain,
   useGlobalState,
 } from 'context';
-import {useIdx} from '@figment-ceramic/context/idx';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
+import Auth from '@figment-ceramic/components/auth';
 
 const {Text} = Typography;
 
@@ -14,7 +16,15 @@ const LogIn = () => {
   const chainId = getCurrentChainId(state);
   const stepId = getCurrentStepIdForCurrentChain(state);
 
-  const {isAuthenticated, currentUserDID} = useIdx();
+  const [currentUserDID, setCurrentUserDID] = useState<string | undefined>(
+    undefined,
+  );
+
+  const userDID = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.DID,
+  );
 
   useEffect(() => {
     if (currentUserDID) {
@@ -27,15 +37,21 @@ const LogIn = () => {
     }
   }, [currentUserDID]);
 
+  const handleLogIn = async (did: string) => {
+    setCurrentUserDID(did);
+  };
+
   return (
     <Col style={{minHeight: '350px', maxWidth: '600px'}}>
       <Space direction="vertical" size="large">
-        {isAuthenticated && currentUserDID ? (
+        <Auth onLoggedIn={handleLogIn} />
+
+        {userDID ? (
           <Alert
             message={
               <div>
-                You are logged in. Your DID is:
-                <Text code>{currentUserDID}</Text>
+                Your DID stored in Local Storage is:
+                <Text code>{userDID}</Text>
               </div>
             }
             type="success"
@@ -43,7 +59,7 @@ const LogIn = () => {
           />
         ) : (
           <Alert
-            message="You are not logged in. Please click Log In button."
+            message="DID not stored in Local Storage. Log in to get one."
             type="error"
             showIcon
           />

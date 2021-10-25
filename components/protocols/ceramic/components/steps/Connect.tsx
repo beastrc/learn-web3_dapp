@@ -1,24 +1,45 @@
-import {Col, Alert, Space, Typography} from 'antd';
-import {useEffect} from 'react';
+import {Col, Alert, Space, Typography, Button, Modal} from 'antd';
+import {LinkOutlined} from '@ant-design/icons';
+import {useEffect, useState} from 'react';
 import {
+  getChainInnerState,
   getCurrentChainId,
   getCurrentStepIdForCurrentChain,
   useGlobalState,
 } from 'context';
+import detectEthereumProvider from '@metamask/detect-provider';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
 import SetupWizard from 'components/shared/SetupWizard';
-import {useIdx} from '@figment-ceramic/context/idx';
 
 const {Text} = Typography;
+
+declare let window: {
+  ethereum: {
+    enable: () => Promise<string[]>;
+  };
+};
 
 const Connect = () => {
   const {state, dispatch} = useGlobalState();
   const chainId = getCurrentChainId(state);
   const stepId = getCurrentStepIdForCurrentChain(state);
 
-  const {isConnected, currentUserAddress, connect} = useIdx();
+  const [address, setAddress] = useState<string | undefined>(undefined);
+
+  const userAddress = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.ADDRESS,
+  );
 
   useEffect(() => {
-    if (currentUserAddress) {
+    if (address) {
+      dispatch({
+        type: 'SetStepInnerState',
+        chainId,
+        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
+        value: address,
+      });
       dispatch({
         type: 'SetStepIsCompleted',
         chainId,
@@ -26,11 +47,24 @@ const Connect = () => {
         value: true,
       });
     }
-  }, [currentUserAddress]);
+  }, [address]);
 
   const checkConnection = async () => {
     try {
-      await connect();
+      const provider = await detectEthereumProvider();
+
+      if (provider) {
+        // Connect to Polygon using Web3Provider and Metamask.
+        // Find more information at: https://docs.metamask.io/guide/rpc-api.html.
+        // NOTE: Be careful not to use deprecated method!
+        // Define address and network
+        const addresses = undefined;
+        const address = undefined;
+
+        setAddress(address);
+      } else {
+        alert('Please install Metamask at https://metamask.io');
+      }
     } catch (error) {
       alert('Something went wrong');
     }
@@ -41,14 +75,22 @@ const Connect = () => {
       <Space direction="vertical" size="large">
         <Space direction="vertical" size="large">
           <>
-            {isConnected && currentUserAddress ? (
+            <Button
+              type="primary"
+              icon={<LinkOutlined />}
+              onClick={checkConnection}
+              size="large"
+            >
+              Check Metamask Connection
+            </Button>
+            {userAddress ? (
               <>
                 <Alert
                   message={<Text strong>Connected to MetaMask 😍</Text>}
                   description={
                     <Space direction="vertical">
                       <Text>Your Ethereum Address is:</Text>
-                      <Text code>{currentUserAddress}</Text>
+                      <Text code>{userAddress}</Text>
                     </Space>
                   }
                   type="success"
