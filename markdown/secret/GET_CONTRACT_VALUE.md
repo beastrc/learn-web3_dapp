@@ -1,4 +1,4 @@
-Our contract is on-chain, and we're going to learn how to fetch the count stored on the contract.
+Our Contract is on-chain, and we're going to learn how to fetch the count stored on the contract.
 
 {% hint style="working" %}
 If you want to learn more about Secret smart contracts, follow the [**Developing your first secret contract**](https://learn.figment.io/tutorials/creating-a-secret-contract-from-scratch) tutorial.
@@ -23,7 +23,7 @@ const customFees = {
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/secret/getter.ts`, complete the code of the default function. You must replace the instances of `undefined` with working code to accomplish this.
@@ -40,16 +40,20 @@ In `pages/api/secret/getter.ts`, complete the code of the default function. You 
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out this link!
 
 - [**Contract example**](https://github.com/enigmampc/SecretJS-Templates/tree/master/5_contracts)
 - [**`queryContractSmart()`**](https://github.com/enigmampc/SecretNetwork/blob/7adccb9a09579a564fc90173cc9509d88c46d114/cosmwasm-js/packages/sdk/src/cosmwasmclient.ts#L400)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```tsx
 // solution
@@ -69,7 +73,7 @@ let count = response.count as number;
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once you have the code above saved, click the button and watch the magic happen:
 
@@ -77,6 +81,6 @@ Once you have the code above saved, click the button and watch the magic happen:
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now, time for the last challenge! Time to modify the state of the contract and thus the state of the blockchain. Let's go!

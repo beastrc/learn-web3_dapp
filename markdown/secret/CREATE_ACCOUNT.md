@@ -2,7 +2,7 @@ Like with most Web 3 protocols, transactions on Secret happen between **accounts
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/secret/account.ts`, implement the function to first create a **mnemonic**, then produce an **address** from the **public key** belonging to the **mnemonic**. You must replace the instances of `undefined` with working code to accomplish this.
@@ -35,7 +35,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -61,7 +61,7 @@ Do not forget to fund the newly created wallet using the [secret faucet](https:/
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route. Now click on **Generate a Mnemonic** and you should see:
 
@@ -69,6 +69,6 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Before we make our first transfer, let's check that that the account is actually funded by asking the cluster for our balance!

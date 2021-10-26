@@ -8,7 +8,7 @@ Visit the [faucet](https://faucet.tzalpha.net/) to generate a mnemonic and get s
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/tezos/account.ts`, implement the function and try to activate your first account on the Tezos network. You must replace the instances of `undefined` with working code to accomplish this.
@@ -31,16 +31,20 @@ In `pages/api/tezos/account.ts`, implement the function and try to activate your
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**method `importKey`**](https://tezostaquito.io/typedoc/modules/_taquito_signer.html#importkey)
 - [**Importing a Faucet Key**](https://tezostaquito.io/docs/quick_start/#importing-a-faucet-key)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -70,7 +74,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file has been saved:
 
@@ -82,6 +86,6 @@ Once the code is complete and the file has been saved:
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Nice work! You now have a Tezos account on the Florence testnet. In the next tutorial, we will query a Tezos node using DataHub, to determine the current balance of our account.

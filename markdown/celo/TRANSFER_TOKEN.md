@@ -3,7 +3,7 @@ Celo has a number of core smart contracts that are deployed to the network. In t
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/celo/transfer.ts`, implement the **transfer** function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -32,16 +32,20 @@ In `pages/api/celo/transfer.ts`, implement the **transfer** function. You must r
 //..
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**We can access the CELO contract via the SDK with kit.contracts.getGoldToken()**](https://docs.celo.org/developer-guide/contractkit/contracts-wrappers-registry#interacting-with-celo-and-cusd)
 - [**Restore an account from private key with `addAccount`**](https://docs.celo.org/developer-guide/sdk-code-reference/summary-17/modules/_rpc_wallet_.rpcwallet#methods)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```tsx
 // solution
@@ -75,7 +79,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route.
 
@@ -86,7 +90,7 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now that we have funded our account and made a transfer, let's move on to perform a more advanced kind of transfer: a **Swap**.
 With ContractKit, you can always exchange your **cUSD** to **CELO** and the other way around. Let’s learn how we can do that in the next tutorial!

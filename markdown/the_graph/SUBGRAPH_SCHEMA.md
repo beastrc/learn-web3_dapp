@@ -34,7 +34,7 @@ type Punk @entity {
 }
 ```
 
-## 😅 Solution
+## 👉 The solution
 
 Replace the existing contents of `schema.graphql` with the following code snippet:
 
