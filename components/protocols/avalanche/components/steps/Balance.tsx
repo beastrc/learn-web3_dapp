@@ -79,6 +79,7 @@ const Balance = () => {
               >{`This address has a balance of ${balance} AVAX`}</Text>
             }
             type="success"
+            closable
             showIcon
           />
         ) : null}

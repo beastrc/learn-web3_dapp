@@ -3,6 +3,7 @@ import {
   AVALANCHE_NETWORKS,
   PROTOCOL_INNER_STATES_ID,
   GlobalStateT,
+  InnerStateT,
 } from 'types';
 import {
   getCurrentChainId,

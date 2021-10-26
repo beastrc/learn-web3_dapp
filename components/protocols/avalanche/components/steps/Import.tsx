@@ -55,7 +55,7 @@ const Import = () => {
             showIcon
             message={
               <a
-                href={transactionUrl(hash as string)}
+                href={transactionUrl(hash ?? '')}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -69,6 +69,7 @@ const Import = () => {
             style={{maxWidth: '350px'}}
             type="error"
             showIcon
+            closable
             message={error}
             onClose={() => setError('')}
           />
