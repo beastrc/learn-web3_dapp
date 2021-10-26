@@ -1,42 +1,28 @@
+import {LoadingOutlined} from '@ant-design/icons';
+import {Alert, Col, Typography} from 'antd';
 import {useEffect, useState} from 'react';
-import {Alert, Col, Space, Typography, Button} from 'antd';
-import {PoweroffOutlined} from '@ant-design/icons';
-import Confetti from 'react-confetti';
-import axios from 'axios';
-
-import {CHAINS} from 'types';
-import {CHAINS_CONFIG} from 'lib/constants';
-
 import {useAppState} from '@figment-secret/hooks';
+import axios from 'axios';
 
 const {Text} = Typography;
 
 const Connect = () => {
-  const {state, dispatch} = useAppState();
-  const chainId = CHAINS_CONFIG[CHAINS.SECRET].label;
-
   const [version, setVersion] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
+  const {state} = useAppState();
 
   useEffect(() => {
-    if (version) {
-      dispatch({
-        type: 'SetNetwork',
-        network: version,
-      });
-    }
-  }, [version, setVersion]);
+    getConnection();
+  }, []);
 
   const getConnection = async () => {
     setFetching(true);
-    setError(null);
-    setVersion(null);
     try {
       const response = await axios.post(`/api/secret/connect`, state);
-      setVersion(response.data);
+      const version = response.data;
+      setVersion(version);
     } catch (error) {
-      setError(error.response.data);
+      console.error(error);
     } finally {
       setFetching(false);
     }
@@ -44,47 +30,21 @@ const Connect = () => {
 
   return (
     <Col>
-      {version && (
-        <Confetti numberOfPieces={500} tweenDuration={1000} gravity={0.05} />
+      <LoadingOutlined style={{fontSize: 24}} spin hidden={!fetching} />
+      {version ? (
+        <Alert
+          message={
+            <Text strong>
+              connected to Secret version
+              <Text code>{version.slice(0, 5)}</Text>
+            </Text>
+          }
+          type="success"
+          showIcon
+        />
+      ) : (
+        <Alert message={`Not connected to Secret`} type="error" showIcon />
       )}
-      <Space direction="vertical" size="large">
-        <Space direction="horizontal" size="large">
-          <Button
-            type="primary"
-            icon={<PoweroffOutlined />}
-            onClick={getConnection}
-            loading={fetching}
-            size="large"
-          />
-          {version ? (
-            <Alert
-              message={
-                <Space>
-                  Connected to {chainId}:<Text code>version {version}</Text>
-                </Space>
-              }
-              type="success"
-              showIcon
-            />
-          ) : error ? (
-            <Alert
-              message={
-                <Space>
-                  <Text code>Error: {error}</Text>
-                </Space>
-              }
-              type="error"
-              showIcon
-            />
-          ) : (
-            <Alert
-              message={<Space>Not Connected to {chainId}</Space>}
-              type="error"
-              showIcon
-            />
-          )}
-        </Space>
-      </Space>
     </Col>
   );
 };
