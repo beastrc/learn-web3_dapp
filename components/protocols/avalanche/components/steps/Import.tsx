@@ -12,7 +12,6 @@ import {getAvalancheInnerState} from '@figment-avalanche/lib';
 const Import = () => {
   const {state, dispatch} = useGlobalState();
   const avalancheState = getAvalancheInnerState(state);
-
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
@@ -37,7 +36,7 @@ const Import = () => {
       );
       setHash(response.data);
     } catch (error) {
-      setError(error.data.message);
+      console.log(error);
     } finally {
       setFetching(false);
     }
@@ -56,7 +55,7 @@ const Import = () => {
             showIcon
             message={
               <a
-                href={transactionUrl(hash as string)}
+                href={transactionUrl(hash ?? '')}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -70,7 +69,9 @@ const Import = () => {
             style={{maxWidth: '350px'}}
             type="error"
             showIcon
+            closable
             message={error}
+            onClose={() => setError('')}
           />
         )}
       </Space>
