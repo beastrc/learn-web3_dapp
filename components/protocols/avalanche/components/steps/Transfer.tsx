@@ -26,7 +26,6 @@ const {Text} = Typography;
 const Transfer = () => {
   const {state, dispatch} = useGlobalState();
   const avalancheState = getAvalancheInnerState(state);
-
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
   const [hash, setHash] = useState(null);
@@ -57,8 +56,7 @@ const Transfer = () => {
       });
       setHash(response.data);
     } catch (error) {
-      const errorMsg = error.data ? error.data.message : 'Unknow error';
-      setError(errorMsg);
+      setError(error.message);
     } finally {
       setFetching(false);
     }
@@ -72,13 +70,13 @@ const Transfer = () => {
         layout="horizontal"
         onFinish={transfer}
         initialValues={{
-          from: avalancheState.address,
+          from: avalancheState.ADDRESS,
           amount: 1,
           to: recipient,
         }}
       >
         <Form.Item label="Sender" name="from" required>
-          <Text code>{avalancheState.address}</Text>
+          <Text code>{avalancheState.ADDRESS}</Text>
         </Form.Item>
 
         <Form.Item
@@ -126,7 +124,7 @@ const Transfer = () => {
               message={<Text strong>Transfer confirmed!</Text>}
               description={
                 <a
-                  href={transactionUrl(hash as string)}
+                  href={transactionUrl(hash ?? '')}
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -139,7 +137,13 @@ const Transfer = () => {
 
         {error && (
           <Form.Item {...tailLayout}>
-            <Alert type="error" showIcon message={error} />
+            <Alert
+              type="error"
+              showIcon
+              closable
+              message={error}
+              onClose={() => setError(null)}
+            />
           </Form.Item>
         )}
       </Form>
