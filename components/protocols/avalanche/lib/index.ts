@@ -3,6 +3,7 @@ import {
   AVALANCHE_NETWORKS,
   PROTOCOL_INNER_STATES_ID,
   GlobalStateT,
+  InnerStateT,
 } from 'types';
 import {
   getCurrentChainId,
@@ -55,7 +56,7 @@ const getAvalancheInnerState = (state: GlobalStateT) => {
   const secret = getChainInnerState(
     state,
     chainId,
-    PROTOCOL_INNER_STATES_ID.SECRET,
+    PROTOCOL_INNER_STATES_ID.METAMASK_NETWORK_NAME,
   );
 
   if (secret) {
