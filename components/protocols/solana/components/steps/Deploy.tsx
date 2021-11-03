@@ -1,23 +1,35 @@
 import {Alert, Col, Input, Button, Space, Typography, Modal} from 'antd';
-import {prettyError, getSolanaState} from '@figment-solana/lib';
-import {PROTOCOL_INNER_STATES_ID} from 'types';
-import {ErrorBox} from '@figment-solana/components/nav';
 import {accountExplorer} from '@figment-solana/lib';
+import {ErrorBox} from '@figment-solana/components/nav';
 import type {ErrorT} from '@figment-solana/types';
+import {prettyError} from '@figment-solana/lib';
 import {useEffect, useState} from 'react';
-import {useGlobalState} from 'context';
 import axios from 'axios';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getNetworkForCurrentChain,
+  getChainInnerState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
 
 const {Text} = Typography;
 
 const Deploy = () => {
   const {state, dispatch} = useGlobalState();
-  const {network} = getSolanaState(state);
+  const chainId = getCurrentChainId(state);
+  const network = getNetworkForCurrentChain(state);
+  const programId = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
+  );
 
   const [value, setValue] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
+  const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
     if (error) {
@@ -34,29 +46,28 @@ const Deploy = () => {
     });
   }
 
-  useEffect(() => {
-    if (address) {
-      dispatch({
-        type: 'SetInnerState',
-        values: [
-          {
-            [PROTOCOL_INNER_STATES_ID.PROGRAM_ID]: address,
-          },
-        ],
-        isCompleted: true,
-      });
-    }
-  }, [address]);
-
   const checkDeployment = async () => {
     setError(null);
+    setChecked(false);
     setFetching(true);
     try {
-      await axios.post(`/api/solana/deploy`, {
+      const response = await axios.post(`/api/solana/deploy`, {
         network,
         programId: value,
       });
-      setAddress(value);
+      setChecked(response.data);
+      dispatch({
+        type: 'SetStepInnerState',
+        chainId,
+        innerStateId: PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
+        value: value,
+      });
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId,
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
     } catch (error) {
       setError(prettyError(error));
     } finally {
@@ -81,12 +92,12 @@ const Deploy = () => {
             Check Deployment
           </Button>
         </Space>
-        {address && (
+        {checked && (
           <Alert
             message={<Text strong>{`The program is correctly deployed`}</Text>}
             description={
               <a
-                href={accountExplorer(address, network)}
+                href={accountExplorer(programId ?? '', network)}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -94,6 +105,7 @@ const Deploy = () => {
               </a>
             }
             type="success"
+            closable
             showIcon
           />
         )}

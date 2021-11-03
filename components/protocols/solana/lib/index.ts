@@ -5,15 +5,11 @@ import {
   SOLANA_PROTOCOLS,
   PROTOCOL_INNER_STATES_ID,
 } from 'types';
-import {
-  getCurrentChainId,
-  getChainInnerState,
-  getNetworkForCurrentChain,
-} from 'context';
+import {getCurrentChainId, getChainInnerState} from 'context';
 import {getNodeURL as getNodeUrl} from 'utils/datahub';
 
 // Helper for generating an account URL on Solana Explorer
-export const accountExplorer = (address: string, network: string) => {
+const accountExplorer = (address: string, network: string) => {
   if (network === 'localhost') {
     return `https://explorer.solana.com/address/${address}?cluster=custom&customUrl=http://127.0.0.1:8899`;
   } else {
@@ -22,7 +18,7 @@ export const accountExplorer = (address: string, network: string) => {
 };
 
 // Helper for generating an transaction URL on Solana Explorer
-export const transactionExplorer = (hash: string, network: string) => {
+const transactionExplorer = (hash: string, network: string) => {
   if (network === 'localhost') {
     return `https://explorer.solana.com/tx/${hash}?cluster=custom&customUrl=http://127.0.0.1:8899`;
   } else {
@@ -30,7 +26,7 @@ export const transactionExplorer = (hash: string, network: string) => {
   }
 };
 
-export const prettyError = (error: any) => {
+const prettyError = (error: any) => {
   return {
     message: error?.response?.data ?? 'Unknown message',
     file: error?.config?.url ?? 'Unknown file',
@@ -40,7 +36,7 @@ export const prettyError = (error: any) => {
   };
 };
 
-export const getNodeURL = (network?: string) =>
+const getNodeURL = (network?: string) =>
   getNodeUrl(
     CHAINS.SOLANA,
     SOLANA_NETWORKS.DEVNET,
@@ -48,10 +44,9 @@ export const getNodeURL = (network?: string) =>
     network,
   );
 
-export const getSolanaState = (state: GlobalStateT) => {
-  const solanaState: any = {};
+const getSolanaInnerState = (state: GlobalStateT) => {
+  const solanaInnerState: any = {};
   const chainId = getCurrentChainId(state);
-  const network = getNetworkForCurrentChain(state);
   const address = getChainInnerState(
     state,
     chainId,
@@ -59,7 +54,7 @@ export const getSolanaState = (state: GlobalStateT) => {
   );
 
   if (address) {
-    solanaState.address = address;
+    solanaInnerState.address = address;
   }
   const secret = getChainInnerState(
     state,
@@ -68,7 +63,7 @@ export const getSolanaState = (state: GlobalStateT) => {
   );
 
   if (secret) {
-    solanaState.secret = secret;
+    solanaInnerState.secret = secret;
   }
   const programId = getChainInnerState(
     state,
@@ -77,7 +72,7 @@ export const getSolanaState = (state: GlobalStateT) => {
   );
 
   if (programId) {
-    solanaState.programId = programId;
+    solanaInnerState.greeter = programId;
   }
 
   const greeter = getChainInnerState(
@@ -86,8 +81,16 @@ export const getSolanaState = (state: GlobalStateT) => {
     PROTOCOL_INNER_STATES_ID.GREETER,
   );
   if (greeter) {
-    solanaState.greeter = greeter;
+    solanaInnerState.greeter = greeter;
   }
 
-  return {network, ...solanaState};
+  return solanaInnerState;
+};
+
+export {
+  prettyError,
+  accountExplorer,
+  transactionExplorer,
+  getNodeURL,
+  getSolanaInnerState,
 };

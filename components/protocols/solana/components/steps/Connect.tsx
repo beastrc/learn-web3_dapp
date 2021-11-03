@@ -1,16 +1,20 @@
 import {Col, Alert, Space, Typography, Button} from 'antd';
-import {getCurrentChainId, useGlobalState} from 'context';
-import {getSolanaState} from '@figment-solana/lib';
 import {PoweroffOutlined} from '@ant-design/icons';
 import {useEffect, useState} from 'react';
-import Confetti from 'react-confetti';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+  getNetworkForCurrentChain,
+} from 'context';
 import axios from 'axios';
+import Confetti from 'react-confetti';
 
 const {Text} = Typography;
 
 const Connect = () => {
   const {state, dispatch} = useGlobalState();
-  const {network} = getSolanaState(state);
+  const network = getNetworkForCurrentChain(state);
   const chainId = getCurrentChainId(state);
 
   const [version, setVersion] = useState<string | null>(null);
@@ -20,7 +24,10 @@ const Connect = () => {
   useEffect(() => {
     if (version) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
       });
     }
   }, [version, setVersion]);
