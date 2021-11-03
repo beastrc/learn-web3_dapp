@@ -130,12 +130,12 @@ Below is the schema describing BasicProfile definition. All schemas must comply 
 }
 ```
 
-# 🏋️ Challenge #1
+# Challenge #1
 
-In this tutorial, we will learn how to write data to the BasicProfile and then read it.
+In this tutorial we will learn how you can write data to BasicProfile and then read it.
 
 {% hint style="tip" %}
-In `components/protocols/ceramic/components/steps/BasicProfile.tsx`, implement the `saveBasicProfile` function.
+In **`components/protocols/ceramic/components/steps/BasicProfile.tsx`**, implement the`saveBasicProfile` function.
 {% endhint %}
 
 **Take a few minutes to figure this out.**
@@ -148,8 +148,8 @@ const saveBasicProfile = async (values: BasicProfile) => {
   const {name} = values;
 
   try {
-    // Set BasicProfile (use IdxSchema.BasicProfile)
-    setCurrentUserData(undefined);
+    // Set BasicProfile (use IndexSchema.BasicProfile)
+
     setName(name);
   } catch (error) {
     alert(error.message);
@@ -159,15 +159,19 @@ const saveBasicProfile = async (values: BasicProfile) => {
 };
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [Create records using IDX](https://developers.idx.xyz/build/writing/)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution for Challenge #1
+# Solution for Challenge #1
 
 ```typescript
 // solution
@@ -178,8 +182,9 @@ const saveBasicProfile = async (values: BasicProfile) => {
   const {name} = values;
 
   try {
-    // Set BasicProfile (use IdxSchema.BasicProfile)
-    setCurrentUserData(IdxSchema.BasicProfile, {name});
+    // Set BasicProfile (use IndexSchema.BasicProfile)
+    await idx.set(IdxSchema.BasicProfile, {name});
+
     setName(name);
   } catch (error) {
     alert(error.message);
@@ -191,16 +196,14 @@ const saveBasicProfile = async (values: BasicProfile) => {
 
 **What happened in the code above?**
 
-- Destructure the `name` property from the BasicProfile values passed to the `saveBasicProfile` function.
-- Use the `setCurrentUserData` React hook to set the BasicProfile and associate it with the `name` object.
-- Use the `setName` React hook to set the BasicProfile's `name` so it can be displayed in the UI.
+- Here we use idx instance to call `set` method on it providing alias name `basicProfile` and data that we want to save. In this case we only store name to Ceramic.
 
-# 🏋️ Challenge #2
+# Challenge #2
 
 Now that we have our data stored with IDX, it's time to read it in order to validate if what we stored in Challenge #1 worked.
 
 {% hint style="tip" %}
-In `components/protocols/ceramic/components/steps/BasicProfile.tsx`, implement the `readBasicProfile` function.
+In **`components/protocols/ceramic/components/steps/BasicProfile.tsx`**, implement the`readBasicProfile` function.
 {% endhint %}
 
 **Take a few minutes to figure this out.**
@@ -209,9 +212,10 @@ In `components/protocols/ceramic/components/steps/BasicProfile.tsx`, implement t
 const readBasicProfile = async () => {
   try {
     setFetching(true);
-    // Read BasicProfile (use IdxSchema.BasicProfile enum)
+
+    // Read basic profile (use IdxSchema.BasicProfile enum)
     const resp = undefined;
-    setCurrentUserData(IdxSchema.BasicProfile, resp as BasicProfile);
+
     setBasicProfile(resp);
   } catch (error) {
     alert(error.message);
@@ -221,15 +225,19 @@ const readBasicProfile = async () => {
 };
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [Read records using IDX](https://developers.idx.xyz/build/reading/)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution for Challenge #2
+# Solution for Challenge #2
 
 ```typescript
 // solution
@@ -237,9 +245,9 @@ const readBasicProfile = async () => {
   try {
     setFetching(true);
 
-    // Read BasicProfile (use IdxSchema.BasicProfile enum)
+    // Read basic profile (use IdxSchema.BasicProfile enum)
     const resp = await idx.get<BasicProfile>(IdxSchema.BasicProfile);
-    setCurrentUserData(IdxSchema.BasicProfile, resp as BasicProfile);
+
     setBasicProfile(resp);
   } catch (error) {
     alert(error.message);

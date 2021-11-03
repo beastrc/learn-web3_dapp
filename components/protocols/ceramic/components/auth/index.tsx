@@ -1,247 +1,110 @@
-import React, {useState} from 'react';
-import {Button, Space, Tag, Typography} from 'antd';
-import {
-  FundViewOutlined,
-  LinkOutlined,
-  PoweroffOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import React, {useCallback, useState} from 'react';
+import {Alert, Button, Space} from 'antd';
+import {LinkOutlined, PoweroffOutlined} from '@ant-design/icons';
 import {useIdx} from '@figment-ceramic/context/idx';
 import {PROTOCOL_INNER_STATES_ID} from 'types';
-import {getCurrentChainId, useGlobalState} from 'context';
-import {slicedAddress} from 'utils/string-utils';
-import {EntryT} from '@figment-ceramic/types';
-import IdentityItem from '@figment-ceramic/components/auth/IdentityItem';
-import IdentityPopover from '@figment-ceramic/components/auth/IdentityPopover';
+import {getChainInnerState, getCurrentChainId, useGlobalState} from 'context';
 
 type AuthProps = {
   onConnected?: (address: string) => void;
   onLoggedIn?: (did: string) => void;
   onLoggedOut?: () => void;
-  onlyConnect?: boolean;
-  connectBtnText?: string;
-  disconnectBtnText?: string;
-  logInBtnText?: string;
-  logOutBtnText?: string;
 };
 
 const Auth = (props: AuthProps): JSX.Element => {
-  const {
-    onlyConnect = false,
-    onConnected,
-    onLoggedIn,
-    onLoggedOut,
-    logInBtnText = 'Log In',
-    logOutBtnText = 'Log Out',
-    connectBtnText = 'Connect',
-    disconnectBtnText = 'Disconnect',
-  } = props;
+  const {onConnected, onLoggedIn, onLoggedOut} = props;
   const {state, dispatch} = useGlobalState();
   const chainId = getCurrentChainId(state);
 
-  const {
-    connect,
-    disconnect,
-    logIn,
-    logOut,
-    isConnected,
-    isAuthenticated,
-    currentUserAddress,
-    currentUserDID,
-    currentUserData,
-  } = useIdx();
-  const [loading, setLoading] = useState<boolean>(false);
+  const {connect, logIn, logOut, isAuthenticated} = useIdx();
 
-  const handleConnect = async () => {
-    try {
-      setLoading(true);
-
-      const address = await connect();
-
-      dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: address,
-      });
-
-      if (onConnected) {
-        onConnected(address);
-      }
-    } catch (err) {
-      alert('Could not connect to Metamask');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDisconnect = async () => {
-    try {
-      setLoading(true);
-
-      await disconnect();
-    } catch (err) {
-      alert('Could not disconnect');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const userDID = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.DID,
+  );
 
   const handleLogIn = async () => {
     try {
-      setLoading(true);
+      const address = await connect();
 
-      const DID = await logIn();
+      if (address) {
+        dispatch({
+          type: 'SetStepInnerState',
+          chainId,
+          innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
+          value: address,
+        });
 
-      dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.DID,
-        value: DID,
-      });
+        if (onConnected) {
+          onConnected(address);
+        }
 
-      if (onLoggedIn) {
-        onLoggedIn(DID);
+        const did = await logIn(address);
+
+        if (did) {
+          dispatch({
+            type: 'SetStepInnerState',
+            chainId,
+            innerStateId: PROTOCOL_INNER_STATES_ID.DID,
+            value: did,
+          });
+
+          if (onLoggedIn) {
+            onLoggedIn(did);
+          }
+        }
+      } else {
+        alert('Could not connect to Metamask');
       }
     } catch (err) {
       console.log(err);
       alert('Something went wrong');
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleLogOut = async () => {
-    try {
-      setLoading(true);
+  const handleLogOut = () => {
+    logOut();
 
-      await logOut();
+    dispatch({
+      type: 'SetStepInnerState',
+      chainId,
+      innerStateId: PROTOCOL_INNER_STATES_ID.DID,
+      value: null,
+    });
 
-      dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.DID,
-        value: null,
-      });
+    dispatch({
+      type: 'SetStepInnerState',
+      chainId,
+      innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
+      value: null,
+    });
 
-      dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.ADDRESS,
-        value: null,
-      });
+    dispatch({
+      type: 'SetStepInnerState',
+      chainId,
+      innerStateId: PROTOCOL_INNER_STATES_ID.USER_NAME,
+      value: null,
+    });
 
-      dispatch({
-        type: 'SetStepInnerState',
-        chainId,
-        innerStateId: PROTOCOL_INNER_STATES_ID.USER_NAME,
-        value: null,
-      });
-
-      if (onLoggedOut) {
-        onLoggedOut();
-      }
-    } catch (err) {
-      console.log(err);
-      alert('Something went wrong');
-    } finally {
-      setLoading(false);
+    if (onLoggedOut) {
+      onLoggedOut();
     }
   };
 
-  const UserInfo = ({msg, display, value}: EntryT) => {
+  if (userDID && isAuthenticated) {
     return (
-      <Typography.Paragraph
-        copyable={{text: value, tooltips: `Click to copy!`}}
-      >
-        <span>{msg}</span>
-        <Tag color="gold">
-          <Space>
-            <FundViewOutlined />
-            <strong>{display ? display(value) : value}</strong>
-          </Space>
-        </Tag>
-      </Typography.Paragraph>
-    );
-  };
-
-  const IdentityItems = () => {
-    return (
-      <div>
-        <IdentityItem label="Address" value={currentUserAddress} slice />
-
-        <IdentityItem label="DID" value={currentUserDID} slice />
-
-        <IdentityItem
-          label="Name"
-          value={currentUserData?.basicProfile?.name}
-        />
-      </div>
-    );
-  };
-
-  if (onlyConnect) {
-    if (isConnected && currentUserAddress) {
-      return (
-        <IdentityPopover
-          actions={[
-            <Button
-              icon={<LinkOutlined />}
-              onClick={handleDisconnect}
-              block
-              danger
-            >
-              {disconnectBtnText}
-            </Button>,
-          ]}
-        >
-          <Button size="large" shape="round" icon={<UserOutlined />}>
-            {slicedAddress(currentUserAddress as string)}
-          </Button>
-        </IdentityPopover>
-      );
-    } else {
-      return (
+      <Space>
         <Button
           type="primary"
-          icon={<LinkOutlined />}
-          onClick={handleConnect}
+          icon={<PoweroffOutlined />}
+          onClick={handleLogOut}
           size="large"
-          shape="round"
+          danger
         >
-          {connectBtnText}
+          Log Out
         </Button>
-      );
-    }
-  }
-
-  if (isAuthenticated && currentUserDID) {
-    let displayText;
-    if (currentUserData?.basicProfile?.name) {
-      displayText = currentUserData.basicProfile.name;
-    } else {
-      displayText = slicedAddress(
-        (currentUserDID || currentUserAddress) as string,
-      );
-    }
-
-    return (
-      <IdentityPopover
-        actions={[
-          <Button
-            icon={<PoweroffOutlined />}
-            onClick={handleLogOut}
-            block
-            danger
-          >
-            {logOutBtnText}
-          </Button>,
-        ]}
-      >
-        <Button size="large" shape="round" icon={<UserOutlined />}>
-          {displayText}
-        </Button>
-      </IdentityPopover>
+      </Space>
     );
   } else {
     return (
@@ -251,12 +114,14 @@ const Auth = (props: AuthProps): JSX.Element => {
           icon={<PoweroffOutlined />}
           onClick={handleLogIn}
           size="large"
-          shape="round"
-          disabled={loading}
-          loading={loading}
         >
-          {logInBtnText}
+          Log In
         </Button>
+        <Alert
+          message="Please log in to submit transactions to Ceramic"
+          type="error"
+          showIcon
+        />
       </Space>
     );
   }

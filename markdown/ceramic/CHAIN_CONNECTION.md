@@ -10,32 +10,29 @@ Imagine this scenario: You're a fresh Web3 developer who just landed a sweet rol
 
 # 🧑🏼‍💻 Challenge
 
-In `components/protocols/ceramic/context/idx.tsx`, implement the `checkConnection` function.
+In `components/protocols/ceramic/components/steps/Connect.tsx`, implement the`checkConnection` function.
 
 ```typescript
-// components/protocols/ceramic/context/idx.tsx
+// components/protocols/ceramic/components/steps/Connect.tsx
 
-const connect = async (): Promise<string> => {
-  const provider = await detectEthereumProvider();
-  if (provider) {
-    // Connect to Polygon using Web3Provider and Metamask.
-    // Find more information at: https://docs.metamask.io/guide/rpc-api.html.
-    // NOTE: Be careful not to use a deprecated method!
-    // Define address and network
-    const addresses = undefined;
-    const address = undefined;
-    if (setIsConnected) {
-      setIsConnected(true);
+const checkConnection = async () => {
+  try {
+    const provider = await detectEthereumProvider();
+
+    if (provider) {
+      // Connect to Polygon using Web3Provider and Metamask.
+      // Find more information at: https://docs.metamask.io/guide/rpc-api.html.
+      // NOTE: Be careful not to use deprecated method!
+      // Define address and network
+      const addresses = undefined;
+      const address = undefined;
+
+      setAddress(address);
+    } else {
+      alert('Please install Metamask at https://metamask.io');
     }
-    if (setCurrentUserAddress) {
-      setCurrentUserAddress(address);
-    }
-    if (identityStore) {
-      await identityStore.setAddress(address);
-    }
-    return address;
-  } else {
-    throw new Error('Please install Metamask at https://metamask.io');
+  } catch (error) {
+    alert('Something went wrong');
   }
 };
 ```
@@ -48,28 +45,26 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ```typescript
 // solution
-// components/protocols/ceramic/context/idx.tsx
-const connect = async (): Promise<string> => {
-  const provider = await detectEthereumProvider();
-  if (provider) {
-    // Connect to Polygon using Web3Provider and Metamask.
-    // Find more information at: https://docs.metamask.io/guide/rpc-api.html.
-    // NOTE: Be careful not to use deprecated method!
-    // Define address and network
-    const addresses = await provider.request({method: 'eth_requestAccounts'});
-    const address = addresses[0];
-    if (setIsConnected) {
-      setIsConnected(true);
+// components/protocols/ceramic/components/steps/Connect.tsx
+
+const checkConnection = async () => {
+  try {
+    const provider = await detectEthereumProvider();
+
+    if (provider) {
+      // Connect to Polygon using Web3Provider and Metamask.
+      // Find more information at: https://docs.metamask.io/guide/rpc-api.html.
+      // NOTE: Be careful not to use deprecated method!
+      // Define address and network
+      const addresses = await provider.request({method: 'eth_requestAccounts'});
+      const address = addresses[0];
+
+      setAddress(address);
+    } else {
+      alert('Please install Metamask at https://metamask.io');
     }
-    if (setCurrentUserAddress) {
-      setCurrentUserAddress(address);
-    }
-    if (identityStore) {
-      await identityStore.setAddress(address);
-    }
-    return address;
-  } else {
-    throw new Error('Please install Metamask at https://metamask.io');
+  } catch (error) {
+    alert('Something went wrong');
   }
 };
 //...
