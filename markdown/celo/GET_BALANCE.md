@@ -6,7 +6,7 @@ The Celo blockchain has two native assets, **CELO** (CELO) and the **Celo Dollar
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/celo/balance.ts`, implement the **balance** function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -36,17 +36,21 @@ In `pages/api/celo/balance.ts`, implement the **balance** function. You must rep
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**We can access the CELO contract via the SDK with kit.contracts.getGoldToken()**](https://docs.celo.org/developer-guide/contractkit/contracts-wrappers-registry#interacting-with-celo-and-cusd)
 - [**We can access the cUSD contract with kit.contracts.getStableToken()**](https://docs.celo.org/developer-guide/contractkit/contracts-wrappers-registry#interacting-with-celo-and-cusd)
 - [**Reading from Alfajores**](https://docs.celo.org/developer-guide/start/hellocelo#reading-alfajores)
 
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
+
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -82,7 +86,7 @@ The amount returned by these calls is denominated in **aCELO** and **acUSD**, wh
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route. Click on **Check Balance** and you should see the balance displayed on the page:
 
@@ -90,6 +94,6 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Querying the balance information is fun, but being able to submit transactions and change the state of a blockchain is even better! In the next step, we will dive deeper and submit our first transactions on Celo.

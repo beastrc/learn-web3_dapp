@@ -4,7 +4,7 @@ The role of TezosToolkit here is to provide a simplified way of dealing with the
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/tezos/transfer.ts`, implement the function and try to make your first transfer on the Tezos network. You must replace the instances of `undefined` with working code to accomplish this.
@@ -31,16 +31,20 @@ In `pages/api/tezos/transfer.ts`, implement the function and try to make your fi
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**Transfer with Taquito**](https://tezostaquito.io/docs/quick_start/#transfer)
 - [**Check out the `transfer` method's interface**](https://tezostaquito.io/typedoc/interfaces/_taquito_taquito.contractprovider.html#transfer)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -82,7 +86,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once you have the code above saved:
 
@@ -93,6 +97,6 @@ Once you have the code above saved:
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now that we have created our account and made a transfer, let's move on to deploying some code (known as a "smart contract") to the **Tezos** blockchain! Ready to take the plunge? Let's go...

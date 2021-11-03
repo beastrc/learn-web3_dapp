@@ -11,7 +11,7 @@ Here we will focus on the second part, the **C-Chain import transaction**.
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/avalanche/import.ts`, implement the function and try to import the AVAX sent in the previous tutorial to C-Chain. You must replace any instances of `undefined` with working code to accomplish this.
@@ -56,16 +56,20 @@ In `pages/api/avalanche/import.ts`, implement the function and try to import the
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**Code examples**](https://github.com/ava-labs/avalanchejs/tree/master/examples/avm)
 - [**Manage X-Chain Keys**](https://docs.avax.network/build/tools/avalanchejs/manage-x-chain-keys)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -124,7 +128,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route. Click on **Import 0.05 AVAX** and you should see the balance displayed on the page:
 
@@ -132,7 +136,7 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Congratulations, you've made it this far and successfully completed an AVAX transfer from the X-Chain to the C-Chain. The same approach works in reverse (C-Chain -> X-Chain), or for any other inter-chain transfers (X-Chain -> P-Chain or P-Chain -> C-Chain for example).
 

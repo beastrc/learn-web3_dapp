@@ -2,7 +2,7 @@ At the beginning of this journey into Polygon, we generated a mnemonic. Now we'r
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In the file `components/protocols/polygon/components/steps/Restore.tsx`, implement the `restore` function. Using `ethers`, look for `Wallet`, then when the wallet has been regenerated try to deduce which property we're going to call in order to display the address and the private key, finally verify than the generated key matches the existing one.  
@@ -29,16 +29,20 @@ const restore = () => {
 };
 ```
 
-Need some help? Check out these links 👇
+Need some help? Check out these two tips/links
 
 - [**Create Wallet using ethers**](https://docs.ethers.io/v5/api/signer/#Wallet)
 - [**Properties of a Wallet**](https://docs.ethers.io/v5/api/signer/#Wallet--properties)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```javascript
 // solution
@@ -70,7 +74,7 @@ const restore = () => {
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 When you have completed the code:
 
@@ -81,7 +85,7 @@ When you have completed the code:
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Congratulations! We have gone from zero to **Polygon**, covering all the most fundamental concepts needed for developers to succeed in using **Polygon**. From connecting to the network to interacting with smart contracts, you have completed coding challenges and created a functional yet basic dApp.
 

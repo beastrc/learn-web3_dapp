@@ -2,7 +2,7 @@ At this point, we have deployed a smart contract on the Polygon testnet & set th
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In the file `components/protocols/polygon/components/steps/Getter.tsx`, implement the `getValue` function.  
@@ -29,18 +29,22 @@ const getValue = async () => {
 };
 ```
 
-**Need some help?** Check out these links 👇
+Need some help? Check out these two tips/links
 
 - [**Create a Contract using ethers**](https://docs.ethers.io/v5/api/contract/contract/#Contract--creating)
   - You can **console.log `SimpleStorageJson`** to find the contract's `abi` and `address` (through the property `networks`)
 - [**How to call a contract's methods on a ethers Contract object**](https://docs.ethers.io/v5/api/contract/contract/#Contract-functionsCall)
 - To read from the blockchain you don't need to spend any tokens so you can just use a provider to create a Contract instance. But to write you will need to create and sign a transaction through Metamask. Use a `signer` to create the Contract object!
 
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
+
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -73,7 +77,7 @@ const getValue = async () => {
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code above save you can click and this is what the UI should look like!
 
@@ -81,6 +85,6 @@ Once the code above save you can click and this is what the UI should look like!
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
-Now that we know how to interact with a smart contract we are going to learn how to restore an account from its mnemonic.
+Now that we know how to interact with a smart contract we are going to learn how to retore an account from its mnemonic.

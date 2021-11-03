@@ -35,7 +35,7 @@ const customFees = {
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/secret/deploy.ts`, implement the default function. Upload your first smart contract on the **Secret** network. You must replace the instances of `undefined` with working code to accomplish this.
@@ -60,16 +60,20 @@ const receipt = undefined;
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?**
 
 - [**Contract example**](https://github.com/enigmampc/SecretJS-Templates/tree/master/5_contracts)
 - [**The `upload` function**](https://github.com/enigmampc/SecretNetwork/blob/7adccb9a09579a564fc90173cc9509d88c46d114/cosmwasm-js/packages/sdk/src/signingcosmwasmclient.ts#L208)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```tsx
 // solution
@@ -101,7 +105,7 @@ const receipt = await client.instantiate(codeId, initMsg, address.slice(6));
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once you have the code above saved, click on **Deploy Contract**
 
@@ -109,6 +113,6 @@ Once you have the code above saved, click on **Deploy Contract**
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now that we have deployed a smart contract, let's interact with it! In the following tutorials, we will look at how to use both view and change functions.

@@ -23,7 +23,7 @@ const GreetingSchema = new Map([
 
 ---
 
-# 🏋️ Challenge
+# 👨‍💻 Challenge
 
 {% hint style="tip" %}
 In `pages/api/solana/getter.ts`, complete the code for `getter`. First deserialize the greeter data to a TypeScript class, then access the counter value and pass it to the response object using the `.json()` method as in all previous tutorials.
@@ -48,15 +48,19 @@ res.status(200).json(undefined);
 //...
 ```
 
-**Need some help?** Check out this link 👇
+**Need some help?** Here are a few hints
 
 - [Read about the deserialize method](https://npm.io/package/borsh)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# 👉 Solution
 
 ```typescript
 // solution

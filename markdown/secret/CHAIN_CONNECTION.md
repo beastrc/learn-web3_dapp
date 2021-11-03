@@ -4,7 +4,7 @@ Connecting to a node works pretty much the same as for a standard web server. Th
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/secret/connect.ts`, implement the function and try to establish your first connection to the Secret network. To verify your connection has been correctly established, try to return the current protocol version. You must replace the instances of `undefined` with working code to accomplish this.
@@ -24,16 +24,20 @@ try {
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**Connection example**](https://github.com/enigmampc/SecretJS-Templates/tree/master/1_connecting_to_node)
 - [**Read the code for `SecretJS` & `cosmwasm`**](https://github.com/enigmampc/SecretNetwork/tree/master/cosmwasm-js/packages/sdk)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -55,7 +59,7 @@ try {
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file has been saved, refresh the page to see it update & display the current version.
 
@@ -63,6 +67,6 @@ Once the code is complete and the file has been saved, refresh the page to see i
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Well done! Your fluency in the Secret dialect of Web 3 is growing. As a newcomer, creating an account is the next logical step in your exploration. Ready to take the next step forward?

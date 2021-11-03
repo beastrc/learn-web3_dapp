@@ -2,7 +2,7 @@ Unlike many other Web 3 protocols, NEAR uses a human readable account ID instead
 
 ---
 
-# 🏋️ Challenge 1 of 2
+# Challenge 1 of 2
 
 {% hint style="tip" %}
 In `pages/api/near/check-account.ts`, implement the default function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -40,7 +40,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -67,7 +67,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# 🏋️ Challenge 2 of 2
+# Challenge 2 of 2
 
 {% hint style="tip" %}
 In `pages/api/near/create-account.ts`, implement the default function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -85,15 +85,19 @@ try {
 }
 ```
 
-**Need some help?** Check out this link 👇
+**Need some help?**
 
 - [`createAccount` method](https://near.github.io/near-api-js/classes/near.near-1.html#createaccount)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -115,7 +119,7 @@ try {
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route:
 
@@ -127,7 +131,7 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Every new account created on the testnet is given a free **airdrop** of 200 NEAR tokens. So cool!
 Ready to move on? Let's check the account balance in the next step.

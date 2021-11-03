@@ -5,7 +5,6 @@ export default async function connect(
   req: NextApiRequest,
   res: NextApiResponse<string>,
 ) {
-  //...
   try {
     const {network} = req.body;
     const client = undefined;
@@ -16,7 +15,6 @@ export default async function connect(
     }
     res.status(200).json(version);
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }

@@ -1,18 +1,17 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {getAvalancheClient} from '@figment-avalanche/lib';
 
-type ResponseT = {
+type ReponseT = {
   secret: string;
   address: string;
 };
-
 export default function account(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseT | string>,
+  res: NextApiResponse<ReponseT>,
 ) {
   try {
     const {network} = req.body;
-    const client = getAvalancheClient();
+    const client = getAvalancheClient(network);
     const chain = client.XChain();
     const keyChain = chain.keyChain();
     const keypair = keyChain.undefined; // There is a useful method to use here
@@ -23,7 +22,6 @@ export default function account(
       address,
     });
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    res.status(500).json(error.message);
   }
 }

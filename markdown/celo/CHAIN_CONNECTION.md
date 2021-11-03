@@ -4,7 +4,7 @@ We are now all set up with our application and we can start writing some JavaScr
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/celo/connect.ts`, implement the function and try to establish your first connection to the Celo network. You must replace any instances of `undefined` with working code to accomplish this.
@@ -23,16 +23,20 @@ In `pages/api/celo/connect.ts`, implement the function and try to establish your
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [**ContractKit usage**](https://docs.celo.org/developer-guide/contractkit/usage)
 - [**To start working with ContractKit you need a kit instance**](https://docs.celo.org/developer-guide/sdk-code-reference/summary-2/modules/_kit_#functions)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -54,7 +58,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file has been saved, refresh the page to see it update & display the current version.
 
@@ -64,6 +68,6 @@ Congratulations, you have successfully made a function that can connect to the C
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 In this tutorial you’ve learned how to use the ContractKit package and DataHub to connect to the Celo node. You also had a chance to run one simple query to test that connection.

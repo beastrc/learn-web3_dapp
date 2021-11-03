@@ -4,7 +4,7 @@ It’s time to create your first Celo account on the **Alfajores** testnet. With
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/celo/account.ts`, implement the function to first create a **mnemonic**, then produce an **address** from the **public key** belonging to the **mnemonic**. You must replace any instances of `undefined` with working code to accomplish this.
@@ -29,15 +29,19 @@ try {
 //...
 ```
 
-**Need some help?** Check out this link 👇
+**Need some help?**
 
 - [**Account documentation**](https://web3js.readthedocs.io/en/v1.4.0/web3-eth-accounts.html)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -72,7 +76,7 @@ Do not forget to fund the newly created wallet using the [Celo developer faucet]
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route. Now click on **Generate a Keypair** and you should see:
 
@@ -80,6 +84,6 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now that we have a Celo account created and funded with testnet tokens, let’s move on to querying a Celo node to get the current balance of our account!

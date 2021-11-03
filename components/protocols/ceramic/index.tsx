@@ -20,7 +20,7 @@ import {
   useGlobalState,
 } from 'context';
 import {getNodeURL} from 'utils/datahub';
-import LocalStorageIdentityStore from '@figment-ceramic/lib/identityStore/LocalStorage';
+import SetupWizard from 'components/shared/SetupWizard';
 
 const Ceramic: React.FC = () => {
   const {state} = useGlobalState();
@@ -32,15 +32,12 @@ const Ceramic: React.FC = () => {
     CERAMIC_PROTOCOLS.HTTP,
     'devnet',
   );
-  // IdentityStore is responsible for persisting address, did and basic profile
-  // Here we use LocalStorage identity store, but we could easily create another abstractions for ie. storing data in cookies
-  const identityStore = new LocalStorageIdentityStore('learn-web3-dapp');
 
   return (
-    <Web3AuthProvider ceramicNodeUrl={nodeUrl} identityStore={identityStore}>
+    <Web3AuthProvider ceramicNodeUrl={nodeUrl}>
       <div key={stepId}>
         <Nav />
-        {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP}
+        {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP && <SetupWizard showText />}
         {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
         {stepId === PROTOCOL_STEPS_ID.LOGIN && <LogIn />}
         {stepId === PROTOCOL_STEPS_ID.BASIC_PROFILE && <BasicProfile />}

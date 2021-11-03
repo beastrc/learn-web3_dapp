@@ -4,7 +4,7 @@ In this tutorial, we will learn how to connect to an Avalanche node using DataHu
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/avalanche/connect.ts`, implement the function and try to establish your first connection to the Avalanche network. To verify your connection has been correctly established, try to return the current protocol version. You must replace any instances of `undefined` with working code to accomplish this.
@@ -25,7 +25,7 @@ In `pages/api/avalanche/connect.ts`, implement the function and try to establish
 //...
 ```
 
-**Need some help?** Check out these tips 👇
+**Need some help?** Check out these tips
 
 - [**Check out the `AvalancheJS` library**](https://github.com/ava-labs/avalanchejs)
 - Use the `getAvalancheClient` helper function.
@@ -40,7 +40,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -66,7 +66,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file has been saved, refresh the page to see it update & display the current version.
 
@@ -74,6 +74,6 @@ Once the code is complete and the file has been saved, refresh the page to see i
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
-Now that we have successfully connected to an Avalanche node using DataHub, we are ready to move on to the next tutorial. We have also created the foundation for the next step, creating an account.
+Now that we have successfully connected to Avalanche node using DataHub, we are ready to move onto the next tutorial. We have also created the foundation for the next step, creating an account.

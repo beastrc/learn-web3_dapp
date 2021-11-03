@@ -6,7 +6,7 @@ If you want to learn more about Celo smart contracts, follow the [**Deploy and I
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/celo/getter.ts`, implement the default function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -31,16 +31,20 @@ In `pages/api/celo/getter.ts`, implement the default function. You must replace 
 //...
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out this link!
 
 - [**Interacting with Custom contracts**](https://docs.celo.org/developer-guide/contractkit/usage#interacting-with-custom-contracts)
 - [**Web3.js eth contract interface**](https://web3js.readthedocs.io/en/v1.4.0/web3-eth-contract.html)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```tsx
 // solution
@@ -68,7 +72,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once you have the code above saved, click the button and watch the magic happen:
 
@@ -76,6 +80,6 @@ Once you have the code above saved, click the button and watch the magic happen:
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now, time for the last challenge! Time to modify the state of the contract and thus the state of the blockchain. Let's go!

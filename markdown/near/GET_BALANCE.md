@@ -2,7 +2,7 @@ After the creation of your account on the **NEAR** testnet, the **NEAR Helper** 
 
 ---
 
-# 🏋️ Challenge
+# Challenge
 
 {% hint style="tip" %}
 In `pages/api/near/balance.ts`, implement the default function. You must replace any instances of `undefined` with working code to accomplish this.
@@ -22,16 +22,20 @@ In `pages/api/near/balance.ts`, implement the default function. You must replace
   }
 ```
 
-**Need some help?** Check out these links 👇
+**Need some help?** Check out these links
 
 - [Basic `NEAR` economics](https://docs.near.org/docs/concepts/gas)
 - [The `Account` class](https://near.github.io/near-api-js/classes/account.account-1.html)
+
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
 
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -56,7 +60,7 @@ The amount returned by `getAccountBalance` is denominated in **yoctoNEAR**, so t
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
 Once the code is complete and the file is saved, Next.js will rebuild the API route. Click on **Check Balance** and you should see the balance displayed on the page:
 
@@ -64,6 +68,6 @@ Once the code is complete and the file is saved, Next.js will rebuild the API ro
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 200 **NEAR** available, hmmm ... More than enough to do our first transfer. In the next tutorial, we're going to buy an imaginary pizza with our testnet NEAR! Transferring tokens is generally done as an exchange for goods or services.
