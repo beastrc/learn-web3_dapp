@@ -1,19 +1,33 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
-import {ErrorT, ErrorBox, prettyError} from 'utils/error';
+import {ErrorBox} from '@figment-solana/components/nav';
+import type {ErrorT} from '@figment-solana/types';
 import {useState, useEffect} from 'react';
-import {useGlobalState} from 'context';
+import {prettyError} from '@figment-solana/lib';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getNetworkForCurrentChain,
+  getChainInnerState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
 import axios from 'axios';
-import {getInnerState} from 'utils/context';
 
 const {Text} = Typography;
 
 const Getter = () => {
   const {state, dispatch} = useGlobalState();
-  const {network, greeter} = getInnerState(state);
+  const chainId = getCurrentChainId(state);
+  const network = getNetworkForCurrentChain(state);
+  const greeter = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.GREETER,
+  );
 
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
-  const [value, setValue] = useState<number | null>(null);
+  const [greeting, setGreeting] = useState<number>(-1);
 
   useEffect(() => {
     if (error) {
@@ -30,24 +44,21 @@ const Getter = () => {
     });
   }
 
-  useEffect(() => {
-    if (typeof value === 'number') {
-      dispatch({
-        type: 'SetIsCompleted',
-      });
-    }
-  }, [value, setValue]);
-
   const getGreeting = async () => {
     setError(null);
     setFetching(true);
-    setValue(null);
     try {
       const response = await axios.post(`/api/solana/getter`, {
         network,
         greeter,
       });
-      setValue(response.data);
+      setGreeting(response.data);
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId,
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
     } catch (error) {
       setError(prettyError(error));
     } finally {
@@ -64,14 +75,15 @@ const Getter = () => {
             Get Greeting
           </Button>
         </Space>
-        {value && (
+        {greeting >= 0 && (
           <Alert
             message={
               <Text
                 strong
-              >{`The account has been greeted ${value} times`}</Text>
+              >{`The account has been greeted ${greeting} times`}</Text>
             }
             type="success"
+            closable
             showIcon
           />
         )}

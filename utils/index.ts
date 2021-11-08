@@ -1,5 +1,3 @@
-export const VERSION = 'DEPRECATED';
-/*
 import {CHAINS} from 'types';
 
 const pack = (map: Map<string, boolean>) => {
@@ -66,4 +64,3 @@ export {
   setActionSetStepStatusFromChainId,
   resetStepsStatus,
 };
-*/
