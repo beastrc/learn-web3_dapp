@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
-import {dracula} from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import gfm from 'remark-gfm';
 import {Typography, Divider, Tag} from 'antd';
 import {FileOutlined, LinkOutlined} from '@ant-design/icons';
@@ -109,17 +108,11 @@ const Markdown = ({
                   );
                 }
 
-                const firstNode = textMatches[1] as string;
-                const renderedChildren = children.map((child, index) => {
-                  if (index === 0) {
-                    return firstNode;
-                  } else {
-                    return child;
-                  }
-                });
+                children[0] = textMatches[1] as string;
+
                 return (
                   <StyledAlert
-                    message={<Text>{renderedChildren}</Text>}
+                    message={<Text>{children}</Text>}
                     type={style}
                     showIcon
                   />

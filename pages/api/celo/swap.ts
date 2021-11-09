@@ -38,7 +38,7 @@ export default async function swap(
       hash,
     });
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    console.error(error);
+    res.status(500).json('Token Exchange failed');
   }
 }

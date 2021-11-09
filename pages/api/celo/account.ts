@@ -11,18 +11,18 @@ export default async function connect(
   res: NextApiResponse<ResponseT | string>,
 ) {
   try {
-      const url = getSafeUrl();
-      const kit = newKit(url);
-      const account = undefined;
-      const address = undefined;
-      const secret = undefined;
+    const url = getSafeUrl();
+    const kit = newKit(url);
+    const account = undefined;
+    const address = undefined;
+    const secret = undefined;
 
-      res.status(200).json({
-          address,
-          secret
-      })
+    res.status(200).json({
+      address,
+      secret,
+    });
   } catch (error) {
-    let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
-    res.status(500).json(errorMessage);
+    console.error(error);
+    res.status(500).json('Account creation failed');
   }
 }
