@@ -1,17 +1,21 @@
 import {Col, Alert, Space, Typography, Button} from 'antd';
-import {useGlobalState} from 'context';
-import {getInnerState, getChainLabel} from 'utils/context';
 import {PoweroffOutlined} from '@ant-design/icons';
 import {useEffect, useState} from 'react';
-import Confetti from 'react-confetti';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+  getNetworkForCurrentChain,
+} from 'context';
 import axios from 'axios';
+import Confetti from 'react-confetti';
 
 const {Text} = Typography;
 
 const Connect = () => {
   const {state, dispatch} = useGlobalState();
-  const {network} = getInnerState(state);
-  const chainLabel = getChainLabel(state);
+  const network = getNetworkForCurrentChain(state);
+  const chainId = getCurrentChainId(state);
 
   const [version, setVersion] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -20,7 +24,10 @@ const Connect = () => {
   useEffect(() => {
     if (version) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
       });
     }
   }, [version, setVersion]);
@@ -57,7 +64,7 @@ const Connect = () => {
             <Alert
               message={
                 <Space>
-                  Connected to {chainLabel}:<Text code>version {version}</Text>
+                  Connected to {chainId}:<Text code>version {version}</Text>
                 </Space>
               }
               type="success"
@@ -75,7 +82,7 @@ const Connect = () => {
             />
           ) : (
             <Alert
-              message={<Space>Not Connected to {chainLabel}</Space>}
+              message={<Space>Not Connected to {chainId}</Space>}
               type="error"
               showIcon
             />

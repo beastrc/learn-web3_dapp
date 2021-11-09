@@ -1,4 +1,10 @@
-import {GlobalContext, globalStateReducer, initialGlobalState} from 'context';
+import {
+  getCurrentStepIdForCurrentChain,
+  getIsOneColumn,
+  GlobalContext,
+  globalStateReducer,
+  initialGlobalState,
+} from 'context';
 import {ChainType, MarkdownForChainIdT, LocalStorageStateT} from 'types';
 import {FOOTER_HEIGHT, GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
 import React, {useEffect, useReducer} from 'react';
@@ -8,12 +14,7 @@ import Sidebar from './Sidebar';
 import {Row, Col} from 'antd';
 import Footer from './Footer';
 import Nav from './Nav';
-import {
-  prepareGlobalState,
-  prepareGlobalStateForStorage,
-  isOneColumnStep,
-  getChainId,
-} from 'utils/context';
+import {prepareGlobalState, prepareGlobalStateForStorage} from 'utils/context';
 import {Spinner} from './Spinner';
 import {colors} from 'utils/colors';
 
@@ -25,8 +26,7 @@ const Layout = (
   const [storageState, setStorageState] =
     useLocalStorage<LocalStorageStateT>('figment');
   const newGlobalState = prepareGlobalState(storageState, initialGlobalState);
-
-  const [state, dispatch] = useReducer(globalStateReducer, initialGlobalState);
+  const [state, dispatch] = useReducer(globalStateReducer, newGlobalState);
 
   useEffect(() => {
     dispatch({
@@ -43,8 +43,8 @@ const Layout = (
     return <Spinner color={colors.figmentYellow} />;
   }
 
-  const isStepOneColumn = isOneColumnStep(state);
-  const currentStepId = getChainId(state);
+  const isStepOneColumn = getIsOneColumn(state);
+  const currentStepId = getCurrentStepIdForCurrentChain(state);
 
   return (
     <GlobalContext.Provider value={{state, dispatch}}>

@@ -1,10 +1,18 @@
 import {Alert, Col, Button, Space, Typography, Modal} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
 import {transactionExplorer} from '@figment-solana/lib';
+import {ErrorBox} from '@figment-solana/components/nav';
 import {useEffect, useState} from 'react';
-import {ErrorT, ErrorBox, prettyError} from 'utils/error';
-import {useGlobalState} from 'context';
-import {getInnerState} from 'utils/context';
+import type {ErrorT} from '@figment-solana/types';
+import {prettyError} from '@figment-solana/lib';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getNetworkForCurrentChain,
+  getChainInnerState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
 
 import axios from 'axios';
 
@@ -12,13 +20,29 @@ const {Text} = Typography;
 
 const Setter = () => {
   const {state, dispatch} = useGlobalState();
-  const {network, greeter, programId, secret} = getInnerState(state);
+  const chainId = getCurrentChainId(state);
+  const network = getNetworkForCurrentChain(state);
+  const secret = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.SECRET,
+  );
+  const programId = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.CONTRACT_ID,
+  );
+  const greeter = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.GREETER,
+  );
 
   const [fetching, setFetching] = useState<boolean>(false);
   const [resetting, setResetting] = useState<boolean>(false);
   const [error, setError] = useState<ErrorT | null>(null);
-  const [hash, setHash] = useState<string | null>(null);
-  const [message, setMessage] = useState<number | null>(null);
+  const [hash, setHash] = useState<string>('');
+  const [message, setMessage] = useState<number>(-1);
 
   useEffect(() => {
     if (error) {
@@ -36,38 +60,40 @@ const Setter = () => {
   }
 
   useEffect(() => {
-    if (hash) {
-      dispatch({
-        type: 'SetIsCompleted',
-      });
-    }
-  }, [hash, setHash]);
+    if (message === -1) return;
 
-  const getGreeting = async () => {
-    setError(null);
-    setFetching(true);
-    setMessage(null);
-    try {
-      const response = await axios.post(`/api/solana/getter`, {
-        network,
-        greeter,
-      });
-      setMessage(response.data);
-    } catch (error) {
-      setError(prettyError(error));
-    } finally {
-      setFetching(false);
-    }
-  };
+    dispatch({
+      type: 'SetStepIsCompleted',
+      chainId,
+      stepId: getCurrentStepIdForCurrentChain(state),
+      value: true,
+    });
+  }, [message]);
 
   useEffect(() => {
+    const getGreeting = async () => {
+      setError(null);
+      setFetching(true);
+      try {
+        const response = await axios.post(`/api/solana/getter`, {
+          greeter,
+          secret,
+          programId,
+          network,
+        });
+        setMessage(response.data);
+      } catch (error) {
+        setError(prettyError(error));
+      } finally {
+        setFetching(false);
+      }
+    };
     getGreeting();
-  }, [hash, setHash]);
+  }, [hash, state]);
 
   const setGreetings = async () => {
-    setResetting(true);
     setError(null);
-    setHash(null);
+    setResetting(true);
     try {
       const response = await axios.post(`/api/solana/setter`, {
         greeter,
@@ -87,15 +113,18 @@ const Setter = () => {
     <Col>
       <Space direction="vertical" size="large">
         <Text>Number of greetings:</Text>
-        {fetching ? (
-          <LoadingOutlined style={{fontSize: 24}} spin />
-        ) : (
-          <Alert
-            style={{fontWeight: 'bold', textAlign: 'center'}}
-            type="success"
-            message={typeof message === 'number' ? message : 'NaN'}
-          />
-        )}
+        <Col>
+          {fetching ? (
+            <LoadingOutlined style={{fontSize: 24}} spin />
+          ) : (
+            <Alert
+              style={{fontWeight: 'bold', textAlign: 'center'}}
+              type="success"
+              closable={false}
+              message={message >= 0 ? message : 'NaN'}
+            />
+          )}
+        </Col>
         <Col>
           <Space direction="vertical" size="large">
             <Space direction="horizontal">
@@ -105,12 +134,12 @@ const Setter = () => {
             </Space>
             {resetting ? (
               <LoadingOutlined style={{fontSize: 24}} spin />
-            ) : hash ? (
+            ) : hash.length !== 0 ? (
               <Alert
                 message={<Text strong>{`The greeting has been sent`}</Text>}
                 description={
                   <a
-                    href={transactionExplorer(network)(hash)}
+                    href={transactionExplorer(hash, network)}
                     target="_blank"
                     rel="noreferrer"
                   >
@@ -118,6 +147,7 @@ const Setter = () => {
                   </a>
                 }
                 type="success"
+                closable
                 showIcon
               />
             ) : null}

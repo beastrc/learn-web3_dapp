@@ -1,12 +1,19 @@
 import {Form, Input, Button, Alert, Space, Typography, Col, Modal} from 'antd';
 import {LoadingOutlined, RedoOutlined} from '@ant-design/icons';
-import {transactionExplorer} from '@figment-solana/lib';
-import {ErrorT, ErrorBox, prettyError} from 'utils/error';
+import {prettyError, transactionExplorer} from '@figment-solana/lib';
+import {ErrorBox} from '@figment-solana/components/nav';
+import type {ErrorT} from '@figment-solana/types';
 import {useEffect, useState} from 'react';
 import {Keypair} from '@solana/web3.js';
-import {useGlobalState} from 'context';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+  getNetworkForCurrentChain,
+  getChainInnerState,
+} from 'context';
 import axios from 'axios';
-import {getInnerState} from 'utils/context';
+import {PROTOCOL_INNER_STATES_ID} from 'types';
 
 const layout = {
   labelCol: {span: 4},
@@ -21,7 +28,18 @@ const {Text} = Typography;
 
 const Transfer = () => {
   const {state, dispatch} = useGlobalState();
-  const {address, network, secret} = getInnerState(state);
+  const chainId = getCurrentChainId(state);
+  const network = getNetworkForCurrentChain(state);
+  const address = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.ADDRESS,
+  );
+  const secret = getChainInnerState(
+    state,
+    chainId,
+    PROTOCOL_INNER_STATES_ID.SECRET,
+  );
 
   const [recipient, setRecipient] = useState<string | null>(null);
   const [error, setError] = useState<ErrorT | null>(null);
@@ -39,14 +57,6 @@ const Transfer = () => {
       errorMsg(error);
     }
   }, [error, setError]);
-
-  useEffect(() => {
-    if (hash) {
-      dispatch({
-        type: 'SetIsCompleted',
-      });
-    }
-  }, [fetching, setFetching]);
 
   function errorMsg(error: ErrorT) {
     Modal.error({
@@ -72,6 +82,12 @@ const Transfer = () => {
         recipient,
       });
       setHash(response.data);
+      dispatch({
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
+      });
     } catch (error) {
       if (error.message === 'invalid amount') {
         setError({message: 'invalid amount'});
@@ -82,6 +98,8 @@ const Transfer = () => {
       setFetching(false);
     }
   };
+
+  const explorerUrl = transactionExplorer(hash ?? '', network);
 
   return (
     <Col>
@@ -150,11 +168,7 @@ const Transfer = () => {
               showIcon
               message={<Text strong>Transfer confirmed!</Text>}
               description={
-                <a
-                  href={transactionExplorer(network)(hash)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={explorerUrl} target="_blank" rel="noreferrer">
                   View on Solana Explorer
                 </a>
               }
