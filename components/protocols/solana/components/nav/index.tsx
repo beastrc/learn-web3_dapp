@@ -1,8 +1,7 @@
 import {trackStorageCleared} from 'utils/tracking-utils';
 import {Typography, Popover, Button, Select} from 'antd';
 import type {EntryT, ErrorT} from '@figment-solana/types';
-import dynamic from 'next/dynamic';
-const DynamicReactJson = dynamic(() => import('react-json-view'), {ssr: false});
+import ReactJson from 'react-json-view';
 import {StepMenuBar} from 'components/shared/Layout/StepMenuBar';
 import {
   getCurrentChainId,
@@ -128,7 +127,7 @@ const Nav = () => {
 
 export const ErrorBox = ({error}: {error: ErrorT}) => {
   return (
-    <DynamicReactJson
+    <ReactJson
       src={error}
       collapsed={false}
       name={'error'}
