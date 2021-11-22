@@ -173,6 +173,11 @@ export type ChainsType = {
   [key in CHAINS]: ChainType;
 };
 
+export type ChainPropT = {
+  chain: ChainType;
+  markdown: MarkdownForChainIdT;
+};
+
 export type StepType = {
   id: PROTOCOL_STEPS_ID;
   title: string;
@@ -265,7 +270,6 @@ export enum PROTOCOL_INNER_STATES_ID {
 
 export enum PROTOCOL_STEPS_ID {
   PREFACE = 'PREFACE',
-  FINAL = 'FINAL',
   EXPORT_TOKEN = 'EXPORT_TOKEN',
   IMPORT_TOKEN = 'IMPORT_TOKEN',
   SWAP_TOKEN = 'SWAP_TOKEN',
