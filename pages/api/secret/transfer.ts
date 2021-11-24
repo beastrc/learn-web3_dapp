@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeUrl} from '@figment-secret/lib';
+import {getSafeUrl} from 'components/protocols/secret/lib';
 import {
   EnigmaUtils,
   SigningCosmWasmClient,
@@ -13,7 +13,7 @@ export default async function connect(
   res: NextApiResponse<string>,
 ) {
   try {
-    const url = getNodeUrl();
+    const url = await getSafeUrl();
     const {mnemonic, txAmount} = req.body;
     console.log(url);
     console.log(mnemonic);
@@ -34,26 +34,11 @@ export default async function connect(
     };
 
     // 2. Initialize a secure Secret client
-    const client = new SigningCosmWasmClient(
-      url,
-      address,
-      (signBytes) => signingPen.sign(signBytes),
-      txEncryptionSeed,
-      fees,
-    );
+    const client = new SigningCosmWasmClient(undefined);
 
     // 3. Send tokens
-    const memo = 'sendTokens example'; // optional memo
-    const sent = await client.sendTokens(
-      address,
-      [
-        {
-          amount: txAmount,
-          denom: 'uscrt',
-        },
-      ],
-      memo,
-    );
+    const memo = 'sendTokens example'; // Optional memo to identify the transaction
+    const sent = await client.sendTokens(undefined);
 
     // 4. Query the tx result
     const query = {id: sent.transactionHash};

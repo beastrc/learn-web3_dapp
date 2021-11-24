@@ -5,7 +5,7 @@ import {
   pubkeyToAddress,
   encodeSecp256k1Pubkey,
 } from 'secretjs';
-import {getNodeUrl} from '@figment-secret/lib';
+import {getSafeUrl} from 'components/protocols/secret/lib';
 import type {NextApiRequest, NextApiResponse} from 'next';
 import fs from 'fs';
 
@@ -31,7 +31,7 @@ export default async function connect(
   res: NextApiResponse<ResponseT | string>,
 ) {
   try {
-    const url = await getNodeUrl();
+    const url = await getSafeUrl();
     const {mnemonic} = req.body;
     const signingPen = await Secp256k1Pen.fromMnemonic(mnemonic);
     const pubkey = encodeSecp256k1Pubkey(signingPen.pubkey);
@@ -49,7 +49,7 @@ export default async function connect(
 
     // Upload the contract wasm
     const wasm = fs.readFileSync(CONTRACT_PATH);
-    const uploadReceipt = await client.upload(wasm, {});
+    const uploadReceipt = await client.undefined;
     if (!uploadReceipt) {
       throw new Error('uploadReceipt error');
     }
@@ -58,7 +58,7 @@ export default async function connect(
 
     // Create an instance of the Counter contract, providing a starting count
     const initMsg = {count: 101};
-    const receipt = await client.instantiate(codeId, initMsg, address.slice(6));
+    const receipt = undefined;
 
     res.status(200).json({
       contractAddress: receipt.contractAddress,

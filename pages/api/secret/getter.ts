@@ -5,7 +5,7 @@ import {
   pubkeyToAddress,
   encodeSecp256k1Pubkey,
 } from 'secretjs';
-import {getNodeUrl} from '@figment-secret/lib';
+import {getSafeUrl} from 'components/protocols/secret/lib';
 import type {NextApiRequest, NextApiResponse} from 'next';
 
 export default async function connect(
@@ -13,8 +13,8 @@ export default async function connect(
   res: NextApiResponse<string>,
 ) {
   try {
-    const url = getNodeUrl();
-    const {mnemonic, contractId} = req.body;
+    const url = await getSafeUrl();
+    const {mnemonic, contract} = req.body;
 
     const signingPen = await Secp256k1Pen.fromMnemonic(mnemonic);
     const pubkey = encodeSecp256k1Pubkey(signingPen.pubkey);
@@ -39,7 +39,7 @@ export default async function connect(
 
     // Get the stored value
     console.log('Querying contract for current count');
-    let response = await client.queryContractSmart(contractId, {get_count: {}});
+    let response = undefined;
     let count = response.count as number;
 
     res.status(200).json(count.toString());

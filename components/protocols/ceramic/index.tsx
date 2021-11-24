@@ -1,5 +1,12 @@
 import {Web3AuthProvider} from '@figment-ceramic/context/idx';
-import {CERAMIC_NETWORKS, CERAMIC_PROTOCOLS, PROTOCOL_STEPS_ID} from 'types';
+import Layout from 'components/shared/Layout';
+import React from 'react';
+import {
+  CERAMIC_NETWORKS,
+  CERAMIC_PROTOCOLS,
+  ChainType,
+  PROTOCOL_STEPS_ID,
+} from 'types';
 import Nav from '@figment-ceramic/components/nav';
 import {
   BasicProfile,
@@ -43,4 +50,11 @@ const Ceramic: React.FC = () => {
   );
 };
 
-export default Ceramic;
+const WithLayoutCeramic: React.FC<{chain: ChainType; markdown: any}> = ({
+  chain,
+  markdown,
+}) => {
+  return Layout(Ceramic, chain, markdown);
+};
+
+export default WithLayoutCeramic;

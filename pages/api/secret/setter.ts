@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeUrl} from '@figment-secret/lib';
+import {getSafeUrl} from 'components/protocols/secret/lib';
 import {
   EnigmaUtils,
   SigningCosmWasmClient,
@@ -13,8 +13,8 @@ export default async function connect(
   res: NextApiResponse<string>,
 ) {
   try {
-    const url = getNodeUrl();
-    const {mnemonic, contractId} = req.body;
+    const url = await getSafeUrl();
+    const {mnemonic, contract} = req.body;
     const signingPen = await Secp256k1Pen.fromMnemonic(mnemonic);
     const pubkey = encodeSecp256k1Pubkey(signingPen.pubkey);
     const address = pubkeyToAddress(pubkey, 'secret');
@@ -37,7 +37,7 @@ export default async function connect(
 
     // Increment the counter
     const handleMsg = {increment: {}};
-    const response = await client.execute(contractId, handleMsg);
+    const response = undefined;
 
     res.status(200).json(response.transactionHash);
   } catch (error) {
