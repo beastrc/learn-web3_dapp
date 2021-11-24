@@ -17,7 +17,7 @@ type Action =
 
 const initialState = {
   index: 0,
-  network: 'supernova-2',
+  network: 'holodeck-2',
 };
 
 function appStateReducer(state: State, action: Action): State {
