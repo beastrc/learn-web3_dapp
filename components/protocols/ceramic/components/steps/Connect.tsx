@@ -1,20 +1,29 @@
 import {Col, Alert, Space, Typography} from 'antd';
 import {useEffect} from 'react';
-import {useGlobalState} from 'context';
+import {
+  getCurrentChainId,
+  getCurrentStepIdForCurrentChain,
+  useGlobalState,
+} from 'context';
 import {useIdx} from '@figment-ceramic/context/idx';
 import Confetti from 'react-confetti';
 
 const {Text} = Typography;
 
 const Connect = () => {
-  const {dispatch} = useGlobalState();
+  const {state, dispatch} = useGlobalState();
+  const chainId = getCurrentChainId(state);
+  const stepId = getCurrentStepIdForCurrentChain(state);
 
   const {isConnected, currentUserAddress, connect} = useIdx();
 
   useEffect(() => {
     if (currentUserAddress) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetStepIsCompleted',
+        chainId,
+        stepId,
+        value: true,
       });
     }
   }, [currentUserAddress]);

@@ -1,11 +1,10 @@
 import * as Steps from '@figment-the-graph/components/steps';
-import {getStepId} from 'utils/context';
-import {useGlobalState} from 'context';
 import {PROTOCOL_STEPS_ID} from 'types';
+import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
 
 const TheGraph: React.FC = () => {
-  const {state} = useGlobalState();
-  const stepId = getStepId(state);
+  const {state: globalState} = useGlobalState();
+  const stepId = getCurrentStepIdForCurrentChain(globalState);
 
   return (
     <>

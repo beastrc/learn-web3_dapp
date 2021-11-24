@@ -8,7 +8,11 @@ import {
   useLazyQuery,
 } from '@apollo/client';
 import MOST_VALUABLE_PUNKS_QUERY from '@figment-the-graph/graphql/query';
-import {useGlobalState} from 'context';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
 import {useColors} from 'hooks';
 import {StepButton} from 'components/shared/Button.styles';
 import Punks from '@figment-the-graph/components/punks';
@@ -24,7 +28,7 @@ const client = new ApolloClient({
 
 const QueryPunks = () => {
   const {state, dispatch} = useGlobalState();
-  const {primaryColor, secondaryColor} = useColors(state);
+  const {primaryColor, secondaryColor} = useColors(getCurrentChainId(state));
   const [getAssignedPunk, {loading, error, data}] = useLazyQuery(
     MOST_VALUABLE_PUNKS_QUERY,
   );
@@ -32,7 +36,10 @@ const QueryPunks = () => {
   useEffect(() => {
     if (data) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
       });
     }
   }, [data]);
