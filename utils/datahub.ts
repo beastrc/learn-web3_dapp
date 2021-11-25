@@ -2,7 +2,6 @@ import {
   NETWORKS,
   PROTOCOLS,
   CHAINS,
-  AVALANCHE_NETWORKS,
   NEAR_NETWORKS,
   CELO_NETWORKS,
   SECRET_NETWORKS,
@@ -64,7 +63,7 @@ export const getDatahubNodeURL = (
 ): string => {
   switch (chain) {
     case CHAINS.AVALANCHE:
-      return getDataHubAvalancheNodeUrl(network as AVALANCHE_NETWORKS);
+      return getDataHubAvalancheNodeUrl();
     case CHAINS.NEAR:
       return getDataHubNearNodeUrl(network as NEAR_NETWORKS);
     case CHAINS.POLKADOT:
@@ -88,10 +87,8 @@ export const getDatahubNodeURL = (
   }
 };
 
-const getDataHubAvalancheNodeUrl = (network: AVALANCHE_NETWORKS): string =>
-  network === AVALANCHE_NETWORKS.MAINNET
-    ? `https://${process.env.DATAHUB_AVALANCHE_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_AVALANCHE_API_KEY}`
-    : `https://${process.env.DATAHUB_AVALANCHE_FUJI_RPC_URL}/apikey/${process.env.DATAHUB_AVALANCHE_API_KEY}`;
+const getDataHubAvalancheNodeUrl = (): string =>
+  `https://${process.env.AVALANCHE_DATAHUB_URL}/apikey/${process.env.DATAHUB_AVALANCHE_API_KEY}`;
 
 const getDataHubNearNodeUrl = (network: NEAR_NETWORKS): string =>
   network === NEAR_NETWORKS.MAINNET
@@ -103,10 +100,8 @@ const getDataHubCeloNodeUrl = (network: CELO_NETWORKS): string =>
     ? `https://${process.env.DATAHUB_CELO_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_CELO_API_KEY}/`
     : `https://${process.env.DATAHUB_CELO_TESTNET_RPC_URL}/apikey/${process.env.DATAHUB_CELO_API_KEY}/`;
 
-const getDataHubSecretNodeUrl = (network: SECRET_NETWORKS): string =>
-  network === SECRET_NETWORKS.MAINNET
-    ? `https://${process.env.DATAHUB_SECRET_MAINNET_RPC_URL}/apikey/${process.env.DATAHUB_SECRET_API_KEY}/`
-    : `https://${process.env.DATAHUB_SECRET_TESTNET_RPC_URL}/apikey/${process.env.DATAHUB_SECRET_API_KEY}/`;
+const getDataHubSecretNodeUrl = (network?: SECRET_NETWORKS): string =>
+  `https://${process.env.DATAHUB_SECRET_TESTNET_URL}/apikey/${process.env.DATAHUB_SECRET_API_KEY}/`;
 
 const getDataHubPolkadotNodeUrl = (
   network: POLKADOT_NETWORKS,
