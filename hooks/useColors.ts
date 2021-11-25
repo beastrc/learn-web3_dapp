@@ -1,9 +1,7 @@
-import {GlobalStateT} from 'types';
+import {CHAINS} from 'types';
 import {getChainColors} from 'utils/colors';
-import {getChainId} from 'utils/context';
 
-const useColors = (state: GlobalStateT) => {
-  const chainId = getChainId(state);
+const useColors = (chainId: CHAINS) => {
   const {primaryColor, secondaryColor} = getChainColors(chainId);
 
   return {

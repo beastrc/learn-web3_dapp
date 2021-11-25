@@ -1,15 +1,6 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {getAvalancheClient} from '@figment-avalanche/lib';
-
-type TransactionT = {
-  txID: string;
-  outputIndex: number;
-};
-
-type BalanceT = {
-  balance: string;
-  utxoIDs: TransactionT[];
-};
+import {BalanceT} from '@figment-avalanche/types';
 
 export default async function balance(
   req: NextApiRequest,

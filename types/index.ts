@@ -82,8 +82,9 @@ export enum CHAIN_PROVIDERS {
 
 // NETWORKS ----------------------
 export enum AVALANCHE_NETWORKS {
-  TESTNET = 'Testnet',
-  DATAHUB = 'Datahub',
+  MAINNET = 'MAINNET',
+  FUJI = 'FUJI',
+  DATAHUB = 'datahub',
 }
 
 export enum CELO_NETWORKS {
@@ -93,8 +94,7 @@ export enum CELO_NETWORKS {
 
 export enum SECRET_NETWORKS {
   MAINNET = 'MAINNET',
-  TESTNET = 'SUPERNOVA-2',
-  DATAHUB = 'datahub',
+  TESTNET = 'HOLODECK-2',
 }
 
 export enum NEAR_NETWORKS {
@@ -106,19 +106,16 @@ export enum NEAR_NETWORKS {
 export enum TEZOS_NETWORKS {
   MAINNET = 'MAINNET',
   TESTNET = 'TESTNET',
-  DATAHUB = 'datahub',
 }
 
 export enum POLKADOT_NETWORKS {
   WESTEND = 'WESTEND',
   MAINNET = 'MAINNET',
-  DATAHUB = 'datahub',
 }
 
 export enum POLYGON_NETWORKS {
   MAINNET = 'MAINNET',
   TESTNET = 'TESTNET',
-  DATAHUB = 'datahub',
 }
 
 export enum SOLANA_NETWORKS {
@@ -143,11 +140,10 @@ export enum THE_GRAPH_NETWORKS {
 
 export enum ARWEAVE_NETWORKS {
   MAINNET = 'mainnet',
-  TESTNET = 'TESTNET',
-  DATAHUB = 'datahub',
 }
 
 // -----------------------------
+
 export type NETWORKS =
   | POLYGON_NETWORKS
   | AVALANCHE_NETWORKS
@@ -162,13 +158,6 @@ export type NETWORKS =
   | TEZOS_NETWORKS
   | ARWEAVE_NETWORKS;
 
-// -----------------------------
-export enum NETWORK {
-  DATAHUB,
-  TESTNET,
-  LOCALNET,
-}
-
 // ---------------------------------------------------
 export type ChainType = {
   id: CHAINS;
@@ -182,11 +171,6 @@ export type ChainType = {
 
 export type ChainsType = {
   [key in CHAINS]: ChainType;
-};
-
-export type ChainPropT = {
-  chain: ChainType;
-  markdown: MarkdownForChainIdT;
 };
 
 export type StepType = {
@@ -224,7 +208,8 @@ export type ProtocolStateT = {
   network: NETWORKS;
   protocol: PROTOCOLS;
   isActive: boolean;
-  numberOfSteps: number;
+  // numberOfSteps
+  numberOfStep: number;
   currentStepId: PROTOCOL_STEPS_ID;
   firstStepId: PROTOCOL_STEPS_ID;
   lastStepId: PROTOCOL_STEPS_ID;
@@ -235,6 +220,7 @@ export type ProtocolStateT = {
 export type ProtocolStepT = {
   id: PROTOCOL_STEPS_ID;
   title: string;
+  isVisited: boolean;
   isSkippable: boolean;
   isOneColumn: boolean;
   isCompleted: boolean;
