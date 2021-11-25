@@ -1,11 +1,15 @@
-import {useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Col, Alert, Space, Typography} from 'antd';
 import {
   CheckOutlined,
   CloseOutlined,
   PoweroffOutlined,
 } from '@ant-design/icons';
-import {useGlobalState} from 'context';
+import {
+  getCurrentChainId,
+  useGlobalState,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
 import axios from 'axios';
 import {StepButton} from 'components/shared/Button.styles';
 import {useColors} from 'hooks';
@@ -22,7 +26,7 @@ const Entity = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const {primaryColor, secondaryColor} = useColors(state);
+  const {primaryColor, secondaryColor} = useColors(getCurrentChainId(state));
 
   const isValid = () =>
     Object.values(status).reduce((completion, statusField) => {
@@ -32,7 +36,10 @@ const Entity = () => {
   useEffect(() => {
     if (isValid()) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetStepIsCompleted',
+        chainId: getCurrentChainId(state),
+        stepId: getCurrentStepIdForCurrentChain(state),
+        value: true,
       });
     }
   }, [status, setStatus]);
@@ -52,7 +59,7 @@ const Entity = () => {
   };
 
   return (
-    <Col key={`${fetching}`}>
+    <Col key={fetching as unknown as React.Key}>
       <Space direction="vertical" size="large">
         <StepButton
           type="primary"

@@ -26,8 +26,7 @@
       "@figment-polygon/*": ["components/protocols/polygon/*"],
       "@figment-ceramic/*": ["components/protocols/ceramic/*"],
       "@figment-the-graph/*": ["components/protocols/the_graph/*"]
-    },
-    "incremental": true
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],
   "exclude": ["node_modules"]

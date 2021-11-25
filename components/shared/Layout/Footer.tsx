@@ -1,6 +1,9 @@
 import {ArrowLeftOutlined, ArrowRightOutlined} from '@ant-design/icons';
-import {useGlobalState} from 'context';
-import {getStepId} from 'utils/context';
+import {
+  useGlobalState,
+  getCurrentChainId,
+  getCurrentStepIdForCurrentChain,
+} from 'context';
 import {FOOTER_HEIGHT} from 'lib/constants';
 import styled from 'styled-components';
 import {Col, Row} from 'antd';
@@ -20,7 +23,7 @@ const Footer = () => {
     isCompleted,
   } = useSteps(state, dispatch);
 
-  const {primaryColor, secondaryColor} = useColors(state);
+  const {primaryColor, secondaryColor} = useColors(getCurrentChainId(state));
 
   return (
     <Col span={24}>
@@ -37,7 +40,7 @@ const Footer = () => {
         )}
         {!isLastStep && (
           <NextButton
-            key={getStepId(state)}
+            key={getCurrentStepIdForCurrentChain(state)}
             size="large"
             type="primary"
             onClick={() => next()}

@@ -190,7 +190,6 @@ const Auth = (props: AuthProps): JSX.Element => {
               onClick={handleDisconnect}
               block
               danger
-              key={'handleDisconnect'}
             >
               {disconnectBtnText}
             </Button>,
@@ -234,7 +233,6 @@ const Auth = (props: AuthProps): JSX.Element => {
             onClick={handleLogOut}
             block
             danger
-            key={'handleLogOut'}
           >
             {logOutBtnText}
           </Button>,

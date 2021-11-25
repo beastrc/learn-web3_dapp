@@ -5,7 +5,7 @@ import {
   pubkeyToAddress,
   encodeSecp256k1Pubkey,
 } from 'secretjs';
-import {getNodeUrl} from '@figment-secret/lib';
+import {getSafeUrl} from 'components/protocols/secret/lib';
 import type {NextApiRequest, NextApiResponse} from 'next';
 import fs from 'fs';
 
@@ -31,13 +31,13 @@ export default async function connect(
   res: NextApiResponse<ResponseT | string>,
 ) {
   try {
-    const url = await getNodeUrl();
+    const url = await getSafeUrl();
     const {mnemonic} = req.body;
     const signingPen = await Secp256k1Pen.fromMnemonic(mnemonic);
     const pubkey = encodeSecp256k1Pubkey(signingPen.pubkey);
     const address = pubkeyToAddress(pubkey, 'secret');
 
-    // Initialise client
+    // 1. Initialise client
     const txEncryptionSeed = EnigmaUtils.GenerateNewSeed();
     const client = new SigningCosmWasmClient(
       url,

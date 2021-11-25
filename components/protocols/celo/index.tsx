@@ -1,12 +1,22 @@
 import {useEffect, useReducer} from 'react';
-import * as Steps from '@figment-celo/components/steps';
+import {
+  Connect,
+  Account,
+  Balance,
+  Transfer,
+  Swap,
+  Deploy,
+  Getter,
+  Setter,
+} from '@figment-celo/components/steps';
 import {
   appStateReducer,
   initialState,
   CeloContext,
 } from '@figment-celo/context';
 import {useLocalStorage} from '@figment-celo/hooks';
-import {PROTOCOL_STEPS_ID} from 'types';
+import {PROTOCOL_STEPS_ID, ChainType} from 'types';
+import Layout from 'components/shared/Layout';
 import Nav from './components/nav';
 import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
 
@@ -23,18 +33,25 @@ const Celo: React.FC = () => {
 
   return (
     <CeloContext.Provider value={{state, dispatch}}>
-      <Nav />
       {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP}
-      {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Steps.Connect />}
-      {stepId === PROTOCOL_STEPS_ID.CREATE_ACCOUNT && <Steps.Account />}
-      {stepId === PROTOCOL_STEPS_ID.GET_BALANCE && <Steps.Balance />}
-      {stepId === PROTOCOL_STEPS_ID.TRANSFER_TOKEN && <Steps.Transfer />}
-      {stepId === PROTOCOL_STEPS_ID.SWAP_TOKEN && <Steps.Swap />}
-      {stepId === PROTOCOL_STEPS_ID.DEPLOY_CONTRACT && <Steps.Deploy />}
-      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Steps.Getter />}
-      {stepId === PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE && <Steps.Setter />}
+      {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
+      {stepId === PROTOCOL_STEPS_ID.CREATE_ACCOUNT && <Account />}
+      {stepId === PROTOCOL_STEPS_ID.GET_BALANCE && <Balance />}
+      {stepId === PROTOCOL_STEPS_ID.TRANSFER_TOKEN && <Transfer />}
+      {stepId === PROTOCOL_STEPS_ID.SWAP_TOKEN && <Swap />}
+      {stepId === PROTOCOL_STEPS_ID.DEPLOY_CONTRACT && <Deploy />}
+      {stepId === PROTOCOL_STEPS_ID.GET_CONTRACT_VALUE && <Getter />}
+      {stepId === PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE && <Setter />}
+      <Nav />
     </CeloContext.Provider>
   );
 };
 
-export default Celo;
+const WithLayoutCelo: React.FC<{chain: ChainType; markdown: any}> = ({
+  chain,
+  markdown,
+}) => {
+  return Layout(Celo, chain, markdown);
+};
+
+export default WithLayoutCelo;
