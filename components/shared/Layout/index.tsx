@@ -1,10 +1,4 @@
-import {
-  getCurrentStepIdForCurrentChain,
-  getIsOneColumn,
-  GlobalContext,
-  globalStateReducer,
-  initialGlobalState,
-} from 'context';
+import {GlobalContext, globalStateReducer, initialGlobalState} from 'context';
 import {ChainType, MarkdownForChainIdT, LocalStorageStateT} from 'types';
 import {FOOTER_HEIGHT, GRID_LAYOUT, HEADER_HEIGHT} from 'lib/constants';
 import React, {useEffect, useReducer} from 'react';
@@ -14,18 +8,28 @@ import Sidebar from './Sidebar';
 import {Row, Col} from 'antd';
 import Footer from './Footer';
 import Nav from './Nav';
-import {prepareGlobalState, prepareGlobalStateForStorage} from 'utils/context';
+import {
+  prepareGlobalState,
+  prepareGlobalStateForStorage,
+  isOneColumnStep,
+  getChainId,
+} from 'utils/context';
 import {Spinner} from './Spinner';
 import {colors} from 'utils/colors';
+import Head from 'components/shared/Layout/Head';
+import {ReactElement} from 'react';
 
-const Layout = (
-  Protocol: React.FC,
-  chain: ChainType,
-  markdown: MarkdownForChainIdT,
-) => {
+type LayoutPropT = {
+  children: ReactElement;
+  chain: ChainType;
+  markdown: MarkdownForChainIdT;
+};
+
+const Layout = ({children, chain, markdown}: LayoutPropT) => {
   const [storageState, setStorageState] =
     useLocalStorage<LocalStorageStateT>('figment');
   const newGlobalState = prepareGlobalState(storageState, initialGlobalState);
+
   const [state, dispatch] = useReducer(globalStateReducer, newGlobalState);
 
   useEffect(() => {
@@ -43,11 +47,12 @@ const Layout = (
     return <Spinner color={colors.figmentYellow} />;
   }
 
-  const isStepOneColumn = getIsOneColumn(state);
-  const currentStepId = getCurrentStepIdForCurrentChain(state);
+  const isStepOneColumn = isOneColumnStep(state);
+  const currentStepId = getChainId(state);
 
   return (
     <GlobalContext.Provider value={{state, dispatch}}>
+      <Head label={chain.label} />
       <Col>
         <Nav />
         <BelowNav>
@@ -58,9 +63,7 @@ const Layout = (
             <Sidebar markdown={markdown} />
           </LeftPanel>
           {!isStepOneColumn && (
-            <RightPanel span={GRID_LAYOUT[1]}>
-              <Protocol />
-            </RightPanel>
+            <RightPanel span={GRID_LAYOUT[1]}>{children}</RightPanel>
           )}
         </BelowNav>
         <Footer />

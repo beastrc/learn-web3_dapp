@@ -1,37 +1,23 @@
-import {
-  Node,
-  Subgraph,
-  Manifest,
-  Query,
-  Mapping,
-  Entity,
-} from '@figment-the-graph/components/steps';
-import Layout from 'components/shared/Layout';
-import {ChainType, MarkdownForChainIdT, PROTOCOL_STEPS_ID} from 'types';
-import {getCurrentStepIdForCurrentChain, useGlobalState} from 'context';
+import * as Steps from '@figment-the-graph/components/steps';
+import {getStepId} from 'utils/context';
+import {useGlobalState} from 'context';
+import {PROTOCOL_STEPS_ID} from 'types';
 
 const TheGraph: React.FC = () => {
-  const {state: globalState} = useGlobalState();
-  const stepId = getCurrentStepIdForCurrentChain(globalState);
+  const {state} = useGlobalState();
+  const stepId = getStepId(state);
 
   return (
     <>
       {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP}
-      {stepId === PROTOCOL_STEPS_ID.GRAPH_NODE && <Node />}
-      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_SCAFFOLD && <Subgraph />}
-      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_MANIFEST && <Manifest />}
-      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_SCHEMA && <Entity />}
-      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_MAPPINGS && <Mapping />}
-      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_QUERY && <Query />}
+      {stepId === PROTOCOL_STEPS_ID.GRAPH_NODE && <Steps.Node />}
+      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_SCAFFOLD && <Steps.Subgraph />}
+      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_MANIFEST && <Steps.Manifest />}
+      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_SCHEMA && <Steps.Entity />}
+      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_MAPPINGS && <Steps.Mapping />}
+      {stepId === PROTOCOL_STEPS_ID.SUBGRAPH_QUERY && <Steps.Query />}
     </>
   );
 };
 
-const WithLayoutTheGraph: React.FC<{
-  chain: ChainType;
-  markdown: MarkdownForChainIdT;
-}> = ({chain, markdown}) => {
-  return Layout(TheGraph, chain, markdown);
-};
-
-export default WithLayoutTheGraph;
+export default TheGraph;
