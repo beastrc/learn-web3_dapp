@@ -6,7 +6,7 @@ import {useGlobalState} from 'context';
 
 const {Text} = Typography;
 
-const FAUCET_URL = 'https://faucet.supernova.enigma.co/';
+const FAUCET = 'https://faucet.supernova.enigma.co/';
 
 const Account = () => {
   const {dispatch} = useGlobalState();
@@ -51,31 +51,33 @@ const Account = () => {
 
   return (
     <Col>
-      <Space direction="vertical">
-        <Button
-          type="primary"
-          onClick={generateKeypair}
-          style={{marginBottom: '20px'}}
-          loading={fetching}
-        >
-          Generate a Keypair
-        </Button>
-        {address && mnemonic ? (
-          <>
+      <Button
+        type="primary"
+        onClick={generateKeypair}
+        style={{marginBottom: '20px'}}
+        loading={fetching}
+      >
+        Generate a mnemonic
+      </Button>
+      {mnemonic && address ? (
+        <Col>
+          <Space direction="vertical">
             <Alert
               message={
                 <Space>
-                  <Text strong>Keypair generated!</Text>
+                  <Text strong>Mnemonic generated!</Text>
                 </Space>
               }
               description={
                 <div>
-                  <div>
-                    This is the string representation of the public key <br />
-                    <Text code>{address}</Text>.
-                  </div>
-                  <Text>
-                    Accessible (and copyable) at the top right of this page.
+                  Your generated address: <br />
+                  <Text strong mark>
+                    {address}
+                  </Text>
+                  <br />
+                  Your generated mnemonic: <br />
+                  <Text code strong>
+                    {mnemonic.slice(0, 24)} ... {mnemonic.slice(-24)}
                   </Text>
                 </div>
               }
@@ -84,25 +86,29 @@ const Account = () => {
             />
             <Alert
               message={
-                <Space>
-                  <Text strong>Fund your new account</Text>
-                </Space>
+                <Text strong>
+                  Accessible (and copyable) at the top right of this page.
+                </Text>
               }
-              description={
-                <a href={FAUCET_URL} target="_blank" rel="noreferrer">
-                  Go to the faucet
-                </a>
-              }
-              type="warning"
+              type="info"
               showIcon
             />
-          </>
-        ) : error ? (
-          <Alert message={error} type="error" showIcon />
-        ) : (
-          <Alert message="Please Generate a Keypair" type="error" showIcon />
-        )}
-      </Space>
+            <Alert
+              message={
+                <a href={FAUCET} target="_blank" rel="noreferrer">
+                  Fund your new account
+                </a>
+              }
+              type="error"
+              showIcon
+            />
+          </Space>
+        </Col>
+      ) : error ? (
+        <Alert message={error} type="error" showIcon />
+      ) : (
+        <Alert message="Please Generate a Keypair" type="error" showIcon />
+      )}
     </Col>
   );
 };

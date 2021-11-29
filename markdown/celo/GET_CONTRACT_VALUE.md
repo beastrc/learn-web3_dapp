@@ -17,8 +17,8 @@ In `pages/api/celo/getter.ts`, implement the default function. You must replace 
 ```tsx
 //...
   try {
-    const {contract, network} = req.body;
-    const url = getNodeUrl(network);
+    const { contract } = req.body;
+    const url = getSafeUrl();
     const kit = newKit(url);
 
     // Create a new contract instance with the HelloWorld contract info
@@ -46,8 +46,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {contract, network} = req.body;
-    const url = getNodeUrl(network);
+    const { contract } = req.body;
+    const url = getSafeUrl();
     const kit = newKit(url);
 
     const instance = new kit.web3.eth.Contract(

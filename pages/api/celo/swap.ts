@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeUrl} from '@figment-celo/lib';
+import {getSafeUrl} from '@figment-celo/lib';
 import {newKit} from '@celo/contractkit';
 
 type ResponseT = {
@@ -11,10 +11,10 @@ export default async function swap(
   res: NextApiResponse<ResponseT | string>,
 ) {
   try {
-    const {secret, address, network} = req.body;
+    const {secret, address} = req.body;
     const OneCUSD = '1000000000000000000';
 
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     const kit = newKit(url);
     kit.addAccount(secret);
 
