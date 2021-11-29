@@ -1,16 +1,15 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 
 import {ApiPromise, WsProvider} from '@polkadot/api';
-import {getNodeUrl} from '@figment-polkadot/lib';
+import {getSafeUrl} from '@figment-polkadot/lib';
 
 export default async function deposit(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<number | string>,
 ) {
   let provider;
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     provider = new WsProvider(url);
     const api = await ApiPromise.create({provider: provider});
     const deposit = undefined;

@@ -110,8 +110,9 @@ export enum TEZOS_NETWORKS {
 }
 
 export enum POLKADOT_NETWORKS {
-  TESTNET = 'Westend',
-  DATAHUB = 'Datahub',
+  WESTEND = 'WESTEND',
+  MAINNET = 'MAINNET',
+  DATAHUB = 'datahub',
 }
 
 export enum POLYGON_NETWORKS {

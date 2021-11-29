@@ -57,9 +57,9 @@ const Connect = () => {
           {version ? (
             <Alert
               message={
-                <Text>
+                <Space>
                   Connected to {chainLabel}:<Text code>version {version}</Text>
-                </Text>
+                </Space>
               }
               type="success"
               showIcon

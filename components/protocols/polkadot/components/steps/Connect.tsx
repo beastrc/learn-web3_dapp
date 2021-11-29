@@ -1,18 +1,19 @@
+import {useEffect, useState} from 'react';
 import {Alert, Col, Space, Typography, Button} from 'antd';
 import {PoweroffOutlined} from '@ant-design/icons';
-import {useEffect, useState} from 'react';
 import Confetti from 'react-confetti';
 import axios from 'axios';
 
-import {getInnerState, getChainLabel} from 'utils/context';
-import {useGlobalState} from 'context';
+import {CHAINS} from 'types';
+import {CHAINS_CONFIG} from 'lib/constants';
+
+import {useAppState} from '@figment-polkadot/hooks';
 
 const {Text} = Typography;
 
 const Connect = () => {
-  const {state, dispatch} = useGlobalState();
-  const {network} = getInnerState(state);
-  const chainLabel = getChainLabel(state);
+  const {state, dispatch} = useAppState();
+  const chainId = CHAINS_CONFIG[CHAINS.POLKADOT].label;
 
   const [version, setVersion] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +22,8 @@ const Connect = () => {
   useEffect(() => {
     if (version) {
       dispatch({
-        type: 'SetIsCompleted',
+        type: 'SetNetwork',
+        network: version,
       });
     }
   }, [version, setVersion]);
@@ -31,10 +33,10 @@ const Connect = () => {
     setError(null);
     setVersion(null);
     try {
-      const response = await axios.post(`/api/polkadot/connect`, {network});
+      const response = await axios.post(`/api/polkadot/connect`, state);
       setVersion(response.data);
     } catch (error) {
-      setError(error.message);
+      setError(error.response.data);
     } finally {
       setFetching(false);
     }
@@ -57,22 +59,26 @@ const Connect = () => {
           {version ? (
             <Alert
               message={
-                <Text>
-                  Connected to {chainLabel}:<Text code>version {version}</Text>
-                </Text>
+                <Space>
+                  Connected to {chainId}:<Text code>version {version}</Text>
+                </Space>
               }
               type="success"
               showIcon
             />
           ) : error ? (
             <Alert
-              message={<Text code>Error: {error}</Text>}
+              message={
+                <Space>
+                  <Text code>Error: {error}</Text>
+                </Space>
+              }
               type="error"
               showIcon
             />
           ) : (
             <Alert
-              message={<Text code>Not Connected to {chainLabel}</Text>}
+              message={<Space>Not Connected to {chainId}</Space>}
               type="error"
               showIcon
             />

@@ -51,7 +51,7 @@ const Export = () => {
             showIcon
             message={
               <a href={transactionUrl(hash)} target="_blank" rel="noreferrer">
-                View transaction on block Explorer
+                View transaction on Avalanche Explorer
               </a>
             }
           />
