@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeUrl} from '@figment-celo/lib';
+import {getSafeUrl} from '@figment-celo/lib';
 import {newKit} from '@celo/contractkit';
 
 type ResponseT = {
@@ -7,12 +7,11 @@ type ResponseT = {
   secret: string;
 };
 export default async function connect(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<ResponseT | string>,
 ) {
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     const kit = newKit(url);
     const account = undefined;
     const address = undefined;

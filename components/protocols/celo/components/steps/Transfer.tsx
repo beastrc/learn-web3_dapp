@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {Form, Input, Button, Alert, Space, Typography, Col} from 'antd';
 import {LoadingOutlined} from '@ant-design/icons';
-import {useAppState} from '@figment-polkadot/hooks';
+import {useAppState} from '@figment-celo/hooks';
+import {transactionUrl} from '@figment-celo/lib';
 import axios from 'axios';
 
 const layout = {
@@ -15,15 +16,12 @@ const tailLayout = {
 
 const {Text} = Typography;
 
-const RECIPIENT_ADDR = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-
-const transactionUrl = (hash: string) =>
-  `https://westend.subscan.io/extrinsic/${hash}`;
+const recipient = '0xD86518b29BB52a5DAC5991eACf09481CE4B0710d';
 
 const Transfer = () => {
   const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState(false);
-  const [hash, setHash] = useState(null);
+  const [txHash, setTxHash] = useState(null);
   const {state} = useAppState();
 
   const transfer = (values: any) => {
@@ -32,14 +30,14 @@ const Transfer = () => {
       setError('Amount needs to be a valid number');
       throw Error('Invalid Amount');
     }
-    const txAmount = values.amount;
+    const amount = values.amount;
 
     setFetching(true);
     axios
-      .post(`/api/polkadot/transfer`, {...state, txAmount})
+      .post(`/api/celo/transfer`, {...state, amount, recipient})
       .then((res) => {
         const hash = res.data;
-        setHash(hash);
+        setTxHash(hash);
         setFetching(false);
       })
       .catch((err) => {
@@ -47,7 +45,6 @@ const Transfer = () => {
         setFetching(false);
       });
   };
-
   return (
     <Col>
       <Form
@@ -58,7 +55,7 @@ const Transfer = () => {
         initialValues={{
           from: state.address,
           amount: 1,
-          to: RECIPIENT_ADDR,
+          to: recipient,
         }}
       >
         <Form.Item label="Sender" name="from" required>
@@ -69,19 +66,19 @@ const Transfer = () => {
           label="Amount"
           name="amount"
           required
-          tooltip="1 WND = 10**12 Planck"
+          tooltip="1 CELO = 10**18 aCELO"
         >
           <Space direction="vertical">
             <Input
-              suffix="Planck"
+              suffix="aCELO"
               style={{width: '200px'}}
-              placeholder={'enter amount in Planck'}
+              placeholder={'enter amount in'}
             />
           </Space>
         </Form.Item>
 
         <Form.Item label="Recipient" name="to" required>
-          <Text code>{RECIPIENT_ADDR}</Text>
+          <Text code>{recipient}</Text>
         </Form.Item>
 
         <Form.Item {...tailLayout}>
@@ -101,20 +98,20 @@ const Transfer = () => {
           </Form.Item>
         )}
 
-        {hash && (
+        {txHash && (
           <Form.Item {...tailLayout}>
             <Alert
-              style={{maxWidth: '365px'}}
+              style={{maxWidth: '350px'}}
               type="success"
               showIcon
               message={<Text strong>Transfer confirmed!</Text>}
               description={
                 <a
-                  href={transactionUrl(hash ?? '')}
+                  href={transactionUrl(txHash ?? '')}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View on Polkadot Explorer
+                  View on Celo Explorer
                 </a>
               }
             />

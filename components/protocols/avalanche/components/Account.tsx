@@ -1,18 +1,15 @@
 import {useEffect, useState} from 'react';
 import {Alert, Button, Col, Space, Typography} from 'antd';
 import axios from 'axios';
-
 import {PROTOCOL_INNER_STATES_ID} from 'types';
 import {useGlobalState} from 'context';
-import {getInnerState} from 'utils/context';
 
 const {Text} = Typography;
 
-const FAUCET_URL = 'https://faucet.avax-test.network/';
+const FAUCET = 'https://faucet.avax-test.network/';
 
 const Account = () => {
-  const {state, dispatch} = useGlobalState();
-  const {network} = getInnerState(state);
+  const {dispatch} = useGlobalState();
 
   const [address, setAddress] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
@@ -42,7 +39,7 @@ const Account = () => {
       setAddress(null);
       setSecret(null);
       setError(null);
-      const response = await axios.post(`/api/avalanche/account`, {network});
+      const response = await axios.get(`/api/avalanche/account`);
       setAddress(response.data.address);
       setSecret(response.data.secret);
     } catch (error) {
@@ -92,7 +89,7 @@ const Account = () => {
                 </Space>
               }
               description={
-                <a href={FAUCET_URL} target="_blank" rel="noreferrer">
+                <a href={FAUCET} target="_blank" rel="noreferrer">
                   Go to the faucet
                 </a>
               }

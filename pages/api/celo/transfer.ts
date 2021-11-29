@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import {getNodeUrl} from '@figment-celo/lib';
+import {getSafeUrl} from '@figment-celo/lib';
 import {newKit} from '@celo/contractkit';
 
 export default async function transfer(
@@ -7,8 +7,8 @@ export default async function transfer(
   res: NextApiResponse<string>,
 ) {
   try {
-    const {secret, amount, recipient, address, network} = req.body;
-    const url = getNodeUrl(network);
+    const {secret, amount, recipient, address} = req.body;
+    const url = getSafeUrl();
     const kit = newKit(url);
 
     // Restore account using your secret

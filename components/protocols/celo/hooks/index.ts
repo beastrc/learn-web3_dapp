@@ -1,9 +1,7 @@
 import {useState, useContext} from 'react';
-import type {State} from '@figment-polkadot/context';
-import {PolkadotContext} from '@figment-polkadot/context';
+import type {State} from '@figment-celo/context';
+import {CeloContext} from '@figment-celo/context';
 
-// TODO
-// Delete
 const useLocalStorage = (key: string, initialValue: State) => {
   const [storedValue, setStoredValue] = useState<State>(() => {
     try {
@@ -27,6 +25,6 @@ const useLocalStorage = (key: string, initialValue: State) => {
   return [storedValue, setValue] as const;
 };
 
-const useAppState = () => useContext(PolkadotContext);
+const useAppState = () => useContext(CeloContext);
 
 export {useLocalStorage, useAppState};
