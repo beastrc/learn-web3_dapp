@@ -6,36 +6,45 @@ import {getInnerState} from 'utils/context';
 
 const {Text} = Typography;
 
-const DECIMAL_OFFSET = 10 ** 6;
-const TOKEN_SYMBOL = 'SCRT';
+const DECIMAL_OFFSET = 10 ** 18;
+const TOKEN_SYMBOL = 'CELO';
 
 const Balance = () => {
   const {state, dispatch} = useGlobalState();
   const {address, network} = getInnerState(state);
 
-  const [fetching, setFetching] = useState<boolean>(false);
+  const [fetching, setFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balanceCELO, setBalanceCELO] = useState<number | null>(null);
+  const [balanceUSD, setBalanceUSD] = useState<number | null>(null);
 
   useEffect(() => {
-    if (balance) {
+    if (balanceCELO) {
       dispatch({
         type: 'SetIsCompleted',
       });
     }
-  }, [balance, setBalance]);
+  }, [balanceCELO, setBalanceCELO]);
 
   const getBalance = async () => {
     setFetching(true);
     setError(null);
-    setBalance(null);
+    setBalanceCELO(null);
+    setBalanceUSD(null);
     try {
-      const response = await axios.post(`/api/secret/balance`, {
+      const response = await axios.post(`/api/celo/balance`, {
         address,
         network,
       });
-      setBalance(
-        parseFloat((parseFloat(response.data) / DECIMAL_OFFSET).toFixed()),
+      setBalanceCELO(
+        parseFloat(
+          (parseFloat(response.data.attoCELO) / DECIMAL_OFFSET).toFixed(),
+        ),
+      );
+      setBalanceUSD(
+        parseFloat(
+          (parseFloat(response.data.attoUSD) / DECIMAL_OFFSET).toFixed(),
+        ),
       );
     } catch (error) {
       setError(error.message);
@@ -46,16 +55,22 @@ const Balance = () => {
 
   return (
     <Col>
-      <Space direction="vertical">
+      <Space direction="vertical" size="large">
         <Button type="primary" onClick={getBalance} loading={fetching}>
           Check Balance
         </Button>
-        {balance ? (
+        {balanceUSD && balanceCELO ? (
           <Alert
-            message={
-              <Text
-                strong
-              >{`This address has a balance of ${balance} ${TOKEN_SYMBOL}`}</Text>
+            message={<Text strong>This address has a balance of:</Text>}
+            description={
+              <ul>
+                <li>
+                  {balanceCELO} {TOKEN_SYMBOL}
+                </li>
+                <li>
+                  {balanceUSD} {'USD'}
+                </li>
+              </ul>
             }
             type="success"
             showIcon
