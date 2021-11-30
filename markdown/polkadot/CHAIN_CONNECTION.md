@@ -15,8 +15,7 @@ In `pages/api/polkadot/connect.ts`, implement the function and try to establish 
 ```typescript
 //...
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     const provider = new WsProvider(url);
     const api = undefined;
     const rawVersion = undefined;
@@ -42,8 +41,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     const provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
     const rawVersion = await api.rpc.system.version();
@@ -66,7 +64,9 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/polkadot/connect.ts` is complete, click the blue button to connect to Polkadot & display the current version.
+Once the code is complete and the file has been saved, refresh the page to see it update & display the current version.
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/polkadot/polkadot-connect.gif)
 
 ---
 

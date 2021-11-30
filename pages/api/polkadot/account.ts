@@ -1,13 +1,8 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
+import {PolkadotAccountResponse} from '@figment-polkadot/types';
 
 import {Keyring} from '@polkadot/api';
 import {mnemonicGenerate, mnemonicValidate} from '@polkadot/util-crypto';
-
-type PolkadotAccountResponse = {
-  address: string;
-  mnemonic: string;
-  jsonWallet: string;
-};
 
 export default async function account(
   _req: NextApiRequest,

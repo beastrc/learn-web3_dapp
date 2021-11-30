@@ -17,16 +17,23 @@ In `pages/api/tezos/getter.ts`, implement the function and try to read the value
 ```typescript
 //...
   try {
-    const {network, mnemonic, email, password, secret, contract} = req.body;
-    const url = getNodeUrl(network);
+    const { mnemonic, email, password, secret, contract } = req.body;
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
-    await importKey(tezos, email, password, mnemonic, secret);
+    await importKey(
+      tezos,
+      email,
+      password,
+      mnemonic,
+      secret
+    );
 
     // Use the contract module to get the storage
     const counter = undefined;
 
-    res.status(200).json(counter);
+    // @ts-ignore
+    res.status(200).json(counter.toString());
   }
 //...
 ```
@@ -45,15 +52,22 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {network, mnemonic, email, password, secret, contract} = req.body;
-    const url = getNodeUrl(network);
+    const { mnemonic, email, password, secret, contract } = req.body;
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
-    await importKey(tezos, email, password, mnemonic, secret);
+    await importKey(
+      tezos,
+      email,
+      password,
+      mnemonic,
+      secret
+    );
 
     const counter = await tezos.contract.getStorage(contract);
 
-    res.status(200).json(counter);
+    // @ts-ignore
+    res.status(200).json(counter.toString());
   }
 //...
 ```
@@ -69,9 +83,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once you have the code above saved, click the button and watch the magic happen:
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-getter.gif)
+Once the code in `pages/api/tezos/getter.ts` is complete, click the **Get Counter** button to query the current value stored in the smart contract and display it on the page.
 
 ---
 

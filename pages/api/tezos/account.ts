@@ -1,31 +1,21 @@
-/* eslint-disable no-unreachable */
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {TezosToolkit} from '@taquito/taquito';
 import {importKey} from '@taquito/signer';
-import {getNodeUrl} from '@figment-tezos/lib';
+import {getTezosUrl} from '@figment-tezos/lib';
 
 export default async function account(
   req: NextApiRequest,
-  res: NextApiResponse<boolean | string>,
+  res: NextApiResponse<string>,
 ) {
   try {
-    const {
-      mnemonic: mnemonic0,
-      email,
-      password,
-      activation_code: secret,
-      network,
-    } = req.body;
-    const mnemonic = mnemonic0.join(' ');
-
-    const url = getNodeUrl(network);
+    const {mnemonic, email, password, secret} = req.body;
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
     // call the importKey method
     undefined;
-    throw new Error('Please complete the code');
 
-    res.status(200).json(true);
+    res.status(200).json('Activation of the account ok');
   } catch (error) {
     let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
     res.status(500).json(errorMessage);

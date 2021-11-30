@@ -3,7 +3,7 @@ A faucet is a way for users to acquire some amount of tokens on a blockchain, ty
 Take all available precautions when dealing with crypto assets. Keeping mnemonic seed phrases and private cryptographic keys safe is an important consideration when dealing with any blockchain, Tezos is no exception.
 
 {% hint style="info" %}
-Visit the [faucet](https://faucet.tzalpha.net/) to generate a mnemonic and get some testnet ꜩ (tez).
+Visit the [faucet](https://teztnets.xyz/hangzhounet-faucet) to generate a mnemonic and get some testnet ꜩ (tez).
 {% endhint %}
 
 ---
@@ -19,23 +19,14 @@ In `pages/api/tezos/account.ts`, implement the function and try to activate your
 ```typescript
 //...
   try {
-    const {
-      mnemonic: mnemonic0,
-      email,
-      password,
-      activation_code: secret,
-      network,
-    } = req.body;
-    const mnemonic = mnemonic0.join(' ');
-
-    const url = getNodeUrl(network);
+    const { mnemonic, email, password, secret } = req.body;
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
     // call the importKey method
     undefined;
-    throw new Error('Please complete the code');
 
-    res.status(200).json(true);
+    res.status(200).json('Activation of the account ok');
   }
 //...
 ```
@@ -55,21 +46,19 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {
-      mnemonic: mnemonic0,
-      email,
-      password,
-      activation_code: secret,
-      network,
-    } = req.body;
-    const mnemonic = mnemonic0.join(' ');
-
-    const url = getNodeUrl(network);
+    const { mnemonic, email, password, secret } = req.body
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
-    await importKey(tezos, email, password, mnemonic, secret);
+    await importKey(
+      tezos,
+      email,
+      password,
+      mnemonic,
+      secret
+    )
 
-    res.status(200).json(true);
+    res.status(200).json('Activation of the account ok');
   }
 //...
 ```
@@ -83,16 +72,10 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code is complete and the file has been saved:
-
-- Copy/paste the faucet information
-- Click on **Feed the storage**
-- Click on **Activate account**
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-account.gif)
+Once the code in `pages/api/tezos/account.ts` is complete, copy & paste the faucet information into the textinput then click on **Create Account**. Once the faucet key has been accepted, click on **Activate account**.
 
 ---
 
 # 🏁 Conclusion
 
-Nice work! You now have a Tezos account on the Florence testnet. In the next tutorial, we will query a Tezos node using DataHub, to determine the current balance of our account.
+Nice work! You now have a Tezos account on the Florence testnet. In the next tutorial, we will query a Tezos node using DataHub to determine the current balance of our account.

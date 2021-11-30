@@ -11,7 +11,7 @@ const TOKEN_SYMBOL = 'SCRT';
 
 const Balance = () => {
   const {state, dispatch} = useGlobalState();
-  const {address, network} = getInnerState(state);
+  const {address} = getInnerState(state);
 
   const [fetching, setFetching] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -30,10 +30,7 @@ const Balance = () => {
     setError(null);
     setBalance(null);
     try {
-      const response = await axios.post(`/api/secret/balance`, {
-        address,
-        network,
-      });
+      const response = await axios.post(`/api/secret/balance`, {address});
       setBalance(
         parseFloat((parseFloat(response.data) / DECIMAL_OFFSET).toFixed()),
       );

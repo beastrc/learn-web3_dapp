@@ -15,8 +15,9 @@ In `pages/api/polkadot/estimate.ts`, implement the function and try to estimate 
 ```typescript
 //...
   try {
-    const {address, network} = req.body;
-    const url = getNodeUrl(network);
+    const { address } = req.body;
+
+    const url = getSafeUrl();
     provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
 
@@ -49,9 +50,10 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {address, network} = req.body;
-    const url = getNodeUrl(network);
-    provider = new WsProvider(url);
+    const { address } = req.body;
+
+    const url = getSafeUrl();
+    const provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
 
     // A generic address for recipient (//Alice) and an amount to send
@@ -79,7 +81,9 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/polkadot/estimate.ts` is complete, click on **Estimate Fees** to get the estimated fees to perform a token transfer.
+Once the code is complete and the file has been saved, click on **Estimate Fees**.
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/polkadot/polkadot-estimate.gif)
 
 ---
 

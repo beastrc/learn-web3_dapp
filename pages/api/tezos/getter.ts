@@ -1,15 +1,15 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {TezosToolkit} from '@taquito/taquito';
-import {getNodeUrl} from '@figment-tezos/lib';
+import {getTezosUrl} from '@figment-tezos/lib';
 import {importKey} from '@taquito/signer';
 
 export default async function getter(
   req: NextApiRequest,
-  res: NextApiResponse<unknown | string>,
+  res: NextApiResponse<string>,
 ) {
   try {
-    const {network, mnemonic, email, password, secret, contract} = req.body;
-    const url = getNodeUrl(network);
+    const {mnemonic, email, password, secret, contract} = req.body;
+    const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
     await importKey(tezos, email, password, mnemonic, secret);
@@ -17,7 +17,8 @@ export default async function getter(
     // use the contract module to get the storage
     const counter = undefined;
 
-    res.status(200).json(counter);
+    // @ts-ignore
+    res.status(200).json(counter.toString());
   } catch (error) {
     let errorMessage = error instanceof Error ? error.message : 'Unknown Error';
     res.status(500).json(errorMessage);

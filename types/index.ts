@@ -87,8 +87,8 @@ export enum AVALANCHE_NETWORKS {
 }
 
 export enum CELO_NETWORKS {
-  TESTNET = 'Alfajores',
-  DATAHUB = 'Datahub',
+  MAINNET = 'MAINNET',
+  ALFAJORES = 'alfajores',
 }
 
 export enum SECRET_NETWORKS {
@@ -104,13 +104,15 @@ export enum NEAR_NETWORKS {
 }
 
 export enum TEZOS_NETWORKS {
-  TESTNET = 'Hangzhounet',
-  DATAHUB = 'Datahub',
+  MAINNET = 'MAINNET',
+  TESTNET = 'TESTNET',
+  DATAHUB = 'datahub',
 }
 
 export enum POLKADOT_NETWORKS {
-  TESTNET = 'Westend',
-  DATAHUB = 'Datahub',
+  WESTEND = 'WESTEND',
+  MAINNET = 'MAINNET',
+  DATAHUB = 'datahub',
 }
 
 export enum POLYGON_NETWORKS {

@@ -15,8 +15,7 @@ In `pages/api/polkadot/deposit.ts`, implement the function and try to determine 
 ```typescript
 //...
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getSafeUrl();
     provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
     const deposit = undefined;
@@ -41,9 +40,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
-    provider = new WsProvider(url);
+    const url = getSafeUrl();
+    const provider = new WsProvider(url);
     const api = await ApiPromise.create({ provider: provider });
     const deposit = api.consts.balances.existentialDeposit.toNumber();
     res.status(200).json(deposit);
@@ -61,7 +59,9 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/polkadot/deposit.ts` is complete, Next.js will rebuild the API route. Click the **Get Existential Deposit** button to display the amount needed to keep an account active.
+Once the code is complete and the file has been saved, Next.js will rebuild the API route. Click the button to display the existential deposit amount.
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/polkadot/polkadot-deposit.gif)
 
 ---
 

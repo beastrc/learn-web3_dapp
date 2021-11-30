@@ -1,14 +1,14 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {TezosToolkit} from '@taquito/taquito';
-import {getNodeUrl} from '@figment-tezos/lib';
+import {getTezosUrl} from '@figment-tezos/lib';
 
 export default async function balance(
   req: NextApiRequest,
   res: NextApiResponse<string>,
 ) {
   try {
-    const {address, network} = req.body;
-    const url = getNodeUrl(network);
+    const {address} = req.body;
+    const url = getTezosUrl();
     const toolkit = new TezosToolkit(url);
     const balance = undefined;
     res.status(200).json(balance.toString());

@@ -1,15 +1,14 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import {TezosToolkit} from '@taquito/taquito';
 import {validateChain} from '@taquito/utils';
-import {getNodeUrl} from '@figment-tezos/lib';
+import {getTezosUrl} from '@figment-tezos/lib';
 
 export default async function connect(
-  req: NextApiRequest,
+  _req: NextApiRequest,
   res: NextApiResponse<string | boolean>,
 ) {
   try {
-    const {network} = req.body;
-    const url = getNodeUrl(network);
+    const url = getTezosUrl();
     const toolkit = undefined;
     const chainId = undefined;
     if (validateChain(chainId) != 3) {

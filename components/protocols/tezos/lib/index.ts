@@ -1,13 +1,27 @@
-export const getNodeUrl = (network: string) => {
-  if (network === 'Datahub') {
-    return `${process.env.TEZOS_DATAHUB_URL}/apikey/${process.env.DATAHUB_TEZOS_API_KEY}`;
-  } else {
-    return 'https://hangzhounet.api.tez.ie';
-  }
-};
+export enum TEZOS_NETWORKS {
+  MAINNET = 'MAINNET',
+  TESTNET = 'TESTNET',
+}
 
-export const accountExplorer = (network: string) => (address: string) =>
-  `https://hangzhou.tzstats.com/${address}`;
+export const getSafeEnv = (): string =>
+  process.env.TEZOS_NETWORK ? process.env.TEZOS_NETWORK : 'florencenet';
+/*
+export const getTezosUrl = (network: TEZOS_NETWORKS): string => 
+    network === TEZOS_NETWORKS.MAINNET 
+            ?  `https://${process.env.DATAHUB_TEZOS_TESTNET_URL}/apikey/${process.env.DATAHUB_TEZOS_API_KEY}`
+            :  `wss://${process.env.DATAHUB_TEZOS_TESTNET_URL}/apikey/${process.env.DATAHUB_TEZOS_API_KEY}`
+*/
 
-export const transactionUrl = (hash: string) =>
-  `https://hangzhou.tzstats.com/${hash}`;
+export const getTezosUrl = (): string =>
+  `https://${process.env.DATAHUB_TEZOS_TESTNET_URL}/apikey/${process.env.DATAHUB_TEZOS_API_KEY}`;
+
+export const officialUrl = 'https://api.tez.ie/rpc/florencenet';
+
+export const getSafeUrl = (force: true) =>
+  force ? officialUrl : getTezosUrl();
+
+export const accountUrl = (address: string) =>
+  `https://florencenet.tzkt.io/${address}`;
+
+export const transactionUrl = (address: string) =>
+  `https://florencenet.tzkt.io/${address}`;
