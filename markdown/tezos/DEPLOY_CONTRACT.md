@@ -57,11 +57,15 @@ In `pages/api/tezos/deploy.ts`, implement the function and try to deploy the com
 - [**Interface ContractProvider method `originate`**](https://tezostaquito.io/typedoc/interfaces/_taquito_taquito.contractprovider.html#originate)
 - [**Class OriginateOperation method `contract`**](https://tezostaquito.io/typedoc/classes/_taquito_taquito.originationoperation.html#contract)
 
+{% hint style="info" %}
+You can [**join us on Discord**](https://discord.gg/fszyM7K), if you have questions or want help completing the tutorial.
+{% endhint %}
+
 Still not sure how to do this? No problem! The solution is below so you don't get stuck.
 
 ---
 
-# 😅 Solution
+# Solution
 
 ```typescript
 // solution
@@ -103,12 +107,14 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 ---
 
-# ✅ Make sure it works
+# Make sure it works
 
-Once the code in `pages/api/tezos/deploy.ts` is complete, click on **Deploy Contract** to send the compiled smart contract to the network.
+Once you have the code above saved, click on **Deploy Contract**
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-deploy.gif)
 
 ---
 
-# 🏁 Conclusion
+# Conclusion
 
 Now that we have deployed a smart contract on Tezos, let's interact with it! In the following tutorials, we will look at how to use both view and change functions.
