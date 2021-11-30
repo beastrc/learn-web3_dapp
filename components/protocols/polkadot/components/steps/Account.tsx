@@ -1,16 +1,58 @@
 import {useEffect, useState} from 'react';
 import {Alert, Button, Col, Space, Typography} from 'antd';
-import {useAppState} from '@figment-celo/hooks';
+import {useAppState} from '@figment-polkadot/hooks';
 import axios from 'axios';
 
 const {Text} = Typography;
 
+const FAUCET_ADDR = `https://app.element.io/#/room/#westend_faucet:matrix.org`;
+
+type downloadBoxT = {
+  jsonWallet: string;
+  address: string;
+};
+const DownloadBox = ({jsonWallet, address}: downloadBoxT) => {
+  const fileName = address;
+  return (
+    <Button>
+      <a
+        href={`data:text/json;charset=utf-8,${encodeURIComponent(jsonWallet)}`}
+        download={`polkadot-${fileName}.json`}
+      >
+        {`Download Json`}
+      </a>
+    </Button>
+  );
+};
+
 const Account = () => {
   const [fetching, setFetching] = useState<boolean>(false);
   const [address, setAddress] = useState<string | null>(null);
+  const [jsonWallet, setJsonWallet] = useState<string>('');
   const {state, dispatch} = useAppState();
 
   useEffect(() => {
+    const fromMnemonic = () => {
+      setFetching(true);
+      axios
+        .post(`/api/polkadot/fromMnemonic`, state)
+        .then((res) => {
+          setAddress(res.data.address);
+          setJsonWallet(res.data.jsonWallet);
+          dispatch({
+            type: 'SetAddress',
+            address: res.data.address,
+          });
+          setFetching(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setFetching(false);
+        });
+    };
+    if (state?.mnemonic) {
+      fromMnemonic();
+    }
     if (state?.address) {
       setAddress(state.address);
     }
@@ -19,13 +61,15 @@ const Account = () => {
   const generateKeypair = async () => {
     try {
       setFetching(true);
-      const response = await axios.get(`/api/celo/account`);
-      const secret = response.data.secret;
+      const response = await axios.get(`/api/polkadot/account`);
+      const mnemonic = response.data.mnemonic;
       const address = response.data.address;
+      const jsonWallet = response.data.jsonWallet;
       setAddress(address);
+      setJsonWallet(jsonWallet);
       dispatch({
-        type: 'SetSecret',
-        secret: secret,
+        type: 'SetMnemonic',
+        mnemonic: mnemonic,
       });
       dispatch({
         type: 'SetAddress',
@@ -61,7 +105,10 @@ const Account = () => {
                 <div>
                   <div>
                     This is the string representation of the public key <br />
-                    <Text code>{address}</Text>.
+                    <Text code style={{fontWeight: 'bold'}}>
+                      {address}
+                    </Text>
+                    .
                   </div>
                   <Text>
                     Accessible (and copyable) at the top right of this page.
@@ -78,17 +125,22 @@ const Account = () => {
                 </Space>
               }
               description={
-                <a
-                  href={`https://celo.org/developers/faucet`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Go to the faucet
-                </a>
+                <div>
+                  <a href={FAUCET_ADDR} target="_blank" rel="noreferrer">
+                    Go to the faucet, connect and enter
+                  </a>
+                  <br />
+                  <Text code style={{fontWeight: 'bold'}}>
+                    !drip {address}
+                  </Text>
+                </div>
               }
               type="warning"
               showIcon
             />
+            {state?.address && (
+              <DownloadBox jsonWallet={jsonWallet} address={state.address} />
+            )}
           </Space>
         </Col>
       )}

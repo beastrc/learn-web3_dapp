@@ -7,13 +7,13 @@ import axios from 'axios';
 import {CHAINS} from 'types';
 import {CHAINS_CONFIG} from 'lib/constants';
 
-import {useAppState} from '@figment-celo/hooks';
+import {useAppState} from '@figment-polkadot/hooks';
 
 const {Text} = Typography;
 
 const Connect = () => {
   const {state, dispatch} = useAppState();
-  const chainId = CHAINS_CONFIG[CHAINS.CELO].label;
+  const chainId = CHAINS_CONFIG[CHAINS.POLKADOT].label;
 
   const [version, setVersion] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -33,7 +33,7 @@ const Connect = () => {
     setError(null);
     setVersion(null);
     try {
-      const response = await axios.post(`/api/celo/connect`, state);
+      const response = await axios.post(`/api/polkadot/connect`, state);
       setVersion(response.data);
     } catch (error) {
       setError(error.response.data);

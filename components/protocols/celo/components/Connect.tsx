@@ -15,8 +15,8 @@ const Connect = () => {
   const chainLabel = getChainLabel(state);
 
   const [version, setVersion] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [fetching, setFetching] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (version) {
@@ -31,10 +31,10 @@ const Connect = () => {
     setError(null);
     setVersion(null);
     try {
-      const response = await axios.post(`/api/polkadot/connect`, {network});
+      const response = await axios.post(`/api/celo/connect`, {network});
       setVersion(response.data);
     } catch (error) {
-      setError(error.message);
+      setError(error.response.data);
     } finally {
       setFetching(false);
     }
@@ -57,22 +57,26 @@ const Connect = () => {
           {version ? (
             <Alert
               message={
-                <Text>
+                <Space>
                   Connected to {chainLabel}:<Text code>version {version}</Text>
-                </Text>
+                </Space>
               }
               type="success"
               showIcon
             />
           ) : error ? (
             <Alert
-              message={<Text code>Error: {error}</Text>}
+              message={
+                <Space>
+                  <Text code>Error: {error}</Text>
+                </Space>
+              }
               type="error"
               showIcon
             />
           ) : (
             <Alert
-              message={<Text code>Not Connected to {chainLabel}</Text>}
+              message={<Space>Not Connected to {chainLabel}</Space>}
               type="error"
               showIcon
             />

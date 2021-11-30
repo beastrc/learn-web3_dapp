@@ -17,7 +17,6 @@ const tailLayout = {
 };
 
 const RECIPIENT = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
-const CHAIN_LABEL = 'Avalanche';
 
 const {Text} = Typography;
 
@@ -76,7 +75,12 @@ const Transfer = () => {
           <Text code>{address}</Text>
         </Form.Item>
 
-        <Form.Item label="Amount" name="amount" required>
+        <Form.Item
+          label="Amount"
+          name="amount"
+          required
+          tooltip="1 AVAX = 1,000,000,000 nAVAX"
+        >
           <Space direction="vertical">
             <Input
               suffix="nAVAX"
@@ -116,7 +120,7 @@ const Transfer = () => {
               message={<Text strong>Transfer confirmed!</Text>}
               description={
                 <a href={transactionUrl(hash)} target="_blank" rel="noreferrer">
-                  View on {CHAIN_LABEL} Explorer
+                  View on transaction Explorer
                 </a>
               }
             />

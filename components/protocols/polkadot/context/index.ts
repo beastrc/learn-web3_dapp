@@ -2,22 +2,24 @@ import {createContext, Dispatch} from 'react';
 
 export type State = {
   index: number;
-  network: string;
+  network?: string;
   address?: string;
-  secret?: string;
-  contract?: string;
+  mnemonic?: string;
+  proxyAddress?: string;
+  proxyMnemonic?: string;
 };
 
 type Action =
   | {type: 'SetIndex'; index: number}
-  | {type: 'SetNetwork'; network: string}
+  | {type: 'SetNetwork'; network?: string}
   | {type: 'SetAddress'; address?: string}
-  | {type: 'SetSecret'; secret?: string}
-  | {type: 'SetContract'; contract?: string};
+  | {type: 'SetMnemonic'; mnemonic?: string}
+  | {type: 'SetProxyAddress'; proxyAddress?: string}
+  | {type: 'SetProxyMnemonic'; proxyMnemonic?: string};
 
 const initialState = {
   index: 0,
-  network: 'alfajores',
+  network: 'westend',
 };
 
 function appStateReducer(state: State, action: Action): State {
@@ -28,16 +30,18 @@ function appStateReducer(state: State, action: Action): State {
       return {...state, network: action.network};
     case 'SetAddress':
       return {...state, address: action.address};
-    case 'SetSecret':
-      return {...state, secret: action.secret};
-    case 'SetContract':
-      return {...state, contract: action.contract};
+    case 'SetMnemonic':
+      return {...state, mnemonic: action.mnemonic};
+    case 'SetProxyAddress':
+      return {...state, proxyAddress: action.proxyAddress};
+    case 'SetProxyMnemonic':
+      return {...state, proxyMnemonic: action.proxyMnemonic};
     default:
       return state;
   }
 }
 
-const CeloContext = createContext<{
+const PolkadotContext = createContext<{
   state: State;
   dispatch: Dispatch<Action>;
 }>({
@@ -45,4 +49,4 @@ const CeloContext = createContext<{
   dispatch: () => null,
 });
 
-export {CeloContext, initialState, appStateReducer};
+export {PolkadotContext, initialState, appStateReducer};
