@@ -71,7 +71,9 @@ let count = response.count as number;
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/secret/getter.ts` is complete, click **Get the stored value** to query the smart contract and display the value.
+Once you have the code above saved, click the button and watch the magic happen:
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/secret/secret-getter.gif)
 
 ---
 
