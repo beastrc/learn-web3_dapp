@@ -16,9 +16,9 @@ const tailLayout = {
   wrapperCol: {offset: 4, span: 20},
 };
 
-const RECIPIENT = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
-
 const {Text} = Typography;
+
+const RECIPIENT = 'X-fuji1j2zasjlkkvptegp6dpm222q6sn02k0rp9fj92d';
 
 const Transfer = () => {
   const {state, dispatch} = useGlobalState();
@@ -75,12 +75,7 @@ const Transfer = () => {
           <Text code>{address}</Text>
         </Form.Item>
 
-        <Form.Item
-          label="Amount"
-          name="amount"
-          required
-          tooltip="1 AVAX = 1,000,000,000 nAVAX"
-        >
+        <Form.Item label="Amount" name="amount" required>
           <Space direction="vertical">
             <Input
               suffix="nAVAX"
