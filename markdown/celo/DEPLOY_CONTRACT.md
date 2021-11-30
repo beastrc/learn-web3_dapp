@@ -22,8 +22,8 @@ In `pages/api/celo/deploy.ts`, implement the default function. Upload your first
 ```tsx
 //...
   try {
-    const { secret, address } = req.body;
-    const url = getSafeUrl();
+    const {secret, address, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     kit.addAccount(secret);
@@ -54,8 +54,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const { secret, address } = req.body;
-    const url = getSafeUrl();
+    const {secret, address, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     kit.addAccount(secret);
@@ -84,9 +84,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once you have the code above saved, click on **Deploy Contract**:
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/celo/celo-deploy.gif)
+Once the code in `pages/api/celo/deploy.ts` is complete, click on **Deploy Contract** to send the transaction (and the compiled smart contract) to Celo.
 
 ---
 

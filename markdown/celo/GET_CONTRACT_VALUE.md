@@ -17,8 +17,8 @@ In `pages/api/celo/getter.ts`, implement the default function. You must replace 
 ```tsx
 //...
   try {
-    const { contract } = req.body;
-    const url = getSafeUrl();
+    const {contract, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     // Create a new contract instance with the HelloWorld contract info
@@ -46,8 +46,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const { contract } = req.body;
-    const url = getSafeUrl();
+    const {contract, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     const instance = new kit.web3.eth.Contract(
@@ -70,9 +70,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once you have the code above saved, click the button and watch the magic happen:
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/celo/celo-getter.gif)
+Once the in `pages/api/celo/getter.ts` is complete, click the button to get the curent value stored in the smart contract. It will be displayed on the page.
 
 ---
 

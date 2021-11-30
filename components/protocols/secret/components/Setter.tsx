@@ -69,7 +69,7 @@ const Setter = () => {
   return (
     <>
       <Space direction="vertical" size="large">
-        <Text strong>Current value of the counter stored in the contract:</Text>
+        <Text strong>Current value stored in the contract:</Text>
         {fetching ? (
           <LoadingOutlined style={{fontSize: 24}} spin />
         ) : (
@@ -83,7 +83,7 @@ const Setter = () => {
           <Space direction="vertical" size="large">
             <Space direction="horizontal">
               <Button type="primary" onClick={setCounter}>
-                Increment the value
+                Increment the stored value
               </Button>
             </Space>
             {resetting ? (
@@ -97,7 +97,7 @@ const Setter = () => {
                     target="_blank"
                     rel="noreferrer"
                   >
-                    View the transaction on Secret Explorer
+                    View the transaction on Explorer
                   </a>
                 }
                 type="success"

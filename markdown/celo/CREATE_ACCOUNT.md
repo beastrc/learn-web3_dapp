@@ -15,16 +15,17 @@ In `pages/api/celo/account.ts`, implement the function to first create a **mnemo
 ```typescript
 //...
 try {
-    const url = getSafeUrl();
+    const {network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
     const account = undefined;
     const address = undefined;
     const secret = undefined;
 
     res.status(200).json({
-        address,
-        secret
-    })
+      address,
+      secret,
+    });
 }
 //...
 ```
@@ -43,16 +44,17 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
 try {
-    const url = getSafeUrl();
+    const {network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
     const account = kit.web3.eth.accounts.create();
     const address = account.address;
     const secret = account.privateKey;
 
     res.status(200).json({
-        address,
-        secret
-    })
+      address,
+      secret,
+    });
 }
 //...
 ```
@@ -74,9 +76,7 @@ Do not forget to fund the newly created wallet using the [Celo developer faucet]
 
 # ✅ Make sure it works
 
-Once the code is complete and the file is saved, Next.js will rebuild the API route. Now click on **Generate a Keypair** and you should see:
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/celo/celo-account.gif)
+Once the code in `pages/api/celo/account.ts` is complete, Next.js will rebuild the API route. Now click on **Generate a Keypair** to create your Celo keypair.
 
 ---
 

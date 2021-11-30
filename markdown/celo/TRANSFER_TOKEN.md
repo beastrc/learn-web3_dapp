@@ -14,8 +14,8 @@ In `pages/api/celo/transfer.ts`, implement the **transfer** function. You must r
 ```tsx
 //..
   try {
-    const { secret, amount, recipient, address } = req.body;
-    const url = getSafeUrl();
+    const {secret, amount, recipient, address, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     // Restore account using your secret
@@ -47,8 +47,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const { secret, amount, recipient, address } = req.body;
-    const url = getSafeUrl();
+    const {secret, amount, recipient, address, network} = req.body;
+    const url = getNodeUrl(network);
     const kit = newKit(url);
 
     kit.addAccount(secret);
@@ -60,7 +60,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
     const celoReceipt = await celotx.waitReceipt();
 
     res.status(200).json(celoReceipt.transactionHash);
-    }
+  }
 //..
 ```
 
@@ -77,16 +77,11 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code is complete and the file is saved, Next.js will rebuild the API route.
-
-- Fill in the amount of **CELO** you want to send.
-- Click on **Submit Transfer**.
-
-![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/celo/celo-transfer.gif)
+Once the code in `pages/api/celo/transfer.ts` is complete, Next.js will rebuild the API route. Fill in the amount of **CELO** you want to send, then click on **Submit Transfer**.
 
 ---
 
 # 🏁 Conclusion
 
 Now that we have funded our account and made a transfer, let's move on to perform a more advanced kind of transfer: a **Swap**.
-With ContractKit, you can always exchange your **cUSD** to **CELO** and the other way around. Let’s learn how we can do that in the next tutorial!
+With ContractKit, you can always exchange your **cUSD** or **cEUR** to **CELO** and the other way around. Let’s learn how we can do that in the next tutorial!

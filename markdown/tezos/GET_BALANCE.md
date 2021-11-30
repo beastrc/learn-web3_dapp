@@ -17,8 +17,8 @@ In `pages/api/tezos/balance.ts`, implement the function and try to return the cu
 ```typescript
 //...
   try {
-    const { address } = req.body;
-    const url = getTezosUrl();
+    const {address, network} = req.body;
+    const url = getNodeUrl(network);
     const toolkit = new TezosToolkit(url);
     const balance = undefined;
     res.status(200).json(balance.toString());
@@ -41,8 +41,8 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const { address } = req.body;
-    const url = getTezosUrl();
+    const {address, network} = req.body;
+    const url = getNodeUrl(network);
     const toolkit = new TezosToolkit(url);
     const balance = await toolkit.tz.getBalance(address);
     res.status(200).json(balance.toString());
@@ -63,7 +63,9 @@ The amount returned by `getBalance` is denominated in **μꜩ** (mutez), so to c
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/tezos/balance.ts` is complete, Next.js will rebuild the API route. Click on **Check Balance** and you should see the balance displayed on the page.
+Once the code is complete and the file is saved, Next.js will rebuild the API route. Click on **Check Balance** and you should see the balance displayed on the page:
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-balance.gif)
 
 ---
 

@@ -11,11 +11,12 @@ In `pages/api/tezos/connect.ts`, implement the function and try to establish you
 ```typescript
 //...
   try {
-    const url = getTezosUrl();
+    const {network} = req.body;
+    const url = getNodeUrl(network);
     const toolkit = undefined;
     const chainId = undefined;
     if (validateChain(chainId) != 3) {
-      throw Error("invalid chain Id");
+      throw Error('invalid chain Id');
     }
     res.status(200).json(chainId);
   }
@@ -36,11 +37,12 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 ```typescript
 // solution
   try {
-    const url = getTezosUrl();
+    const {network} = req.body;
+    const url = getNodeUrl(network);
     const toolkit = new TezosToolkit(url);
     const chainId = await toolkit.rpc.getChainId();
     if (validateChain(chainId) != 3) {
-      throw Error("invalid chain Id");
+      throw Error('invalid chain Id');
     }
     res.status(200).json(chainId);
   }
@@ -56,7 +58,9 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/tezos/connect.ts` is complete, click on the blue button to connect to Tezos & display the Chain ID.
+Once the code is complete and the file has been saved, refresh the page to see it update & display the Chain ID.
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-connect.gif)
 
 ---
 

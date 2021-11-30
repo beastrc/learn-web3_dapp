@@ -15,7 +15,9 @@ In `pages/api/tezos/transfer.ts`, implement the function and try to make your fi
 ```typescript
 //...
   try {
-    const { mnemonic, email, password, secret, amount, recipient } = req.body
+    const {network, mnemonic, email, password, secret, amount, recipient} =
+      req.body;
+    const url = getNodeUrl(network);
     const url = getTezosUrl();
     const tezos = new TezosToolkit(url);
 
@@ -46,21 +48,17 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 // solution
 //...
   try {
-    const { mnemonic, email, password, secret, amount, recipient } = req.body;
-    const url = getTezosUrl();
+    const {network, mnemonic, email, password, secret, amount, recipient} =
+      req.body;
+    const url = getNodeUrl(network);
     const tezos = new TezosToolkit(url);
 
-    await importKey(
-      tezos,
-      email,
-      password,
-      mnemonic,
-      secret
-    );
+    await importKey(tezos, email, password, mnemonic, secret);
 
     const operation = await tezos.contract.transfer({
       to: recipient,
-      amount: amount
+      amount: amount,
+      mutez: true
     });
 
     await operation.confirmation(1);
@@ -77,6 +75,7 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 - Next, we create an transaction using the method `transfer` of the `contract` module, passing:
   - The recipient address.
   - The amount in **μꜩ** (**mutez**).
+  - An optional boolean flag, **mutez**, to set the base unit of the transferred amount.
 - Then, we wait for the confirmation of the transaction.
 - Finally, we send the `operation.hash` back to the client-side as JSON.
 
@@ -84,10 +83,15 @@ Still not sure how to do this? No problem! The solution is below so you don't ge
 
 # ✅ Make sure it works
 
-Once the code in `pages/api/tezos/transfer.ts` is complete, fill in the amount of **mutez** you want to send then click on **Submit Transfer**.
+Once you have the code above saved:
+
+- Fill in the amount of **mutez** you want to send.
+- Click on **Submit Transfer**.
+
+![](https://raw.githubusercontent.com/figment-networks/learn-web3-dapp/main/markdown/__images__/tezos/tezos-transfer.gif)
 
 ---
 
 # 🏁 Conclusion
 
-Now that we have created our account and made a transfer, let's move on to deploying some code (known as a "smart contract") to the blockchain! Ready to take the plunge? Let's go!
+Now that we have created our account and made a transfer, let's move on to deploying some code (known as a "smart contract") to the **Tezos** blockchain! Ready to take the plunge? Let's go...
