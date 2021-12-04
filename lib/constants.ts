@@ -283,7 +283,6 @@ export const CHAINS_CONFIG: ChainsType = {
       {
         id: PROTOCOL_STEPS_ID.DEPLOY_CONTRACT,
         title: 'Deploy a Solidity smart contract',
-        skippable: true,
       },
       {
         id: PROTOCOL_STEPS_ID.SET_CONTRACT_VALUE,
@@ -474,7 +473,7 @@ export const CHAINS_CONFIG: ChainsType = {
   [CHAINS.CERAMIC]: {
     id: CHAINS.CERAMIC,
     label: 'Ceramic',
-    active: false,
+    active: true,
     logoUrl: 'https://developers.ceramic.network/images/ceramic-no-shadow.png',
     protocol: CERAMIC_PROTOCOLS.HTTP,
     network: CERAMIC_NETWORKS.TESTNET,
