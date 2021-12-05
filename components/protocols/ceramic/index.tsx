@@ -7,18 +7,15 @@ import {
   CustomDefinition,
   LogIn,
 } from '@figment-ceramic/components/steps';
-import {
-  getCurrentChainId,
-  getCurrentStepIdForCurrentChain,
-  useGlobalState,
-} from 'context';
+import {useGlobalState} from 'context';
+import {getChainId, getStepId} from 'utils/context';
 import {getNodeURL} from 'utils/datahub';
 import LocalStorageIdentityStore from '@figment-ceramic/lib/identityStore/LocalStorage';
 
 const Ceramic: React.FC = () => {
   const {state} = useGlobalState();
-  const chainId = getCurrentChainId(state);
-  const stepId = getCurrentStepIdForCurrentChain(state);
+  const chainId = getChainId(state);
+  const stepId = getStepId(state);
   const nodeUrl = getNodeURL(
     chainId,
     CERAMIC_NETWORKS.TESTNET,
@@ -33,6 +30,7 @@ const Ceramic: React.FC = () => {
     <Web3AuthProvider ceramicNodeUrl={nodeUrl} identityStore={identityStore}>
       <div key={stepId}>
         <Nav />
+        {stepId === PROTOCOL_STEPS_ID.PROJECT_SETUP}
         {stepId === PROTOCOL_STEPS_ID.CHAIN_CONNECTION && <Connect />}
         {stepId === PROTOCOL_STEPS_ID.LOGIN && <LogIn />}
         {stepId === PROTOCOL_STEPS_ID.BASIC_PROFILE && <BasicProfile />}
