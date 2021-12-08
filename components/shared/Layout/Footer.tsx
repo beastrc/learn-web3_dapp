@@ -32,7 +32,7 @@ const Footer = () => {
             onClick={() => prev()}
             icon={<ArrowLeftOutlined />}
           >
-            {previousStepTitle}
+            {`Prev: ${previousStepTitle}`}
           </PrevButton>
         )}
         {!isLastStep && (
@@ -46,7 +46,7 @@ const Footer = () => {
             disabled={!isCompleted}
           >
             <Row align="middle">
-              {nextStepTitle}
+              {`Next: ${nextStepTitle}`}
               <ArrowRightOutlined size={20} style={{marginLeft: '6px'}} />
             </Row>
           </NextButton>

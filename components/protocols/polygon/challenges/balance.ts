@@ -8,7 +8,8 @@ const getBalance = async (address: string) => {
   try {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    const balance = await provider.getBalance(address);
+    const rawBalance = await provider.getBalance(address);
+    const balance = ethers.utils.formatEther(rawBalance.toString());
     if (!balance) {
       throw new Error('Please complete the code');
     }
